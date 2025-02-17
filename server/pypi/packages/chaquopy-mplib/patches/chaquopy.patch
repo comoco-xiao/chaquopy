@@ -1,0 +1,14 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 493c126..292db53 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -35,7 +35,8 @@ list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+ 
+ include(eigen)
+ include(boost)
+-include(ompl)
++# include(ompl)
++message(--------------------boost-is-included)
+ 
+ # TODO xiao
+ # find_package(Eigen3 3.4.0 REQUIRED)

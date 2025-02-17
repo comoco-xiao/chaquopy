@@ -1,0 +1,13 @@
+{% set version = "3.0.0b18" %}
+
+package:
+  name: chaquopy-mani-skill
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/haosulab/ManiSkill.git
+  git_rev: v{{ version }}
+
+requirements:
+  host:
+    - python

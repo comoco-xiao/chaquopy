@@ -1,0 +1,13 @@
+{% set version = "1.0.0" %}
+
+package:
+  name: mplib
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/comoco-xiao/MPlib.git
+  git_rev: a8cc7ff1028f55778364b4a9a0318b7b52241a5f
+
+requirements:
+  host:
+    - python
