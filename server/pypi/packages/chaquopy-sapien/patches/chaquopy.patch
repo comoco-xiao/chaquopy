@@ -103,3 +103,16 @@ index bd21283f..f246ab57 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
+diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
+index 0e1d57bc..bf42ef32 100644
+--- a/toolchains/android.toolchain.cmake
++++ b/toolchains/android.toolchain.cmake
+@@ -24,5 +24,4 @@ set(CMAKE_Fortran_COMPILER "" CACHE INTERNAL "Set Fortran compiler")
+ 
+ set(USE_IMGUI OFF CACHE INTERNAL "Use imgui")
+ set(USE_GLFW OFF CACHE INTERNAL "Use glfw")
+-set(VK_USE_PLATFORM_ANDROID_KHR ON CACHE INTERNAL "Vulkan setting - Use platform Android")
+-set(USE_CPP_WRAPPER ON CACHE INTERNAL "Use cpp wrapper")
+\ No newline at end of file
++set(VK_USE_PLATFORM_ANDROID_KHR ON CACHE INTERNAL "Vulkan setting - Use platform Android")
+\ No newline at end of file
