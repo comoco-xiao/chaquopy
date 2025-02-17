@@ -1,3 +1,42 @@
+diff --git a/engine/include/engine/vr_viewer.h b/engine/include/engine/vr_viewer.h
+index 1343b057..c112deac 100644
+--- a/engine/include/engine/vr_viewer.h
++++ b/engine/include/engine/vr_viewer.h
+@@ -23,12 +23,13 @@ public:
+   void render();
+ 
+   void setOnTracking(const std::function<void(const std::vector<Pose>& left, const std::vector<Pose>& right)>& onTracking);
++#ifdef USE_OPENXR
+   void setOnControllerStateUpdate(const std::function<void(const ControllerState &)> onControllerStateUpdate);
+ 
+   void addFixedCameraPos(const std::string &name, const Vec3 &p);
+   void removeFixedCameraPos(const std::string &name);
+   void switchCameraPos(const std::string &name = "");
+-
++#endif
+   ~VRViewer();
+ 
+ private:
+diff --git a/engine/src/vr_viewer.cpp b/engine/src/vr_viewer.cpp
+index ba38e7a3..4d6c8dd2 100644
+--- a/engine/src/vr_viewer.cpp
++++ b/engine/src/vr_viewer.cpp
+@@ -32,6 +32,7 @@ namespace sapien::engine {
+     mRenderWindow->setOnTracking(onTracking);
+   }
+ 
++#ifdef USE_OPENXR
+   void VRViewer::setOnControllerStateUpdate(const std::function<void(const ControllerState &)> onControllerStateUpdate) {
+     mRenderWindow->setOnControllerStateUpdate(onControllerStateUpdate);
+   }
+@@ -47,6 +48,7 @@ namespace sapien::engine {
+   void VRViewer::switchCameraPos(const std::string &name) {
+     mRenderWindow->switchCameraPos(name);
+   }
++#endif
+ 
+   VRViewer::~VRViewer() {
+ 
 diff --git a/setup.py b/setup.py
 index bd21283f..f246ab57 100644
 --- a/setup.py
