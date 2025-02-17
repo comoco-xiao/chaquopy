@@ -1,0 +1,66 @@
+diff --git a/setup.py b/setup.py
+index bd21283f..f246ab57 100644
+--- a/setup.py
++++ b/setup.py
+@@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
+         "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded",
+     ]
+     
+-    if args.macOS:
+-        cmake_args += ["-DCMAKE_TOOLCHAIN_FILE=toolchains/macos.toolchain.cmake"]
++    # if args.macOS:
++    #     cmake_args += ["-DCMAKE_TOOLCHAIN_FILE=toolchains/macos.toolchain.cmake"]
++    cmake_args += ["-DCMAKE_TOOLCHAIN_FILE=toolchains/android.toolchain.cmake"]
+ 
+     if sys.platform == "win32":
+         cmake_args += [f"-DBUILD_TESTING=Off"]
+@@ -285,18 +286,19 @@ class CMakeBuild(build_ext):
+ 
+         # provide oidn for linux
+         if platform.system() == "Linux":
+-            for folder in ["lib", "lib64"]:
+-                library_dir = os.path.join(sapien_install_dir, folder)
+-                if not os.path.exists(library_dir):
+-                    continue
+-                print("copy library from", library_dir)
+-                for lib in os.listdir(library_dir):
+-                    if lib in [
+-                        "libOpenImageDenoise.so.2.0.1",
+-                        "libOpenImageDenoise_core.so.2.0.1",
+-                        "libOpenImageDenoise_device_cuda.so.2.0.1",
+-                    ]:
+-                        shutil.copy(os.path.join(library_dir, lib), oidn_library_path)
++            print("---provide oidn for linux")
++            # for folder in ["lib", "lib64"]:
++            #     library_dir = os.path.join(sapien_install_dir, folder)
++            #     if not os.path.exists(library_dir):
++            #         continue
++            #     print("copy library from", library_dir)
++            #     for lib in os.listdir(library_dir):
++            #         if lib in [
++            #             "libOpenImageDenoise.so.2.0.1",
++            #             "libOpenImageDenoise_core.so.2.0.1",
++            #             "libOpenImageDenoise_device_cuda.so.2.0.1",
++            #         ]:
++            #             shutil.copy(os.path.join(library_dir, lib), oidn_library_path)
+ 
+     def copy_assets(self, ext):
+         vulkan_shader_path = os.path.join(self.build_lib, "sapien", "vulkan_shader")
+@@ -326,6 +328,7 @@ class CMakeBuild(build_ext):
+ 
+         # provide Vulkan libraries for linux
+         if platform.system() == "Linux" or platform.system() == "Darwin":
++            print("---provide Vulkan libraries for linux")
+             vulkan_library_path = os.path.join(
+                 self.build_lib, "sapien", "vulkan_library"
+             )
+@@ -350,7 +353,8 @@ class CMakeBuild(build_ext):
+ 
+     def build_extension(self, ext):
+         if platform.system() == "Linux":
+-            self.build_pinocchio(ext)
++            print("---build linux build extension")
++            # self.build_pinocchio(ext)
+         self.build_pybind(ext)
+         self.copy_assets(ext)
+ 
