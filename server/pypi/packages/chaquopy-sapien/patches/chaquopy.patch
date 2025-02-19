@@ -1,16 +1,3 @@
-diff --git a/cmake/pybind11.cmake b/cmake/pybind11.cmake
-index 1cf1a77c..7bb39452 100644
---- a/cmake/pybind11.cmake
-+++ b/cmake/pybind11.cmake
-@@ -5,7 +5,7 @@ endif()
- include(FetchContent)
- FetchContent_Declare(
-   pybind11
--  GIT_REPOSITORY https://github.com/pybind/pybind11.git
-+  GIT_REPOSITORY https://github.com/comoco-xiao/pybind11.git
-   GIT_TAG smart_holder
-   GIT_SHALLOW TRUE
-   GIT_PROGRESS TRUE
 diff --git a/engine/include/engine/vr_viewer.h b/engine/include/engine/vr_viewer.h
 index 1343b057..c112deac 100644
 --- a/engine/include/engine/vr_viewer.h
@@ -64,7 +51,7 @@ index db48f0a0..60de88bf 100644
  
  if (MSVC)
 diff --git a/setup.py b/setup.py
-index bd21283f..f246ab57 100644
+index bd21283f..5ddcc087 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
@@ -129,6 +116,15 @@ index bd21283f..f246ab57 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
+@@ -387,7 +391,7 @@ if args.sapien_only:
+     exit(0)
+ 
+ setup(
+-    name="sapien",
++    name="chaquopy_sapien",
+     version=version,
+     author="Sapien",
+     python_requires=">=3.7",
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
 index 0e1d57bc..bf42ef32 100644
 --- a/toolchains/android.toolchain.cmake
