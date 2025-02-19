@@ -51,7 +51,7 @@ index db48f0a0..60de88bf 100644
  
  if (MSVC)
 diff --git a/setup.py b/setup.py
-index bd21283f..5ddcc087 100644
+index bd21283f..f246ab57 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
@@ -116,15 +116,6 @@ index bd21283f..5ddcc087 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
-@@ -387,7 +391,7 @@ if args.sapien_only:
-     exit(0)
- 
- setup(
--    name="sapien",
-+    name="chaquopy_sapien",
-     version=version,
-     author="Sapien",
-     python_requires=">=3.7",
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
 index 0e1d57bc..bf42ef32 100644
 --- a/toolchains/android.toolchain.cmake

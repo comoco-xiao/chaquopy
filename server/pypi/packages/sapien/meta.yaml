@@ -1,7 +1,7 @@
-{% set version = "1.0.0" %}
+{% set version = "3.0.0.dev20250219+46a22d3f" %}
 
 package:
-  name: chaquopy-sapien
+  name: sapien
   version: {{ version }}
 
 source:
