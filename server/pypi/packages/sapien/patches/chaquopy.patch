@@ -114,6 +114,23 @@ index b3825544..7efd6013 100644
 +#         src_path = os.path.join(source_path, item)
 +#         shutil.copy2(src_path, target_dir)
 \ No newline at end of file
+diff --git a/python/requirements.txt b/python/requirements.txt
+index 495d36ea..9a1f7450 100644
+--- a/python/requirements.txt
++++ b/python/requirements.txt
+@@ -1,7 +1,6 @@
+-numpy>=1.17
+-requests>=2.22
+-transforms3d>=0.3
++numpy
++requests
++transforms3d
+ lxml
+ networkx
+-pyperclip
+-opencv-python>=4.0
++pyperclip
+\ No newline at end of file
 diff --git a/setup.py b/setup.py
 index bd21283f..21c8d344 100644
 --- a/setup.py
