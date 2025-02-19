@@ -38,10 +38,19 @@ index ba38e7a3..4d6c8dd2 100644
    VRViewer::~VRViewer() {
  
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index db48f0a0..60de88bf 100644
+index db48f0a0..8c32417a 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -33,7 +33,7 @@ find_package(sapien REQUIRED)
+@@ -10,6 +10,8 @@ else()
+     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g0 -Wall  -std=c++20")
+ endif()
+ 
++set(CMAKE_INSTALL_RPATH "@loader_path/libs")
++set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+ 
+ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+     add_definitions(-D_DEBUG)
+@@ -33,7 +35,7 @@ find_package(sapien REQUIRED)
  
  file(GLOB_RECURSE PYBIND_SRC "pybind/*.cpp")
  pybind11_add_module(pysapien ${PYBIND_SRC})
@@ -51,7 +60,7 @@ index db48f0a0..60de88bf 100644
  
  if (MSVC)
 diff --git a/setup.py b/setup.py
-index bd21283f..f246ab57 100644
+index bd21283f..c3cf5d25 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
@@ -98,7 +107,35 @@ index bd21283f..f246ab57 100644
  
      def copy_assets(self, ext):
          vulkan_shader_path = os.path.join(self.build_lib, "sapien", "vulkan_shader")
-@@ -326,6 +328,7 @@ class CMakeBuild(build_ext):
+@@ -309,14 +311,22 @@ class CMakeBuild(build_ext):
+         # copy dynamic libs
+         if platform.system() == "Darwin":
+             sapien_install_dir = os.path.join(self.sapien_build_dir, "_sapien_install")
+-            dy_libs_path = os.path.join(self.build_lib, "sapien", "libs")
++            dy_libs_path = os.path.join(self.uild_lib, "sapien", "libs")
+             dy_source_paths = [
+                 os.path.join(sapien_install_dir, "lib/libsapien.dylib"),
+                 os.path.join(sapien_install_dir, "lib/libsvulkan2.dylib"),
+-                os.path.join(ext.sourcedir, "apple/macOS/physx5/bin/mac.x86_64/release/libPhysX_64.dylib"),
+-                os.path.join(ext.sourcedir, "apple/macOS/physx5/bin/mac.x86_64/release/libPhysXCommon_64.dylib"),
+-                os.path.join(ext.sourcedir, "apple/macOS/physx5/bin/mac.x86_64/release/libPhysXCooking_64.dylib"),
+-                os.path.join(ext.sourcedir, "apple/macOS/physx5/bin/mac.x86_64/release/libPhysXFoundation_64.dylib"),
++            ]
++            if os.path.exists(dy_libs_path):
++                shutil.rmtree(dy_libs_path)
++            os.makedirs(dy_libs_path)
++            for lib in dy_source_paths:
++                shutil.copy(lib, dy_libs_path)
++        if platform.system() == "Linux":
++            sapien_install_dir = os.path.join(self.sapien_build_dir, "_sapien_install")
++            dy_libs_path = os.path.join(self.uild_lib, "sapien", "libs")
++            dy_source_paths = [
++                os.path.join(sapien_install_dir, "lib/libsapien.so"),
++                os.path.join(sapien_install_dir, "lib/libsvulkan2.so"),
+             ]
+             if os.path.exists(dy_libs_path):
+                 shutil.rmtree(dy_libs_path)
+@@ -326,6 +336,7 @@ class CMakeBuild(build_ext):
  
          # provide Vulkan libraries for linux
          if platform.system() == "Linux" or platform.system() == "Darwin":
@@ -106,7 +143,7 @@ index bd21283f..f246ab57 100644
              vulkan_library_path = os.path.join(
                  self.build_lib, "sapien", "vulkan_library"
              )
-@@ -350,7 +353,8 @@ class CMakeBuild(build_ext):
+@@ -350,7 +361,8 @@ class CMakeBuild(build_ext):
  
      def build_extension(self, ext):
          if platform.system() == "Linux":
