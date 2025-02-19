@@ -60,7 +60,7 @@ index db48f0a0..8c32417a 100644
  
  if (MSVC)
 diff --git a/setup.py b/setup.py
-index bd21283f..c3cf5d25 100644
+index bd21283f..5f1b8ebe 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
@@ -107,12 +107,7 @@ index bd21283f..c3cf5d25 100644
  
      def copy_assets(self, ext):
          vulkan_shader_path = os.path.join(self.build_lib, "sapien", "vulkan_shader")
-@@ -309,14 +311,22 @@ class CMakeBuild(build_ext):
-         # copy dynamic libs
-         if platform.system() == "Darwin":
-             sapien_install_dir = os.path.join(self.sapien_build_dir, "_sapien_install")
--            dy_libs_path = os.path.join(self.build_lib, "sapien", "libs")
-+            dy_libs_path = os.path.join(self.uild_lib, "sapien", "libs")
+@@ -313,10 +315,18 @@ class CMakeBuild(build_ext):
              dy_source_paths = [
                  os.path.join(sapien_install_dir, "lib/libsapien.dylib"),
                  os.path.join(sapien_install_dir, "lib/libsvulkan2.dylib"),
@@ -128,7 +123,7 @@ index bd21283f..c3cf5d25 100644
 +                shutil.copy(lib, dy_libs_path)
 +        if platform.system() == "Linux":
 +            sapien_install_dir = os.path.join(self.sapien_build_dir, "_sapien_install")
-+            dy_libs_path = os.path.join(self.uild_lib, "sapien", "libs")
++            dy_libs_path = os.path.join(self.build_lib, "sapien", "libs")
 +            dy_source_paths = [
 +                os.path.join(sapien_install_dir, "lib/libsapien.so"),
 +                os.path.join(sapien_install_dir, "lib/libsvulkan2.so"),
