@@ -59,8 +59,63 @@ index db48f0a0..8c32417a 100644
  target_compile_definitions(pysapien PRIVATE PYBIND11_USE_SMART_HOLDER_AS_DEFAULT)
  
  if (MSVC)
+diff --git a/python/py_package/__init__.py b/python/py_package/__init__.py
+index ae4e06cd..4f535ffb 100644
+--- a/python/py_package/__init__.py
++++ b/python/py_package/__init__.py
+@@ -6,8 +6,8 @@ import platform
+ from .version import __version__
+ 
+ os.environ["SAPIEN_PACKAGE_PATH"] = os.path.dirname(__file__)
+-from . import _dylibs_tricks
+-from . import _oidn_tricks
++# from . import _dylibs_tricks
++# from . import _oidn_tricks
+ 
+ from . import pysapien
+ 
+@@ -25,7 +25,7 @@ else:
+ from . import physx
+ from . import render
+ 
+-from . import _vulkan_tricks
++# from . import _vulkan_tricks
+ 
+ from .wrapper.scene import Scene, SceneConfig, Widget
+ from .wrapper.engine import Engine
+diff --git a/python/py_package/_dylibs_tricks.py b/python/py_package/_dylibs_tricks.py
+index b3825544..7efd6013 100644
+--- a/python/py_package/_dylibs_tricks.py
++++ b/python/py_package/_dylibs_tricks.py
+@@ -1,13 +1,13 @@
+-import platform
+-import os
+-import sys
+-import shutil
++# import platform
++# import os
++# import sys
++# import shutil
+ 
+-if platform.system() == "Darwin":
+-    target_dir = os.path.join(sys.prefix, "lib")
+-    source_path = os.path.join(os.path.dirname(__file__), "libs")
+-    assert os.path.exists(source_path)
++# if platform.system() == "Darwin":
++#     target_dir = os.path.join(sys.prefix, "lib")
++#     source_path = os.path.join(os.path.dirname(__file__), "libs")
++#     assert os.path.exists(source_path)
+     
+-    for item in os.listdir(source_path):
+-        src_path = os.path.join(source_path, item)
+-        shutil.copy2(src_path, target_dir)
+\ No newline at end of file
++#     for item in os.listdir(source_path):
++#         src_path = os.path.join(source_path, item)
++#         shutil.copy2(src_path, target_dir)
+\ No newline at end of file
 diff --git a/setup.py b/setup.py
-index bd21283f..5f1b8ebe 100644
+index bd21283f..21c8d344 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
@@ -130,14 +185,32 @@ index bd21283f..5f1b8ebe 100644
              ]
              if os.path.exists(dy_libs_path):
                  shutil.rmtree(dy_libs_path)
-@@ -326,6 +336,7 @@ class CMakeBuild(build_ext):
+@@ -325,15 +335,16 @@ class CMakeBuild(build_ext):
+                 shutil.copy(lib, dy_libs_path)
  
          # provide Vulkan libraries for linux
-         if platform.system() == "Linux" or platform.system() == "Darwin":
-+            print("---provide Vulkan libraries for linux")
-             vulkan_library_path = os.path.join(
-                 self.build_lib, "sapien", "vulkan_library"
-             )
+-        if platform.system() == "Linux" or platform.system() == "Darwin":
+-            vulkan_library_path = os.path.join(
+-                self.build_lib, "sapien", "vulkan_library"
+-            )
+-            source_path = os.path.join(ext.sourcedir, "vulkan_library")
+-            if os.path.exists(vulkan_library_path):
+-                shutil.rmtree(vulkan_library_path)
+-            assert os.path.exists(source_path)
+-            shutil.copytree(source_path, vulkan_library_path)
++        # if platform.system() == "Linux" or platform.system() == "Darwin":
++        #     print("---provide Vulkan libraries for linux")
++        #     vulkan_library_path = os.path.join(
++        #         self.build_lib, "sapien", "vulkan_library"
++        #     )
++        #     source_path = os.path.join(ext.sourcedir, "vulkan_library")
++        #     if os.path.exists(vulkan_library_path):
++        #         shutil.rmtree(vulkan_library_path)
++        #     assert os.path.exists(source_path)
++        #     shutil.copytree(source_path, vulkan_library_path)
+ 
+         sensor_assets_path = os.path.join(self.build_lib, "sapien", "sensor", "assets")
+         source_patterns_path = os.path.join(
 @@ -350,7 +361,8 @@ class CMakeBuild(build_ext):
  
      def build_extension(self, ext):
