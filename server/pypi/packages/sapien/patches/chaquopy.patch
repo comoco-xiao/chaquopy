@@ -132,10 +132,20 @@ index 495d36ea..9a1f7450 100644
 +pyperclip
 \ No newline at end of file
 diff --git a/setup.py b/setup.py
-index bd21283f..21c8d344 100644
+index bd21283f..7b75c66d 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -141,8 +141,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
+@@ -105,7 +105,8 @@ def generate_version():
+     return version
+ 
+ 
+-version = generate_version()
++# version = generate_version()
++version = "3.0.0.dev"
+ 
+ if args.get_version:
+     print(version)
+@@ -141,8 +142,9 @@ def build_sapien(sapien_source_dir, sapien_build_dir):
          "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded",
      ]
      
@@ -147,7 +157,7 @@ index bd21283f..21c8d344 100644
  
      if sys.platform == "win32":
          cmake_args += [f"-DBUILD_TESTING=Off"]
-@@ -285,18 +286,19 @@ class CMakeBuild(build_ext):
+@@ -285,18 +287,19 @@ class CMakeBuild(build_ext):
  
          # provide oidn for linux
          if platform.system() == "Linux":
@@ -179,7 +189,7 @@ index bd21283f..21c8d344 100644
  
      def copy_assets(self, ext):
          vulkan_shader_path = os.path.join(self.build_lib, "sapien", "vulkan_shader")
-@@ -313,10 +315,18 @@ class CMakeBuild(build_ext):
+@@ -313,10 +316,18 @@ class CMakeBuild(build_ext):
              dy_source_paths = [
                  os.path.join(sapien_install_dir, "lib/libsapien.dylib"),
                  os.path.join(sapien_install_dir, "lib/libsvulkan2.dylib"),
@@ -202,7 +212,7 @@ index bd21283f..21c8d344 100644
              ]
              if os.path.exists(dy_libs_path):
                  shutil.rmtree(dy_libs_path)
-@@ -325,15 +335,16 @@ class CMakeBuild(build_ext):
+@@ -325,15 +336,16 @@ class CMakeBuild(build_ext):
                  shutil.copy(lib, dy_libs_path)
  
          # provide Vulkan libraries for linux
@@ -228,7 +238,7 @@ index bd21283f..21c8d344 100644
  
          sensor_assets_path = os.path.join(self.build_lib, "sapien", "sensor", "assets")
          source_patterns_path = os.path.join(
-@@ -350,7 +361,8 @@ class CMakeBuild(build_ext):
+@@ -350,7 +362,8 @@ class CMakeBuild(build_ext):
  
      def build_extension(self, ext):
          if platform.system() == "Linux":
