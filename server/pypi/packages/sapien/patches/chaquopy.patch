@@ -132,7 +132,7 @@ index 495d36ea..9a1f7450 100644
 +pyperclip
 \ No newline at end of file
 diff --git a/setup.py b/setup.py
-index bd21283f..7b75c66d 100644
+index bd21283f..39b99d44 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -105,7 +105,8 @@ def generate_version():
@@ -141,7 +141,7 @@ index bd21283f..7b75c66d 100644
  
 -version = generate_version()
 +# version = generate_version()
-+version = "3.0.0.dev"
++version = "3.0.0"
  
  if args.get_version:
      print(version)
