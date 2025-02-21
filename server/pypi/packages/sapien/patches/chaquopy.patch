@@ -60,7 +60,7 @@ index db48f0a0..8c32417a 100644
  
  if (MSVC)
 diff --git a/python/py_package/__init__.py b/python/py_package/__init__.py
-index ae4e06cd..4f535ffb 100644
+index ae4e06cd..411aaf60 100644
 --- a/python/py_package/__init__.py
 +++ b/python/py_package/__init__.py
 @@ -6,8 +6,8 @@ import platform
@@ -74,7 +74,18 @@ index ae4e06cd..4f535ffb 100644
  
  from . import pysapien
  
-@@ -25,7 +25,7 @@ else:
+@@ -15,17 +15,13 @@ from .pysapien import Entity, Component, System, CudaArray, Pose, Device
+ from .pysapien import profile
+ from .pysapien import set_log_level
+ # zhangxiao
+-import sys
+-if sys.platform == 'darwin':
+-    from .pysapien import math
+-else:
+-    from .pysapien import math, simsense
++from .pysapien import math
+ 
+ 
  from . import physx
  from . import render
  
@@ -83,6 +94,23 @@ index ae4e06cd..4f535ffb 100644
  
  from .wrapper.scene import Scene, SceneConfig, Widget
  from .wrapper.engine import Engine
+diff --git a/python/py_package/__init__.pyi b/python/py_package/__init__.pyi
+index e9c42f50..82b8395e 100644
+--- a/python/py_package/__init__.pyi
++++ b/python/py_package/__init__.pyi
+@@ -15,9 +15,9 @@ from sapien.pysapien.physx import PhysxSceneConfig as SceneConfig
+ from sapien.pysapien import profile
+ from sapien.pysapien import set_log_level
+ # zhangxiao
+-import sys
+-if sys.platform != 'darwin':
+-    from sapien.pysapien import simsense
++# import sys
++# if sys.platform != 'darwin':
++#     from sapien.pysapien import simsense
+ 
+ from sapien.pysapien_pinocchio import PinocchioModel
+ from sapien.wrapper.actor_builder import ActorBuilder
 diff --git a/python/py_package/_dylibs_tricks.py b/python/py_package/_dylibs_tricks.py
 index b3825544..7efd6013 100644
 --- a/python/py_package/_dylibs_tricks.py
@@ -114,6 +142,39 @@ index b3825544..7efd6013 100644
 +#         src_path = os.path.join(source_path, item)
 +#         shutil.copy2(src_path, target_dir)
 \ No newline at end of file
+diff --git a/python/py_package/pysapien/__init__.pyi b/python/py_package/pysapien/__init__.pyi
+index b62afc39..d9fb27ee 100644
+--- a/python/py_package/pysapien/__init__.pyi
++++ b/python/py_package/pysapien/__init__.pyi
+@@ -8,12 +8,7 @@ from . import math
+ from . import physx
+ from . import render
+ # zhangxiao
+-import sys
+-if sys.platform == 'darwin':
+-    __all__ = ['Component', 'CudaArray', 'Device', 'Entity', 'Pose', 'Profiler', 'Scene', 'System', 'abi_version', 'compiled_with_cxx11_abi', 'internal_renderer', 'math', 'physx', 'profile', 'pybind11_internals_id', 'pybind11_use_smart_holder', 'render', 'set_log_level']
+-else:
+-    from . import simsense
+-    __all__ = ['Component', 'CudaArray', 'Device', 'Entity', 'Pose', 'Profiler', 'Scene', 'System', 'abi_version', 'compiled_with_cxx11_abi', 'internal_renderer', 'math', 'physx', 'profile', 'pybind11_internals_id', 'pybind11_use_smart_holder', 'render', 'set_log_level', 'simsense']
++__all__ = ['Component', 'CudaArray', 'Device', 'Entity', 'Pose', 'Profiler', 'Scene', 'System', 'abi_version', 'compiled_with_cxx11_abi', 'internal_renderer', 'math', 'physx', 'profile', 'pybind11_internals_id', 'pybind11_use_smart_holder', 'render', 'set_log_level']
+ 
+ _T = typing.TypeVar("_T", Component)
+ class Component:
+diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
+index 78c6a404..d458673f 100644
+--- a/python/py_package/wrapper/engine.py
++++ b/python/py_package/wrapper/engine.py
+@@ -1,9 +1,5 @@
+ # zhangxiao
+-import sys
+-if sys.platform == 'darwin':
+-    from ..pysapien.physx import PhysxSystem, PhysxCpuSystem, PhysxMaterial
+-else:
+-    from ..pysapien.physx import PhysxSystem, PhysxGpuSystem, PhysxCpuSystem, PhysxMaterial
++from ..pysapien.physx import PhysxSystem, PhysxCpuSystem, PhysxMaterial
+ 
+ from .. import pysapien as sapien
+ from ..pysapien.render import RenderSystem
 diff --git a/python/requirements.txt b/python/requirements.txt
 index 495d36ea..9a1f7450 100644
 --- a/python/requirements.txt
