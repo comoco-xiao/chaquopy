@@ -95,10 +95,10 @@ index ae4e06cd..411aaf60 100644
  from .wrapper.scene import Scene, SceneConfig, Widget
  from .wrapper.engine import Engine
 diff --git a/python/py_package/__init__.pyi b/python/py_package/__init__.pyi
-index e9c42f50..82b8395e 100644
+index e9c42f50..e0d3bb3a 100644
 --- a/python/py_package/__init__.pyi
 +++ b/python/py_package/__init__.pyi
-@@ -15,9 +15,9 @@ from sapien.pysapien.physx import PhysxSceneConfig as SceneConfig
+@@ -15,11 +15,11 @@ from sapien.pysapien.physx import PhysxSceneConfig as SceneConfig
  from sapien.pysapien import profile
  from sapien.pysapien import set_log_level
  # zhangxiao
@@ -109,8 +109,11 @@ index e9c42f50..82b8395e 100644
 +# if sys.platform != 'darwin':
 +#     from sapien.pysapien import simsense
  
- from sapien.pysapien_pinocchio import PinocchioModel
+-from sapien.pysapien_pinocchio import PinocchioModel
++# from sapien.pysapien_pinocchio import PinocchioModel
  from sapien.wrapper.actor_builder import ActorBuilder
+ from sapien.wrapper.articulation_builder import ArticulationBuilder
+ from sapien.wrapper.engine import Engine
 diff --git a/python/py_package/_dylibs_tricks.py b/python/py_package/_dylibs_tricks.py
 index b3825544..7efd6013 100644
 --- a/python/py_package/_dylibs_tricks.py
