@@ -234,14 +234,17 @@ index 9d7bc32c..f4c87f25 100644
  
  def _create_pinocchio_model(
 diff --git a/python/pybind/sapien.cpp b/python/pybind/sapien.cpp
-index c03af1a1..a08300ed 100644
+index c03af1a1..95906d0e 100644
 --- a/python/pybind/sapien.cpp
 +++ b/python/pybind/sapien.cpp
-@@ -18,6 +18,17 @@
+@@ -18,6 +18,20 @@
  #include <pybind11/smart_holder.h>
  #include <pybind11/stl.h>
  
 +#ifdef __ANDROID__
++#include <jni.h>
++#include <string>
++#include <android/native_window_jni.h>
 +#include <android/log.h>
 +#define LOG_TAG "SAPIEN"
 +#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
@@ -255,7 +258,7 @@ index c03af1a1..a08300ed 100644
  namespace py = pybind11;
  using namespace pybind11::literals;
  using namespace sapien;
-@@ -347,3 +358,24 @@ Generator<int> init_sapien(py::module &m) {
+@@ -347,3 +361,24 @@ Generator<int> init_sapien(py::module &m) {
    });
    m.def("pybind11_internals_id", []() { return PYBIND11_INTERNALS_ID; });
  }
