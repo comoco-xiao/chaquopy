@@ -234,26 +234,26 @@ index 9d7bc32c..f4c87f25 100644
  
  def _create_pinocchio_model(
 diff --git a/python/pybind/sapien.cpp b/python/pybind/sapien.cpp
-index c03af1a1..95906d0e 100644
+index c03af1a1..ccbfe436 100644
 --- a/python/pybind/sapien.cpp
 +++ b/python/pybind/sapien.cpp
 @@ -18,6 +18,20 @@
  #include <pybind11/smart_holder.h>
  #include <pybind11/stl.h>
  
-+#ifdef __ANDROID__
-+#include <jni.h>
-+#include <string>
-+#include <android/native_window_jni.h>
-+#include <android/log.h>
-+#define LOG_TAG "SAPIEN"
-+#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
-+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-+#define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
-+#endif
++// #ifdef __ANDROID__
++// #include <jni.h>
++// #include <string>
++// #include <android/native_window_jni.h>
++// #include <android/log.h>
++// #define LOG_TAG "SAPIEN"
++// #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
++// #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
++// #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
++// #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
++// #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
++// #define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
++// #endif
 +
  namespace py = pybind11;
  using namespace pybind11::literals;
@@ -263,26 +263,26 @@ index c03af1a1..95906d0e 100644
    m.def("pybind11_internals_id", []() { return PYBIND11_INTERNALS_ID; });
  }
 +
-+#ifdef __ANDROID__
-+extern "C" JNIEXPORT void JNICALL
-+Java_org_beeware_android_MainActivity_sapienInit(
-+        JNIEnv* env,
-+        jobject,
-+        jobject surface,
-+        jint width,
-+        jint height,
-+        jstring assetsResRootPath) {
-+    LOGI("-----+++++-----Java_org_beeware_android_MainActivity_sapienInit---\n");
-+    std::string rootDir(env->GetStringUTFChars(assetsResRootPath, nullptr));
-+    LOGI("-----+++++-----init---width = %d, height = %d, path = %s\n", width, height, rootDir.c_str());
-+    ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
-+    if (!nativeWindow) {
-+      LOGI("-----+++++-----nativeWindow == nullptr ---\n");
-+    } else {
-+      LOGI("-----+++++-----nativeWindow != nullptr ---\n");
-+    }
-+}
-+#endif
++// #ifdef __ANDROID__
++// extern "C" JNIEXPORT void JNICALL
++// Java_org_beeware_android_MainActivity_sapienInit(
++//         JNIEnv* env,
++//         jobject,
++//         jobject surface,
++//         jint width,
++//         jint height,
++//         jstring assetsResRootPath) {
++//     LOGI("-----+++++-----Java_org_beeware_android_MainActivity_sapienInit---\n");
++//     std::string rootDir(env->GetStringUTFChars(assetsResRootPath, nullptr));
++//     LOGI("-----+++++-----init---width = %d, height = %d, path = %s\n", width, height, rootDir.c_str());
++//     ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
++//     if (!nativeWindow) {
++//       LOGI("-----+++++-----nativeWindow == nullptr ---\n");
++//     } else {
++//       LOGI("-----+++++-----nativeWindow != nullptr ---\n");
++//     }
++// }
++// #endif
 \ No newline at end of file
 diff --git a/python/requirements.txt b/python/requirements.txt
 index 495d36ea..9a1f7450 100644
@@ -418,6 +418,57 @@ index bd21283f..39b99d44 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
+diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
+index 7c190c40..b834c215 100644
+--- a/src/sapien_renderer/sapien_renderer_system.cpp
++++ b/src/sapien_renderer/sapien_renderer_system.cpp
+@@ -18,6 +18,20 @@
+ #include <cuda_runtime.h>
+ #endif
+ 
++#ifdef __ANDROID__
++#include <jni.h>
++#include <string>
++#include <android/native_window_jni.h>
++#include <android/log.h>
++#define LOG_TAG "SAPIEN"
++#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
++#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
++#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
++#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
++#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
++#define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
++#endif
++
+ namespace sapien {
+ namespace sapien_renderer {
+ 
+@@ -224,3 +238,24 @@ SapienRendererSystem::~SapienRendererSystem() {}
+ 
+ } // namespace sapien_renderer
+ } // namespace sapien
++
++#ifdef __ANDROID__
++extern "C" JNIEXPORT void JNICALL
++Java_org_beeware_android_MainActivity_sapienInit(
++        JNIEnv* env,
++        jobject,
++        jobject surface,
++        jint width,
++        jint height,
++        jstring assetsResRootPath) {
++    LOGI("-----+++++-----Java_org_beeware_android_MainActivity_sapienInit---\n");
++    std::string rootDir(env->GetStringUTFChars(assetsResRootPath, nullptr));
++    LOGI("-----+++++-----init---width = %d, height = %d, path = %s\n", width, height, rootDir.c_str());
++    ANativeWindow *nativeWindow = ANativeWindow_fromSurface(env, surface);
++    if (!nativeWindow) {
++      LOGI("-----+++++-----nativeWindow == nullptr ---\n");
++    } else {
++      LOGI("-----+++++-----nativeWindow != nullptr ---\n");
++    }
++}
++#endif
+\ No newline at end of file
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
 index 0e1d57bc..bf42ef32 100644
 --- a/toolchains/android.toolchain.cmake
