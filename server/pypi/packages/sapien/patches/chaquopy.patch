@@ -1,3 +1,16 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index dcd94d91..a267e655 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -137,7 +137,7 @@ if (${USE_OPENXR})
+     target_link_libraries(sapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum pinocchio yaml-cpp nlopt pytorch nlohmann_json)
+ endif()
+ 
+-target_link_libraries(sapien PUBLIC eigen svulkan2)
++target_link_libraries(sapien PUBLIC eigen svulkan2 android log)
+ if (${USE_CPP_WRAPPER})
+     target_link_libraries(sapien PUBLIC tinyxml2)
+ endif()
 diff --git a/engine/include/engine/vr_viewer.h b/engine/include/engine/vr_viewer.h
 index 1343b057..c112deac 100644
 --- a/engine/include/engine/vr_viewer.h
