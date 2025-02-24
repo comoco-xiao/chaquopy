@@ -483,15 +483,16 @@ index 7c190c40..b834c215 100644
 +#endif
 \ No newline at end of file
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
-index 0e1d57bc..62976a77 100644
+index 0e1d57bc..bf104cff 100644
 --- a/toolchains/android.toolchain.cmake
 +++ b/toolchains/android.toolchain.cmake
-@@ -22,7 +22,9 @@ set(CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION clang)
+@@ -22,7 +22,10 @@ set(CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION clang)
  
  set(CMAKE_Fortran_COMPILER "" CACHE INTERNAL "Set Fortran compiler")
  
 +set(CMAKE_C_COMPILER_LAUNCHER ccache CACHE INTERNAL "C cache")
 +set(CMAKE_CXX_COMPILER_LAUNCHER ccache CACHE INTERNAL "C++ cache")
++set(CMAKE_UNITY_BUILD ON)
 +
  set(USE_IMGUI OFF CACHE INTERNAL "Use imgui")
  set(USE_GLFW OFF CACHE INTERNAL "Use glfw")
