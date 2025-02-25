@@ -215,6 +215,20 @@ index b62afc39..d9fb27ee 100644
  
  _T = typing.TypeVar("_T", Component)
  class Component:
+diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
+index 4089ce6b..55c03933 100644
+--- a/python/py_package/utils/viewer/viewer.py
++++ b/python/py_package/utils/viewer/viewer.py
+@@ -32,7 +32,8 @@ class Viewer:
+         self,
+         renderer: SapienRenderer = None,
+         shader_dir="",
+-        resolutions=(1920, 1080),
++        # resolutions=(1920, 1080),
++        resolutions=(1080, 2039),
+         plugins=[
+             PathWindow(),
+             ContactWindow(),
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
