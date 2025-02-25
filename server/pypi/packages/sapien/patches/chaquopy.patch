@@ -216,10 +216,10 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..2ae29f00 100644
+index 4089ce6b..207a8e46 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
-@@ -32,18 +32,19 @@ class Viewer:
+@@ -32,53 +32,54 @@ class Viewer:
          self,
          renderer: SapienRenderer = None,
          shader_dir="",
@@ -249,7 +249,65 @@ index 4089ce6b..2ae29f00 100644
 +            # # KeyframeWindow(),
          ],
      ):
-         filename = sapien.render.get_imgui_ini_filename()
+-        filename = sapien.render.get_imgui_ini_filename()
+-        if not filename:
+-            filename = "imgui.ini"
++        # filename = sapien.render.get_imgui_ini_filename()
++        # if not filename:
++        #     filename = "imgui.ini"
+ 
+-        if not os.path.exists(filename):
+-            Path(filename).parent.mkdir(parents=True, exist_ok=True)
++        # if not os.path.exists(filename):
++        #     Path(filename).parent.mkdir(parents=True, exist_ok=True)
+ 
+-            with open(filename, "w") as f:
+-                f.write(imgui_ini)
++        #     with open(filename, "w") as f:
++        #         f.write(imgui_ini)
+ 
+-        if renderer is None:
+-            renderer = SapienRenderer()
++        # if renderer is None:
++        #     renderer = SapienRenderer()
+ 
+-        self.renderer_context = renderer._internal_context
++        # self.renderer_context = renderer._internal_context
+ 
+-        if not shader_dir:
+-            self.shader_dir = get_viewer_shader_dir()
+-        else:
+-            self.shader_dir = shader_dir
++        # if not shader_dir:
++        #     self.shader_dir = get_viewer_shader_dir()
++        # else:
++        #     self.shader_dir = shader_dir
+ 
+-        resolution = np.array(resolutions).flatten()[:2]
++        # resolution = np.array(resolutions).flatten()[:2]
+ 
+-        self.scenes = []
++        # self.scenes = []
+ 
+-        self.window = RenderWindow(*resolution, self.shader_dir)
+-        self.window.set_focus_callback(self.focus_change)
+-        self.window.set_drop_callback(self.drop)
++        # self.window = RenderWindow(*resolution, self.shader_dir)
++        # self.window.set_focus_callback(self.focus_change)
++        # self.window.set_drop_callback(self.drop)
+ 
+-        self.paused = False
+-        self.render_target = "Color"
++        # self.paused = False
++        # self.render_target = "Color"
+ 
+-        self.plugins = plugins
+-        self.init_plugins(plugins)
++        # self.plugins = plugins
++        # self.init_plugins(plugins)
+ 
+         self._selected_entity_visibility = 0.5
+ 
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
