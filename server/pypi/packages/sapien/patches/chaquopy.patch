@@ -40,7 +40,7 @@ index dd4a3399..8f2f2a44 100644
        std::vector<vk::Format>{vk::Format::eB8G8R8A8Unorm, vk::Format::eR8G8B8A8Unorm,
                                vk::Format::eB8G8R8Unorm, vk::Format::eR8G8B8Unorm},
 diff --git a/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp b/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
-index 47d49ddc..beceab9e 100644
+index 47d49ddc..8fec34ac 100644
 --- a/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
 @@ -70,10 +70,15 @@ GuiWindow::GuiWindow(std::vector<vk::Format> const &requestFormats,
@@ -59,9 +59,12 @@ index 47d49ddc..beceab9e 100644
  }
  
  void GuiWindow::newFrame() {
-@@ -447,12 +452,12 @@ void GuiWindow::unsetFocusCallback() { mFocusCallback = {}; }
+@@ -446,13 +451,15 @@ void GuiWindow::unsetFocusCallback() { mFocusCallback = {}; }
+ 
  void GuiWindow::selectSurfaceFormat(std::vector<vk::Format> const &requestFormats,
                                      vk::ColorSpaceKHR requestColorSpace) {
++  mSurfaceFormat = vk::Format::eR8G8B8A8Unorm;
++  return;
    assert(requestFormats.size() > 0);
 -
 +LOGD("-----GuiWindow::selectSurfaceFormat---1");
