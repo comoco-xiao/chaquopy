@@ -488,7 +488,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..1ebc2637 100644
+index 7c190c40..453b5b0f 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -516,7 +516,17 @@ index 7c190c40..1ebc2637 100644
  std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Device> device, const void *layer
  #ifdef USE_OPENXR
                                                              ,const std::shared_ptr<PlatformData> &platformData
-@@ -220,6 +228,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -117,6 +125,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
+                                           ,const std::shared_ptr<PlatformData> &data
+ #endif
+ ) {
++  if (gNativeData && gNativeData->layer) {
++    layer = gNativeData->layer;
++  }
+   mEngine = SapienRenderEngine::Get(device, layer
+ #ifdef USE_OPENXR
+                                     ,data
+@@ -220,6 +231,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
