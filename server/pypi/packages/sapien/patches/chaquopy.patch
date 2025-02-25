@@ -216,7 +216,7 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..4b47058e 100644
+index 4089ce6b..2ae29f00 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
 @@ -32,18 +32,19 @@ class Viewer:
@@ -250,63 +250,6 @@ index 4089ce6b..4b47058e 100644
          ],
      ):
          filename = sapien.render.get_imgui_ini_filename()
-@@ -117,34 +118,34 @@ class Viewer:
-             plugin.init(self)
- 
-     def set_scenes(self, scenes, offsets=None):
--        if offsets is None:
--            side = int(np.ceil(len(scenes) ** 0.5))
--            idx = np.arange(len(scenes))
--            offsets = np.stack([idx // side, idx % side, np.zeros_like(idx)], axis=1)
--
--        if self.scenes:
--            camera_pose = self.window.get_camera_pose()
--            self.clear_scene()
--        else:
--            camera_pose = sapien.Pose([-2, 0, 0.5])
-+        # if offsets is None:
-+        #     side = int(np.ceil(len(scenes) ** 0.5))
-+        #     idx = np.arange(len(scenes))
-+        #     offsets = np.stack([idx // side, idx % side, np.zeros_like(idx)], axis=1)
-+
-+        # if self.scenes:
-+        #     camera_pose = self.window.get_camera_pose()
-+        #     self.clear_scene()
-+        # else:
-+        #     camera_pose = sapien.Pose([-2, 0, 0.5])
- 
-         self.selected_entity = None
-         self.scenes = scenes
- 
--        if len(scenes) == 0:
--            self.window.set_scene(None)
--        elif len(scenes) == 1:
--            self.window.set_scene(scenes[0])
--            self.scene_offset = {scenes[0]: np.array([0, 0, 0])}
--        else:
--            self.window.set_scenes(scenes, offsets)
--            self.scene_offset = dict((s, o) for s, o in zip(scenes, offsets))
-+        # if len(scenes) == 0:
-+        #     self.window.set_scene(None)
-+        # elif len(scenes) == 1:
-+        #     self.window.set_scene(scenes[0])
-+        #     self.scene_offset = {scenes[0]: np.array([0, 0, 0])}
-+        # else:
-+        #     self.window.set_scenes(scenes, offsets)
-+        #     self.scene_offset = dict((s, o) for s, o in zip(scenes, offsets))
- 
--        self.window.set_camera_parameters(0.1, 1000, np.pi / 2)
--        self.set_camera_pose(camera_pose)
-+        # self.window.set_camera_parameters(0.1, 1000, np.pi / 2)
-+        # self.set_camera_pose(camera_pose)
- 
--        for plugin in self.plugins:
--            plugin.notify_scene_change()
-+        # for plugin in self.plugins:
-+        #     plugin.notify_scene_change()
- 
-     def get_entity_viewer_pose(self, entity):
-         return sapien.Pose(self.scene_offset[entity.scene]) * entity.pose
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
@@ -377,6 +320,20 @@ index 9d7bc32c..f4c87f25 100644
  
  
  def _create_pinocchio_model(
+diff --git a/python/py_package/wrapper/scene.py b/python/py_package/wrapper/scene.py
+index d79992cd..af24d4c8 100644
+--- a/python/py_package/wrapper/scene.py
++++ b/python/py_package/wrapper/scene.py
+@@ -400,7 +400,8 @@ class Scene(_Scene):
+         from sapien.utils import Viewer
+ 
+         viewer = Viewer()
+-        viewer.set_scene(self)
++        # todo xiao
++        # viewer.set_scene(self)
+ 
+         return viewer
+ 
 diff --git a/python/pybind/sapien.cpp b/python/pybind/sapien.cpp
 index c03af1a1..ccbfe436 100644
 --- a/python/pybind/sapien.cpp
@@ -651,6 +608,64 @@ index 7c190c40..449c5db8 100644
  SapienRendererSystem::~SapienRendererSystem() {}
  
  } // namespace sapien_renderer
+diff --git a/src/sapien_renderer/window.cpp b/src/sapien_renderer/window.cpp
+index 74e3b7a4..3b25eddc 100644
+--- a/src/sapien_renderer/window.cpp
++++ b/src/sapien_renderer/window.cpp
+@@ -4,7 +4,7 @@
+ #include "sapien/sapien_renderer/sapien_renderer_system.h"
+ #include <svulkan2/renderer/rt_renderer.h>
+ #include <svulkan2/scene/scene_group.h>
+-
++#include <logger.h>
+ namespace sapien {
+ namespace sapien_renderer {
+ 
+@@ -54,11 +54,13 @@ void FPSCameraControllerDebug::update() {
+ 
+ SapienRendererWindow::SapienRendererWindow(int width, int height, std::string const &shaderDir, const void *layer)
+     : mShaderDir(shaderDir) {
++  LOGD("-----SapienRendererWindow::SapienRendererWindow---width = {%d}, height = {%d}", width, height);
+   mEngine = SapienRenderEngine::Get(nullptr, layer);
++  LOGD("-----SapienRendererWindow::SapienRendererWindow---1");
+   auto &renderConfig = SapienRendererDefault::Get();
+-
++LOGD("-----SapienRendererWindow::SapienRendererWindow---2");
+   auto config = std::make_shared<svulkan2::RendererConfig>();
+-
++LOGD("-----SapienRendererWindow::SapienRendererWindow---3");
+   switch (renderConfig.msaa) {
+   case 1:
+     config->msaa = vk::SampleCountFlagBits::e1;
+@@ -75,15 +77,17 @@ SapienRendererWindow::SapienRendererWindow(int width, int height, std::string co
+   default:
+     throw std::runtime_error("MSAA count must be one of [1, 2, 4, 8]");
+   }
+-
++LOGD("-----SapienRendererWindow::SapienRendererWindow---4");
+   config->shaderDir = mShaderDir.length() ? mShaderDir : renderConfig.viewerShaderDirectory;
+ 
+   mSVulkanRenderer = svulkan2::renderer::RendererBase::Create(config);
+-
++LOGD("-----SapienRendererWindow::SapienRendererWindow---5");
+   mWindow = mEngine->getContext()->createWindow(width, height);
++  LOGD("-----SapienRendererWindow::SapienRendererWindow---6");
+   mWindow->initImgui();
++  LOGD("-----SapienRendererWindow::SapienRendererWindow---7");
+   mEngine->getContext()->getDevice().waitIdle();
+-
++LOGD("-----SapienRendererWindow::SapienRendererWindow---8");
+   mViewportWidth = width;
+   mViewportHeight = height;
+ 
+@@ -102,6 +106,7 @@ SapienRendererWindow::SapienRendererWindow(int width, int height, std::string co
+     rtRenderer->enableDenoiser(renderConfig.rayTracingDenoiserType, "HdrColor", "Albedo",
+                                "Normal");
+   }
++  LOGD("-----SapienRendererWindow::SapienRendererWindow---9");
+ }
+ 
+ void SapienRendererWindow::setShader(std::string const &shaderDir) {
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
 index 0e1d57bc..62976a77 100644
 --- a/toolchains/android.toolchain.cmake
