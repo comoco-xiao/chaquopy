@@ -488,7 +488,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..3a21328c 100644
+index 7c190c40..1ebc2637 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -499,7 +499,15 @@ index 7c190c40..3a21328c 100644
  
  // zhangxiao
  #ifdef SAPIEN_CUDA
-@@ -21,6 +22,8 @@
+@@ -18,9 +19,16 @@
+ #include <cuda_runtime.h>
+ #endif
+ 
++#ifdef __ANDROID__
++#include <jni.h>
++#include <android/native_window_jni.h>
++#endif
++
  namespace sapien {
  namespace sapien_renderer {
  
@@ -508,7 +516,7 @@ index 7c190c40..3a21328c 100644
  std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Device> device, const void *layer
  #ifdef USE_OPENXR
                                                              ,const std::shared_ptr<PlatformData> &platformData
-@@ -220,6 +223,20 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -220,6 +228,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
@@ -517,6 +525,10 @@ index 7c190c40..3a21328c 100644
 +                                         void *application_activity) {
 +#ifdef __ANDROID__
 +    LOGD("-----SapienRendererSystem::setNativeData---layer = {%ld}, application_vm = {%ld}, application_activity = {%ld}", reinterpret_cast<long>(layer), reinterpret_cast<long>(application_vm), reinterpret_cast<long>(application_activity));
++    ANativeWindow* nativeWindow = reinterpret_cast<ANativeWindow*>(layer);
++    if (nativeWindow) {
++      LOGD("-----SapienRendererSystem::setNativeData---width = {%d}, height = {%d}", ANativeWindow_getWidth(nativeWindow), ANativeWindow_getHeight(nativeWindow));
++    }
 +#endif
 +    gNativeData = std::make_shared<NativeData>();
 +    gNativeData->layer = layer;
