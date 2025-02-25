@@ -399,20 +399,6 @@ index 9d7bc32c..f4c87f25 100644
  
  
  def _create_pinocchio_model(
-diff --git a/python/py_package/wrapper/scene.py b/python/py_package/wrapper/scene.py
-index d79992cd..af24d4c8 100644
---- a/python/py_package/wrapper/scene.py
-+++ b/python/py_package/wrapper/scene.py
-@@ -400,7 +400,8 @@ class Scene(_Scene):
-         from sapien.utils import Viewer
- 
-         viewer = Viewer()
--        viewer.set_scene(self)
-+        # todo xiao
-+        # viewer.set_scene(self)
- 
-         return viewer
- 
 diff --git a/python/pybind/sapien.cpp b/python/pybind/sapien.cpp
 index c03af1a1..ccbfe436 100644
 --- a/python/pybind/sapien.cpp
