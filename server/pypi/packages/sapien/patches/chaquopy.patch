@@ -216,7 +216,7 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..90f62b5d 100644
+index 4089ce6b..a38dd05c 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
 @@ -32,18 +32,19 @@ class Viewer:
@@ -250,24 +250,7 @@ index 4089ce6b..90f62b5d 100644
          ],
      ):
          filename = sapien.render.get_imgui_ini_filename()
-@@ -59,20 +60,20 @@ class Viewer:
-         if renderer is None:
-             renderer = SapienRenderer()
- 
--        self.renderer_context = renderer._internal_context
-+        # self.renderer_context = renderer._internal_context
- 
--        if not shader_dir:
--            self.shader_dir = get_viewer_shader_dir()
--        else:
--            self.shader_dir = shader_dir
-+        # if not shader_dir:
-+        #     self.shader_dir = get_viewer_shader_dir()
-+        # else:
-+        #     self.shader_dir = shader_dir
- 
--        resolution = np.array(resolutions).flatten()[:2]
-+        # resolution = np.array(resolutions).flatten()[:2]
+@@ -70,9 +71,9 @@ class Viewer:
  
          self.scenes = []
  
