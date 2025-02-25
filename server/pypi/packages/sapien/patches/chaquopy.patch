@@ -51,7 +51,7 @@ index ba38e7a3..4d6c8dd2 100644
    VRViewer::~VRViewer() {
  
 diff --git a/include/sapien/sapien_renderer/sapien_renderer_system.h b/include/sapien/sapien_renderer/sapien_renderer_system.h
-index e1e14d43..ad20304e 100644
+index e1e14d43..a11e9b4a 100644
 --- a/include/sapien/sapien_renderer/sapien_renderer_system.h
 +++ b/include/sapien/sapien_renderer/sapien_renderer_system.h
 @@ -26,6 +26,14 @@ class PointCloudComponent;
@@ -85,7 +85,7 @@ index e1e14d43..ad20304e 100644
  
    std::shared_ptr<SapienRenderCubemap> mCubemap;
 +
-+  static std::shared_ptr<NativeData> gNativeData = nullptr;
++  static std::shared_ptr<NativeData> gNativeData;
  };
  
  } // namespace sapien_renderer
@@ -488,7 +488,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..967014b7 100644
+index 7c190c40..d18c65ec 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -499,7 +499,16 @@ index 7c190c40..967014b7 100644
  
  // zhangxiao
  #ifdef SAPIEN_CUDA
-@@ -220,6 +221,20 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -21,6 +22,8 @@
+ namespace sapien {
+ namespace sapien_renderer {
+ 
++std::shared_ptr<NativeData> SapienRendererSystem::gNativeData = nullptr;
++
+ std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Device> device, const void *layer
+ #ifdef USE_OPENXR
+                                                             ,const std::shared_ptr<PlatformData> &platformData
+@@ -220,6 +223,20 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
