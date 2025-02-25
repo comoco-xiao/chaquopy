@@ -51,7 +51,7 @@ index ba38e7a3..4d6c8dd2 100644
    VRViewer::~VRViewer() {
  
 diff --git a/include/sapien/sapien_renderer/sapien_renderer_system.h b/include/sapien/sapien_renderer/sapien_renderer_system.h
-index e1e14d43..a11e9b4a 100644
+index e1e14d43..30888d33 100644
 --- a/include/sapien/sapien_renderer/sapien_renderer_system.h
 +++ b/include/sapien/sapien_renderer/sapien_renderer_system.h
 @@ -26,6 +26,14 @@ class PointCloudComponent;
@@ -84,7 +84,7 @@ index e1e14d43..a11e9b4a 100644
    std::set<std::shared_ptr<CudaDeformableMeshComponent>, comp_cmp> mCudaDeformableMeshComponents;
  
    std::shared_ptr<SapienRenderCubemap> mCubemap;
-+
++public:
 +  static std::shared_ptr<NativeData> gNativeData;
  };
  
@@ -580,7 +580,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..453b5b0f 100644
+index 7c190c40..449c5db8 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -591,7 +591,7 @@ index 7c190c40..453b5b0f 100644
  
  // zhangxiao
  #ifdef SAPIEN_CUDA
-@@ -18,9 +19,16 @@
+@@ -18,14 +19,24 @@
  #include <cuda_runtime.h>
  #endif
  
@@ -608,7 +608,15 @@ index 7c190c40..453b5b0f 100644
  std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Device> device, const void *layer
  #ifdef USE_OPENXR
                                                              ,const std::shared_ptr<PlatformData> &platformData
-@@ -117,6 +125,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
+ #endif
+                                                             ) {
++  if (SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
++    layer = SapienRendererSystem::gNativeData->layer;
++  }
+   static std::weak_ptr<SapienRenderEngine> gEngine;
+   std::shared_ptr<SapienRenderEngine> engine;
+   if ((engine = gEngine.lock())) {
+@@ -117,6 +128,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
                                            ,const std::shared_ptr<PlatformData> &data
  #endif
  ) {
@@ -618,7 +626,7 @@ index 7c190c40..453b5b0f 100644
    mEngine = SapienRenderEngine::Get(device, layer
  #ifdef USE_OPENXR
                                      ,data
-@@ -220,6 +231,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -220,6 +234,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
