@@ -1,3 +1,50 @@
+diff --git a/3rd_party/sapien-vulkan-2/src/core/context.cpp b/3rd_party/sapien-vulkan-2/src/core/context.cpp
+index dd4a3399..8f2f2a44 100644
+--- a/3rd_party/sapien-vulkan-2/src/core/context.cpp
++++ b/3rd_party/sapien-vulkan-2/src/core/context.cpp
+@@ -184,18 +184,21 @@ vk::Sampler Context::createSampler(vk::SamplerCreateInfo const &info) {
+ }
+ 
+ std::unique_ptr<renderer::GuiWindow> Context::createWindow(uint32_t width, uint32_t height) {
++  LOGD("-----Context::createWindow---1");
+   if (!isVulkanAvailable()) {
+     throw std::runtime_error("Vulkan is not initialized");
+   }
+-
++LOGD("-----Context::createWindow---2");
+   if (!isPresentAvailable()) {
+     throw std::runtime_error("Create window failed: Renderer does not support display.");
+   }
++  LOGD("-----Context::createWindow---3");
+ #ifndef USE_OPENXR
+   if (width == 0 || height == 0) {
+     throw std::runtime_error("Create window failed: width and height must be positive.");
+   }
+ #endif
++LOGD("-----Context::createWindow---4");
+   return std::make_unique<renderer::GuiWindow>(
+       std::vector<vk::Format>{vk::Format::eB8G8R8A8Unorm, vk::Format::eR8G8B8A8Unorm,
+                               vk::Format::eB8G8R8Unorm, vk::Format::eR8G8B8Unorm},
+diff --git a/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp b/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
+index 47d49ddc..7d93f256 100644
+--- a/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
++++ b/3rd_party/sapien-vulkan-2/src/renderer/gui.cpp
+@@ -70,10 +70,15 @@ GuiWindow::GuiWindow(std::vector<vk::Format> const &requestFormats,
+                      vk::ColorSpaceKHR requestColorSpace, uint32_t width, uint32_t height,
+                      std::vector<vk::PresentModeKHR> const &requestModes, uint32_t minImageCount)
+     : mMinImageCount(minImageCount) {
++  LOGD("-----GuiWindow::GuiWindow---1");
+   mContext = core::Context::Get();
++  LOGD("-----GuiWindow::GuiWindow---2");
+   createGlfwWindow(width, height);
++  LOGD("-----GuiWindow::GuiWindow---3");
+   selectSurfaceFormat(requestFormats, requestColorSpace);
++  LOGD("-----GuiWindow::GuiWindow---4");
+   selectPresentMode(requestModes);
++  LOGD("-----GuiWindow::GuiWindow---5");
+ }
+ 
+ void GuiWindow::newFrame() {
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index dcd94d91..a267e655 100644
 --- a/CMakeLists.txt
