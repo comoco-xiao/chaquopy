@@ -216,7 +216,7 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..86885c50 100644
+index 4089ce6b..90f62b5d 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
 @@ -32,18 +32,19 @@ class Viewer:
@@ -250,14 +250,9 @@ index 4089ce6b..86885c50 100644
          ],
      ):
          filename = sapien.render.get_imgui_ini_filename()
-@@ -56,23 +57,23 @@ class Viewer:
-             with open(filename, "w") as f:
-                 f.write(imgui_ini)
- 
--        if renderer is None:
--            renderer = SapienRenderer()
-+        # if renderer is None:
-+        #     renderer = SapienRenderer()
+@@ -59,20 +60,20 @@ class Viewer:
+         if renderer is None:
+             renderer = SapienRenderer()
  
 -        self.renderer_context = renderer._internal_context
 +        # self.renderer_context = renderer._internal_context
