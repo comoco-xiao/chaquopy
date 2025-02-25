@@ -216,10 +216,10 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..55c03933 100644
+index 4089ce6b..2ae29f00 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
-@@ -32,7 +32,8 @@ class Viewer:
+@@ -32,18 +32,19 @@ class Viewer:
          self,
          renderer: SapienRenderer = None,
          shader_dir="",
@@ -227,8 +227,29 @@ index 4089ce6b..55c03933 100644
 +        # resolutions=(1920, 1080),
 +        resolutions=(1080, 2039),
          plugins=[
-             PathWindow(),
-             ContactWindow(),
+-            PathWindow(),
+-            ContactWindow(),
+-            SettingWindow(),
+-            TransformWindow(),
+-            RenderOptionsWindow(),
+-            ControlWindow(),
+-            SceneWindow(),
+-            EntityWindow(),
+-            ArticulationWindow(),
+-            # KeyframeWindow(),
++            # PathWindow(),
++            # ContactWindow(),
++            # SettingWindow(),
++            # TransformWindow(),
++            # RenderOptionsWindow(),
++            # ControlWindow(),
++            # SceneWindow(),
++            # EntityWindow(),
++            # ArticulationWindow(),
++            # # KeyframeWindow(),
+         ],
+     ):
+         filename = sapien.render.get_imgui_ini_filename()
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
