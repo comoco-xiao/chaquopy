@@ -488,7 +488,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..d18c65ec 100644
+index 7c190c40..06df3931 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -516,7 +516,7 @@ index 7c190c40..d18c65ec 100644
 +                                         void *application_vm,
 +                                         void *application_activity) {
 +#ifdef __ANDROID__
-+    LOGD("-----SapienRendererSystem::setNativeData---layer = {%d}, application_vm = {%d}, application_activity = {%d}", reinterpret_cast<long>(layer), reinterpret_cast<long>(application_vm), reinterpret_cast<long>(application_activity));
++    LOGD("-----SapienRendererSystem::setNativeData---layer = {%p}, application_vm = {%p}, application_activity = {%p}", reinterpret_cast<long>(layer), reinterpret_cast<long>(application_vm), reinterpret_cast<long>(application_activity));
 +#endif
 +    gNativeData = std::make_shared<NativeData>();
 +    gNativeData->layer = layer;
