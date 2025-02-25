@@ -51,7 +51,7 @@ index ba38e7a3..4d6c8dd2 100644
    VRViewer::~VRViewer() {
  
 diff --git a/include/sapien/sapien_renderer/sapien_renderer_system.h b/include/sapien/sapien_renderer/sapien_renderer_system.h
-index e1e14d43..a7139975 100644
+index e1e14d43..ad20304e 100644
 --- a/include/sapien/sapien_renderer/sapien_renderer_system.h
 +++ b/include/sapien/sapien_renderer/sapien_renderer_system.h
 @@ -26,6 +26,14 @@ class PointCloudComponent;
@@ -69,20 +69,18 @@ index e1e14d43..a7139975 100644
  class SapienRenderEngine {
  public:
    static std::shared_ptr<SapienRenderEngine> Get(std::shared_ptr<Device> device = nullptr, const void *layer = nullptr
-@@ -115,6 +123,12 @@ public:
+@@ -115,6 +123,10 @@ public:
  
    uint64_t nextRenderId() { return mNextRenderId++; };
  
-+  static void setNativeData(void *layer
-+#ifdef USE_OPENXR
-+                            , void *application_vm,
-+                            , void *application_activity
-+#endif
++  static void setNativeData(void *layer = nullptr, 
++                            void *application_vm = nullptr,
++                            void *application_activity = nullptr
 +  );
  private:
    uint64_t mNextRenderId{1};
  
-@@ -128,6 +142,8 @@ private:
+@@ -128,6 +140,8 @@ private:
    std::set<std::shared_ptr<CudaDeformableMeshComponent>, comp_cmp> mCudaDeformableMeshComponents;
  
    std::shared_ptr<SapienRenderCubemap> mCubemap;
@@ -338,6 +336,23 @@ index c03af1a1..ccbfe436 100644
 +// }
 +// #endif
 \ No newline at end of file
+diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
+index 3aa2a05a..9ffa502a 100644
+--- a/python/pybind/sapien_renderer.cpp
++++ b/python/pybind/sapien_renderer.cpp
+@@ -617,6 +617,12 @@ This function waits for any pending CUDA operations on cuda stream provided by :
+ 
+       // .def("disable_auto_upload", &SapienRendererSystem::disableAutoUpload)
+ 
++      .def_static("set_native_data", [](uintptr_t winAddress, uintptr_t vm, uintptr_t activity) {
++        SapienRendererSystem::setNativeData(reinterpret_cast<void*>(winAddress),
++                                            reinterpret_cast<void*>(vm),
++                                            reinterpret_cast<void*>(activity));
++      }, py::arg("layer"), py::arg("application_vm"), py::arg("application_activity"))
++
+       .def_property_readonly("cuda_object_transforms",
+                              &SapienRendererSystem::getTransformCudaArray)
+ 
 diff --git a/python/requirements.txt b/python/requirements.txt
 index 495d36ea..9a1f7450 100644
 --- a/python/requirements.txt
@@ -473,19 +488,27 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..cbcf679a 100644
+index 7c190c40..967014b7 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
-@@ -220,6 +220,20 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -11,6 +11,7 @@
+ #include <svulkan2/renderer/renderer.h>
+ #include <svulkan2/renderer/rt_renderer.h>
+ #include <svulkan2/scene/scene.h>
++#include <logger.h>
+ 
+ // zhangxiao
+ #ifdef SAPIEN_CUDA
+@@ -220,6 +221,20 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
-+void SapienRendererSystem::setNativeData(void *layer
-+#ifdef USE_OPENXR
-+                                          , void *application_vm,
-+                                          , void *application_activity
++void SapienRendererSystem::setNativeData(void *layer,
++                                         void *application_vm,
++                                         void *application_activity) {
++#ifdef __ANDROID__
++    LOGD("-----SapienRendererSystem::setNativeData---layer = {%d}, application_vm = {%d}, application_activity = {%d}", reinterpret_cast<long>(layer), reinterpret_cast<long>(application_vm), reinterpret_cast<long>(application_activity));
 +#endif
-+  ) {
 +    gNativeData = std::make_shared<NativeData>();
 +    gNativeData->layer = layer;
 +#ifdef USE_OPENXR
