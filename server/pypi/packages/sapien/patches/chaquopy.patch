@@ -216,7 +216,7 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..207a8e46 100644
+index 4089ce6b..271986a8 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
 @@ -32,53 +32,54 @@ class Viewer:
@@ -286,8 +286,7 @@ index 4089ce6b..207a8e46 100644
 -        resolution = np.array(resolutions).flatten()[:2]
 +        # resolution = np.array(resolutions).flatten()[:2]
  
--        self.scenes = []
-+        # self.scenes = []
+         self.scenes = []
  
 -        self.window = RenderWindow(*resolution, self.shader_dir)
 -        self.window.set_focus_callback(self.focus_change)
