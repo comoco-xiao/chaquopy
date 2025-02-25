@@ -1,3 +1,17 @@
+diff --git a/3rd_party/sapien-vulkan-2/include/svulkan2/common/config.h b/3rd_party/sapien-vulkan-2/include/svulkan2/common/config.h
+index 201b8af3..5386b232 100644
+--- a/3rd_party/sapien-vulkan-2/include/svulkan2/common/config.h
++++ b/3rd_party/sapien-vulkan-2/include/svulkan2/common/config.h
+@@ -14,7 +14,8 @@ struct RendererConfig {
+ 
+   // default 4-channel texture format
+ //  TODO xiao
+-#ifdef VK_USE_PLATFORM_IOS_MVK
++// #ifdef VK_USE_PLATFORM_IOS_MVK
++#if defined(VK_USE_PLATFORM_ANDROID_KHR) || defined(VK_USE_PLATFORM_IOS_MVK)
+   vk::Format colorFormat4{vk::Format::eR8G8B8A8Unorm};
+ #else
+  vk::Format colorFormat4{vk::Format::eR32G32B32A32Sfloat}; // R8G8B8A8Unorm, R32G32B32A32Sfloat
 diff --git a/3rd_party/sapien-vulkan-2/src/core/context.cpp b/3rd_party/sapien-vulkan-2/src/core/context.cpp
 index dd4a3399..8f2f2a44 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/context.cpp
