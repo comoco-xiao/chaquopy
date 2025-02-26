@@ -216,16 +216,17 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..2ae29f00 100644
+index 4089ce6b..b241f385 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
-@@ -32,18 +32,19 @@ class Viewer:
+@@ -32,18 +32,20 @@ class Viewer:
          self,
          renderer: SapienRenderer = None,
          shader_dir="",
 -        resolutions=(1920, 1080),
 +        # resolutions=(1920, 1080),
-+        resolutions=(1080, 2039),
++        # resolutions=(1080, 2039),
++        resolutions=(0, 0),
          plugins=[
 -            PathWindow(),
 -            ContactWindow(),
@@ -546,6 +547,36 @@ index 7c190c40..449c5db8 100644
  SapienRendererSystem::~SapienRendererSystem() {}
  
  } // namespace sapien_renderer
+diff --git a/src/sapien_renderer/window.cpp b/src/sapien_renderer/window.cpp
+index 74e3b7a4..94b4dab3 100644
+--- a/src/sapien_renderer/window.cpp
++++ b/src/sapien_renderer/window.cpp
+@@ -5,6 +5,11 @@
+ #include <svulkan2/renderer/rt_renderer.h>
+ #include <svulkan2/scene/scene_group.h>
+ 
++#ifdef __ANDROID__
++#include <jni.h>
++#include <android/native_window_jni.h>
++#endif
++
+ namespace sapien {
+ namespace sapien_renderer {
+ 
+@@ -54,6 +59,13 @@ void FPSCameraControllerDebug::update() {
+ 
+ SapienRendererWindow::SapienRendererWindow(int width, int height, std::string const &shaderDir, const void *layer)
+     : mShaderDir(shaderDir) {
++#ifdef __ANDROID__
++  if ((width == 0 || height == 0) && SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
++    ANativeWindow* nativeWindow = reinterpret_cast<ANativeWindow*>(SapienRendererSystem::gNativeData->layer);
++    width = ANativeWindow_getWidth(nativeWindow);
++    height = ANativeWindow_getHeight(nativeWindow);
++  }
++#endif
+   mEngine = SapienRenderEngine::Get(nullptr, layer);
+   auto &renderConfig = SapienRendererDefault::Get();
+ 
 diff --git a/toolchains/android.toolchain.cmake b/toolchains/android.toolchain.cmake
 index 0e1d57bc..62976a77 100644
 --- a/toolchains/android.toolchain.cmake
