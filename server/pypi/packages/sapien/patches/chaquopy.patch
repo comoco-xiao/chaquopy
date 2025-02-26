@@ -216,7 +216,7 @@ index b62afc39..d9fb27ee 100644
  _T = typing.TypeVar("_T", Component)
  class Component:
 diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..b241f385 100644
+index 4089ce6b..e63a249d 100644
 --- a/python/py_package/utils/viewer/viewer.py
 +++ b/python/py_package/utils/viewer/viewer.py
 @@ -32,18 +32,20 @@ class Viewer:
@@ -233,17 +233,16 @@ index 4089ce6b..b241f385 100644
 -            SettingWindow(),
 -            TransformWindow(),
 -            RenderOptionsWindow(),
--            ControlWindow(),
--            SceneWindow(),
--            EntityWindow(),
--            ArticulationWindow(),
--            # KeyframeWindow(),
 +            # PathWindow(),
 +            # ContactWindow(),
 +            # SettingWindow(),
 +            # TransformWindow(),
 +            # RenderOptionsWindow(),
-+            # ControlWindow(),
+             ControlWindow(),
+-            SceneWindow(),
+-            EntityWindow(),
+-            ArticulationWindow(),
+-            # KeyframeWindow(),
 +            # SceneWindow(),
 +            # EntityWindow(),
 +            # ArticulationWindow(),
