@@ -215,41 +215,6 @@ index b62afc39..d9fb27ee 100644
  
  _T = typing.TypeVar("_T", Component)
  class Component:
-diff --git a/python/py_package/utils/viewer/viewer.py b/python/py_package/utils/viewer/viewer.py
-index 4089ce6b..e63a249d 100644
---- a/python/py_package/utils/viewer/viewer.py
-+++ b/python/py_package/utils/viewer/viewer.py
-@@ -32,18 +32,20 @@ class Viewer:
-         self,
-         renderer: SapienRenderer = None,
-         shader_dir="",
--        resolutions=(1920, 1080),
-+        # resolutions=(1920, 1080),
-+        # resolutions=(1080, 2039),
-+        resolutions=(0, 0),
-         plugins=[
--            PathWindow(),
--            ContactWindow(),
--            SettingWindow(),
--            TransformWindow(),
--            RenderOptionsWindow(),
-+            # PathWindow(),
-+            # ContactWindow(),
-+            # SettingWindow(),
-+            # TransformWindow(),
-+            # RenderOptionsWindow(),
-             ControlWindow(),
--            SceneWindow(),
--            EntityWindow(),
--            ArticulationWindow(),
--            # KeyframeWindow(),
-+            # SceneWindow(),
-+            # EntityWindow(),
-+            # ArticulationWindow(),
-+            # # KeyframeWindow(),
-         ],
-     ):
-         filename = sapien.render.get_imgui_ini_filename()
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
@@ -547,7 +512,7 @@ index 7c190c40..449c5db8 100644
  
  } // namespace sapien_renderer
 diff --git a/src/sapien_renderer/window.cpp b/src/sapien_renderer/window.cpp
-index 74e3b7a4..94b4dab3 100644
+index 74e3b7a4..201645de 100644
 --- a/src/sapien_renderer/window.cpp
 +++ b/src/sapien_renderer/window.cpp
 @@ -5,6 +5,11 @@
@@ -562,15 +527,19 @@ index 74e3b7a4..94b4dab3 100644
  namespace sapien {
  namespace sapien_renderer {
  
-@@ -54,6 +59,13 @@ void FPSCameraControllerDebug::update() {
+@@ -54,6 +59,17 @@ void FPSCameraControllerDebug::update() {
  
  SapienRendererWindow::SapienRendererWindow(int width, int height, std::string const &shaderDir, const void *layer)
      : mShaderDir(shaderDir) {
 +#ifdef __ANDROID__
-+  if ((width == 0 || height == 0) && SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
++  if (SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
 +    ANativeWindow* nativeWindow = reinterpret_cast<ANativeWindow*>(SapienRendererSystem::gNativeData->layer);
-+    width = ANativeWindow_getWidth(nativeWindow);
-+    height = ANativeWindow_getHeight(nativeWindow);
++    int w = ANativeWindow_getWidth(nativeWindow);
++    int h = ANativeWindow_getHeight(nativeWindow);
++    if (width != w || height != h) {
++      width = w; 
++      height = h;
++    }
 +  }
 +#endif
    mEngine = SapienRenderEngine::Get(nullptr, layer);
