@@ -321,17 +321,20 @@ index 9d7bc32c..f4c87f25 100644
  
  def _create_pinocchio_model(
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..9ffa502a 100644
+index 3aa2a05a..c789dd52 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
-@@ -617,6 +617,12 @@ This function waits for any pending CUDA operations on cuda stream provided by :
+@@ -617,6 +617,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
  
        // .def("disable_auto_upload", &SapienRendererSystem::disableAutoUpload)
  
-+      .def_static("set_native_data", [](uintptr_t winAddress, uintptr_t vm, uintptr_t activity) {
-+        SapienRendererSystem::setNativeData(reinterpret_cast<void*>(winAddress),
-+                                            reinterpret_cast<void*>(vm),
-+                                            reinterpret_cast<void*>(activity));
++      .def_static("set_native_data", [](std::string winAddress, std::string vm, std::string activity) {
++        uintptr_t a = static_cast<uintptr_t>(std::stoull(winAddress, nullptr, 16));
++        uintptr_t b = static_cast<uintptr_t>(std::stoull(vm, nullptr, 16));
++        uintptr_t c = static_cast<uintptr_t>(std::stoull(activity, nullptr, 16));
++        SapienRendererSystem::setNativeData(reinterpret_cast<void*>(a),
++                                            reinterpret_cast<void*>(b),
++                                            reinterpret_cast<void*>(c));
 +      }, py::arg("layer"), py::arg("application_vm"), py::arg("application_activity"))
 +
        .def_property_readonly("cuda_object_transforms",
