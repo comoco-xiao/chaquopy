@@ -19,4 +19,4 @@ requirements:
     - python
     - chaquopy-openblas 0.2.20
     - numpy 1.26.2
-    - pyyaml
+    - pyyaml 6.0.2
