@@ -306,7 +306,7 @@ index 3aa2a05a..c789dd52 100644
                               &SapienRendererSystem::getTransformCudaArray)
  
 diff --git a/python/requirements.txt b/python/requirements.txt
-index 495d36ea..54ed0d2d 100644
+index 495d36ea..530a6532 100644
 --- a/python/requirements.txt
 +++ b/python/requirements.txt
 @@ -1,7 +1,7 @@
@@ -320,7 +320,7 @@ index 495d36ea..54ed0d2d 100644
  networkx
  pyperclip
 -opencv-python>=4.0
-+opencv-python
++# opencv-python
 diff --git a/setup.py b/setup.py
 index bd21283f..39b99d44 100644
 --- a/setup.py
