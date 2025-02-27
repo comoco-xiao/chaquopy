@@ -1,7 +1,7 @@
 {% set version = "6.0.2" %}
 
 package:
-  name: yyaml
+  name: PyYAML
   version: {{ version }}
 
 source:
