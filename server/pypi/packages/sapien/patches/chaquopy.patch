@@ -440,7 +440,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..449c5db8 100644
+index 7c190c40..114af288 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -470,7 +470,7 @@ index 7c190c40..449c5db8 100644
                                                              ,const std::shared_ptr<PlatformData> &platformData
  #endif
                                                              ) {
-+  if (SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
++  if (!layer && SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
 +    layer = SapienRendererSystem::gNativeData->layer;
 +  }
    static std::weak_ptr<SapienRenderEngine> gEngine;
@@ -480,7 +480,7 @@ index 7c190c40..449c5db8 100644
                                            ,const std::shared_ptr<PlatformData> &data
  #endif
  ) {
-+  if (gNativeData && gNativeData->layer) {
++  if (!layer && gNativeData && gNativeData->layer) {
 +    layer = gNativeData->layer;
 +  }
    mEngine = SapienRenderEngine::Get(device, layer
