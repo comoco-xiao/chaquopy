@@ -13,9 +13,9 @@ source:
 
 requirements:
   build:
-    - cmake
+    - cmake 3.31.4
     - typing-extensions 3.10.0.0
   host:
     - python
     - chaquopy-openblas 0.2.20
-    - numpy 1.17.4
+    - numpy 1.26.2
