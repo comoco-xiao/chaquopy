@@ -16,3 +16,22 @@ index d87cc051660..2fb936216d8 100644
 +//   Scalar longlongOne = 1LL;
 +//   ASSERT_EQ(longOne.toInt(), longlongOne.toInt());
 +// }
+Submodule third_party/pocketfft contains modified content
+diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
+index 330c3c7..74ba560 100644
+--- a/third_party/pocketfft/pocketfft_hdronly.h
++++ b/third_party/pocketfft/pocketfft_hdronly.h
+@@ -156,7 +156,12 @@ template<> struct VLEN<double> { static constexpr size_t val=2; };
+ inline void *aligned_alloc(size_t align, size_t size)
+   {
+   // aligned_alloc() requires that the requested size is a multiple of "align"
+-  void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
++  // void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
++  size_t adjusted_size = (size + align - 1) & (~(align - 1));
++  void *ptr = nullptr;
++  if (posix_memalign(&ptr, align, adjusted_size) != 0) {
++    ptr = nullptr;
++  }
+   if (!ptr) throw std::bad_alloc();
+   return ptr;
+   }
