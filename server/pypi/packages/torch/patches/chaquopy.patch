@@ -41,6 +41,20 @@ index c8af5f00b5c..19e2913cd60 100644
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
+diff --git a/scripts/build_android.sh b/scripts/build_android.sh
+index de0bed7c26d..dffe38e3746 100755
+--- a/scripts/build_android.sh
++++ b/scripts/build_android.sh
+@@ -116,7 +116,8 @@ fi
+ 
+ CMAKE_ARGS+=("-DBUILD_MOBILE_BENCHMARK=$BUILD_MOBILE_BENCHMARK")
+ CMAKE_ARGS+=("-DBUILD_MOBILE_TEST=$BUILD_MOBILE_TEST")
+-CMAKE_ARGS+=("-DBUILD_PYTHON=OFF")
++# CMAKE_ARGS+=("-DBUILD_PYTHON=OFF")
++CMAKE_ARGS+=("-DBUILD_PYTHON=ON")
+ CMAKE_ARGS+=("-DBUILD_SHARED_LIBS=OFF")
+ if (( "${ANDROID_NDK_VERSION:-0}" < 18 )); then
+   CMAKE_ARGS+=("-DANDROID_TOOLCHAIN=gcc")
 diff --git a/setup.py b/setup.py
 index a6a6db7b033..523e7424fc0 100644
 --- a/setup.py
