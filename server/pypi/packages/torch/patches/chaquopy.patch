@@ -140,7 +140,7 @@ index 330c3c7..deb60c5 100644
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..7e9fdfdc996 100644
+index b123023d2fd..1e8c039baf5 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -8,7 +8,8 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
@@ -153,3 +153,13 @@ index b123023d2fd..7e9fdfdc996 100644
  if(NOT BUILD_PYTHON)
    return()
  endif()
+@@ -324,7 +325,8 @@ if(CAFFE2_USE_MKL AND BUILD_LIBTORCHLESS)
+   target_link_libraries(torch_python PRIVATE caffe2::mkl)
+ endif()
+ 
+-add_dependencies(torch_python onnx_proto)
++# todo xiao
++# add_dependencies(torch_python onnx_proto)
+ # Avoid numpy for the DEPLOY build
+ if(USE_NUMPY)
+   target_link_libraries(torch_python PRIVATE Python::NumPy)
