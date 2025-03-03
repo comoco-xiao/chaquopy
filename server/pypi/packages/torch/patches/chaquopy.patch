@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..c3ca92593e5 100644
+index c8af5f00b5c..19e2913cd60 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,29 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -32,6 +32,15 @@ index c8af5f00b5c..c3ca92593e5 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
+@@ -715,7 +738,7 @@ if(INTERN_BUILD_MOBILE)
+   else()
+     set(INTERN_DISABLE_AUTOGRAD ON)
+   endif()
+-  set(BUILD_PYTHON OFF)
++  # set(BUILD_PYTHON OFF)
+   set(BUILD_FUNCTORCH OFF)
+   set(USE_DISTRIBUTED OFF)
+   set(NO_API ON)
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
 index 330c3c7..deb60c5 100644
