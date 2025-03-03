@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..19e2913cd60 100644
+index c8af5f00b5c..bfa30ded1e2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,29 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -8,7 +8,7 @@ index c8af5f00b5c..19e2913cd60 100644
  
 +# --------------------------------- chaquopy begin ------------------------------------
 +set(BUILD_CUSTOM_PROTOBUF OFF)
-+set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/27.1.12297006/build/cmake/android.toolchain.cmake")
++# set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
 +set(BUILD_TEST OFF)
 +set(BUILD_BINARY OFF)
 +set(BUILD_LITE_INTERPRETER OFF)
