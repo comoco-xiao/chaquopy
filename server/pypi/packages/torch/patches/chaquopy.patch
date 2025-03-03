@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..19e2913cd60 100644
+index c8af5f00b5c..a3189dcf0b0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,29 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -32,6 +32,15 @@ index c8af5f00b5c..19e2913cd60 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
+@@ -663,7 +686,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+ if(ANDROID
+    OR IOS
+    OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
+-  set(INTERN_BUILD_MOBILE ON)
++  # set(INTERN_BUILD_MOBILE ON)
+   message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
+   set(BUILD_LAZY_TS_BACKEND OFF)
+ 
 @@ -715,7 +738,7 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
@@ -41,8 +50,36 @@ index c8af5f00b5c..19e2913cd60 100644
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
+diff --git a/aten/src/ATen/CMakeLists.txt b/aten/src/ATen/CMakeLists.txt
+index f0868ea0489..91dbbbff8cb 100644
+--- a/aten/src/ATen/CMakeLists.txt
++++ b/aten/src/ATen/CMakeLists.txt
+@@ -397,7 +397,8 @@ if(UNIX)
+     add_definitions(-DHAVE_MMAP=1)
+   endif(HAVE_MMAP)
+   # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
+-  add_definitions(-D_FILE_OFFSET_BITS=64)
++  # Chaquopy: see https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
++  # add_definitions(-D_FILE_OFFSET_BITS=64)
+   CHECK_FUNCTION_EXISTS(shm_open HAVE_SHM_OPEN)
+   if(HAVE_SHM_OPEN)
+     add_definitions(-DHAVE_SHM_OPEN=1)
+diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
+index 919eb6c8567..b878027c648 100644
+--- a/c10/macros/Macros.h
++++ b/c10/macros/Macros.h
+@@ -433,7 +433,8 @@ __host__ __device__
+ 
+ #if defined(__ANDROID__)
+ #define C10_ANDROID 1
+-#define C10_MOBILE 1
++// Chaquopy: this disables things required by the Python build.
++// #define C10_MOBILE 1
+ #elif (                   \
+     defined(__APPLE__) && \
+     (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..1b99cd65012 100644
+index 1813f4418a2..3b2f1f3f015 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -863,6 +863,7 @@ if(${Python_VERSION} VERSION_LESS 3.8)
@@ -61,6 +98,63 @@ index 1813f4418a2..1b99cd65012 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
+@@ -1290,7 +1292,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+     # In mobile build we care about code size, and so we need drop
+     # everything (e.g. checker) in onnx but the pb definition.
+     if(ANDROID OR IOS)
+-      caffe2_interface_library(onnx_proto onnx_library)
++      # caffe2_interface_library(onnx_proto onnx_library)
++      caffe2_interface_library(onnx onnx_library)  # Chaquopy: `onnx` was `onnx_proto`.
+     else()
+       caffe2_interface_library(onnx onnx_library)
+     endif()
+@@ -1497,7 +1500,8 @@ if(NOT INTERN_BUILD_MOBILE)
+       add_definitions(-DHAVE_MMAP=1)
+     endif(HAVE_MMAP)
+     # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
+-    add_definitions(-D_FILE_OFFSET_BITS=64)
++    # Chaquopy: see https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
++    # add_definitions(-D_FILE_OFFSET_BITS=64)
+     CHECK_FUNCTION_EXISTS(shm_open HAVE_SHM_OPEN)
+     if(HAVE_SHM_OPEN)
+       add_definitions(-DHAVE_SHM_OPEN=1)
+diff --git a/cmake/Modules/FindBLAS.cmake b/cmake/Modules/FindBLAS.cmake
+index 5ce875f5292..e831f529822 100644
+--- a/cmake/Modules/FindBLAS.cmake
++++ b/cmake/Modules/FindBLAS.cmake
+@@ -332,6 +332,13 @@ IF (BLAS_LIBRARIES)
+     ENDIF()
+   ELSE ()
+     SET(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
++
++    IF(TRUE)
++      # Chaquopy: gfortran does not use the f2c return conventions (see
++      # https://gcc.gnu.org/onlinedocs/gcc-4.6.3/gfortran/Code-Gen-Options.html).
++      SET(BLAS_F2C_DOUBLE_WORKS TRUE)
++      SET(BLAS_F2C_FLOAT_WORKS TRUE)
++    ELSE()
+     CHECK_C_SOURCE_RUNS("
+   #include <stdlib.h>
+   #include <stdio.h>
+@@ -358,13 +365,17 @@ IF (BLAS_LIBRARIES)
+     double r = sdot_(&four, x, &one, y, &one);
+     exit((float)r != (float).1234);
+   }" BLAS_F2C_FLOAT_WORKS )
++    ENDIF()  # Chaquopy
++
+     IF (BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
+       MESSAGE(STATUS "This BLAS uses the F2C return conventions")
+       SET(BLAS_F2C TRUE)
+     ELSE (BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
+       SET(BLAS_F2C FALSE)
+     ENDIF(BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
+-    CHECK_C_SOURCE_RUNS("
++
++    # Chaquopy: was CHECK_C_SOURCE_RUNS
++    CHECK_C_SOURCE_COMPILES("
+   #include <stdlib.h>
+   #include <stdio.h>
+   float x[4] = { 1, 2, 3, 4 };
 diff --git a/scripts/build_android.sh b/scripts/build_android.sh
 index de0bed7c26d..dffe38e3746 100755
 --- a/scripts/build_android.sh
@@ -76,7 +170,7 @@ index de0bed7c26d..dffe38e3746 100755
  if (( "${ANDROID_NDK_VERSION:-0}" < 18 )); then
    CMAKE_ARGS+=("-DANDROID_TOOLCHAIN=gcc")
 diff --git a/setup.py b/setup.py
-index a6a6db7b033..523e7424fc0 100644
+index a6a6db7b033..45d3c89e98c 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -483,11 +483,12 @@ def build_deps():
@@ -93,6 +187,42 @@ index a6a6db7b033..523e7424fc0 100644
          cmake_only=CMAKE_ONLY,
          cmake=cmake,
      )
+@@ -1167,7 +1168,15 @@ def main():
+         long_description = f.read()
+ 
+     version_range_max = max(sys.version_info[1], 13) + 1
++    
++    # Chaquopy: see package_data below.
++    if os.path.exists("chaquopy"):
++        shutil.rmtree("chaquopy")
++    os.mkdir("chaquopy")
++    os.symlink("../torch/lib", "chaquopy/lib")
++    
+     torch_package_data = [
++        'lib/libtorch_global_deps.so',  # Chaquopy: see comment at top of package_data.
+         "py.typed",
+         "bin/*",
+         "test/*",
+@@ -1416,6 +1425,9 @@ def main():
+     ]
+     package_data = {
+         "torch": torch_package_data,
++        'chaquopy': [
++            'lib/*.so*'  # See exclude_package_data below.
++        ],
+     }
+ 
+     if not BUILD_LIBTORCH_WHL:
+@@ -1445,6 +1457,9 @@ def main():
+         author="PyTorch Team",
+         author_email="packages@pytorch.org",
+         python_requires=f">={python_min_version_str}",
++        
++        exclude_package_data={'chaquopy': ['lib/libtorch_global_deps.so']},
++        
+         # PyPI package information.
+         classifiers=[
+             "Development Status :: 5 - Production/Stable",
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
 index 330c3c7..deb60c5 100644
@@ -117,6 +247,44 @@ index 330c3c7..deb60c5 100644
    }
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
+diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
+index 84e4dad32d3..0e433ad76a5 100644
+--- a/tools/setup_helpers/cmake.py
++++ b/tools/setup_helpers/cmake.py
+@@ -305,11 +305,33 @@ class CMake:
+             )
+             sys.exit(1)
+         build_options.update(cmake__options)
++        
++        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
++        build_sleef_native = os.path.abspath("build-sleef-native")
++        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
++            os.mkdir(build_sleef_native)
++            sleef_env = os.environ.copy()
++            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++                        "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++                        "NM", "RANLIB", "READELF", "STRIP"]:
++                sleef_env.pop(name, None)
++            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++            check_call(["cmake", "../third_party/sleef"], **kwargs)
++            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
+ 
+         CMake.defines(
+             args,
++            # Chaquopy: see "CMake variables" comment in setup.py.
++            CMAKE_TOOLCHAIN_FILE=os.path.abspath("../chaquopy.toolchain.cmake"),
++            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            BLAS="OpenBLAS",
++            NATIVE_BUILD_DIR=build_sleef_native,
++            
+             Python_EXECUTABLE=sys.executable,
+             TORCH_BUILD_VERSION=version,
++            USE_CUDA="0",
++            USE_VULKAN="0",  # Disable for now to simplify the build.
+             **build_options,
+         )
+ 
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
 index b123023d2fd..5278d5579cf 100644
 --- a/torch/CMakeLists.txt
