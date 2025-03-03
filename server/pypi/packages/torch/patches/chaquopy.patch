@@ -140,14 +140,15 @@ index 330c3c7..deb60c5 100644
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..5278d5579cf 100644
+index b123023d2fd..7e9fdfdc996 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
-@@ -8,7 +8,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
+@@ -8,7 +8,8 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
    option(USE_CUDA "Use CUDA" ON)
    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
  endif()
 -
++set(BUILD_PYTHON ON)
 +message(+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+----------------BUILD_PYTHON = ${BUILD_PYTHON})
  if(NOT BUILD_PYTHON)
    return()
