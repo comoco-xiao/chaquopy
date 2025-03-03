@@ -98,57 +98,6 @@ index 1813f4418a2..1b99cd65012 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
-diff --git a/cmake/Modules/FindBLAS.cmake b/cmake/Modules/FindBLAS.cmake
-index 5ce875f5292..e831f529822 100644
---- a/cmake/Modules/FindBLAS.cmake
-+++ b/cmake/Modules/FindBLAS.cmake
-@@ -332,6 +332,13 @@ IF (BLAS_LIBRARIES)
-     ENDIF()
-   ELSE ()
-     SET(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
-+
-+    IF(TRUE)
-+      # Chaquopy: gfortran does not use the f2c return conventions (see
-+      # https://gcc.gnu.org/onlinedocs/gcc-4.6.3/gfortran/Code-Gen-Options.html).
-+      SET(BLAS_F2C_DOUBLE_WORKS TRUE)
-+      SET(BLAS_F2C_FLOAT_WORKS TRUE)
-+    ELSE()
-     CHECK_C_SOURCE_RUNS("
-   #include <stdlib.h>
-   #include <stdio.h>
-@@ -358,13 +365,17 @@ IF (BLAS_LIBRARIES)
-     double r = sdot_(&four, x, &one, y, &one);
-     exit((float)r != (float).1234);
-   }" BLAS_F2C_FLOAT_WORKS )
-+    ENDIF()  # Chaquopy
-+
-     IF (BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
-       MESSAGE(STATUS "This BLAS uses the F2C return conventions")
-       SET(BLAS_F2C TRUE)
-     ELSE (BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
-       SET(BLAS_F2C FALSE)
-     ENDIF(BLAS_F2C_DOUBLE_WORKS AND NOT BLAS_F2C_FLOAT_WORKS)
--    CHECK_C_SOURCE_RUNS("
-+
-+    # Chaquopy: was CHECK_C_SOURCE_RUNS
-+    CHECK_C_SOURCE_COMPILES("
-   #include <stdlib.h>
-   #include <stdio.h>
-   float x[4] = { 1, 2, 3, 4 };
-diff --git a/scripts/build_android.sh b/scripts/build_android.sh
-index de0bed7c26d..dffe38e3746 100755
---- a/scripts/build_android.sh
-+++ b/scripts/build_android.sh
-@@ -116,7 +116,8 @@ fi
- 
- CMAKE_ARGS+=("-DBUILD_MOBILE_BENCHMARK=$BUILD_MOBILE_BENCHMARK")
- CMAKE_ARGS+=("-DBUILD_MOBILE_TEST=$BUILD_MOBILE_TEST")
--CMAKE_ARGS+=("-DBUILD_PYTHON=OFF")
-+# CMAKE_ARGS+=("-DBUILD_PYTHON=OFF")
-+CMAKE_ARGS+=("-DBUILD_PYTHON=ON")
- CMAKE_ARGS+=("-DBUILD_SHARED_LIBS=OFF")
- if (( "${ANDROID_NDK_VERSION:-0}" < 18 )); then
-   CMAKE_ARGS+=("-DANDROID_TOOLCHAIN=gcc")
 diff --git a/setup.py b/setup.py
 index a6a6db7b033..45d3c89e98c 100644
 --- a/setup.py
