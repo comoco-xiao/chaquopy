@@ -31,3 +31,18 @@ index c8af5f00b5c..d16698abe6d 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
+Submodule third_party/pocketfft contains modified content
+diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
+index 330c3c7..d91d0f0 100644
+--- a/third_party/pocketfft/pocketfft_hdronly.h
++++ b/third_party/pocketfft/pocketfft_hdronly.h
+@@ -156,7 +156,8 @@ template<> struct VLEN<double> { static constexpr size_t val=2; };
+ inline void *aligned_alloc(size_t align, size_t size)
+   {
+   // aligned_alloc() requires that the requested size is a multiple of "align"
+-  void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
++  // void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
++  void *ptr = malloc((size + align - 1) & (~(align - 1)));
+   if (!ptr) throw std::bad_alloc();
+   return ptr;
+   }
