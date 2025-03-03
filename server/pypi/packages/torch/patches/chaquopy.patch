@@ -50,20 +50,6 @@ index c8af5f00b5c..a3189dcf0b0 100644
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
-diff --git a/aten/src/ATen/CMakeLists.txt b/aten/src/ATen/CMakeLists.txt
-index f0868ea0489..91dbbbff8cb 100644
---- a/aten/src/ATen/CMakeLists.txt
-+++ b/aten/src/ATen/CMakeLists.txt
-@@ -397,7 +397,8 @@ if(UNIX)
-     add_definitions(-DHAVE_MMAP=1)
-   endif(HAVE_MMAP)
-   # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
--  add_definitions(-D_FILE_OFFSET_BITS=64)
-+  # Chaquopy: see https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
-+  # add_definitions(-D_FILE_OFFSET_BITS=64)
-   CHECK_FUNCTION_EXISTS(shm_open HAVE_SHM_OPEN)
-   if(HAVE_SHM_OPEN)
-     add_definitions(-DHAVE_SHM_OPEN=1)
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
 index 919eb6c8567..b878027c648 100644
 --- a/c10/macros/Macros.h
