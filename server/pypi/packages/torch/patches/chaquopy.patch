@@ -31,6 +31,27 @@ index c8af5f00b5c..d16698abe6d 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
+diff --git a/setup.py b/setup.py
+index a6a6db7b033..cc63c895978 100644
+--- a/setup.py
++++ b/setup.py
+@@ -948,7 +948,7 @@ def configure_extension_build():
+     library_dirs.append(lib_path)
+ 
+     main_compile_args = []
+-    main_libraries = ["torch_python"]
++    main_libraries = ["torch_python", "torch"]
+ 
+     main_link_args = []
+     main_sources = ["torch/csrc/stub.c"]
+@@ -1362,6 +1362,7 @@ def main():
+                 "lib/libtorch_python.so",
+                 "lib/libtorch_python.dylib",
+                 "lib/libtorch_python.dll",
++                "libtorch.so",
+             ]
+         )
+     if not BUILD_PYTHON_ONLY:
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
 index 330c3c7..deb60c5 100644
