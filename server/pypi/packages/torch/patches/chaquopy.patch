@@ -42,7 +42,7 @@ index c8af5f00b5c..19e2913cd60 100644
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..1b99cd65012 100644
+index 1813f4418a2..42aefc31de6 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -863,6 +863,7 @@ if(${Python_VERSION} VERSION_LESS 3.8)
@@ -53,8 +53,12 @@ index 1813f4418a2..1b99cd65012 100644
  if(BUILD_PYTHON)
    if(Python_Development.Module_FOUND)
      if(USE_NUMPY)
-@@ -880,6 +881,7 @@ if(BUILD_PYTHON)
-     caffe2_update_option(BUILD_PYTHON OFF)
+@@ -877,9 +878,10 @@ if(BUILD_PYTHON)
+     caffe2_update_option(USE_OBSERVERS ON)
+   else()
+     message(WARNING "Python dependencies not met. Not compiling with python. Suppress this warning with -DBUILD_PYTHON=OFF")
+-    caffe2_update_option(BUILD_PYTHON OFF)
++    # caffe2_update_option(BUILD_PYTHON OFF)
    endif()
  endif()
 +message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---2---BUILD_PYTHON = ${BUILD_PYTHON})
