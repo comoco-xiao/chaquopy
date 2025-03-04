@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..fdd765ddb50 100644
+index c8af5f00b5c..ad090a4324d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,36 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -149,15 +149,6 @@ index c8af5f00b5c..fdd765ddb50 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,7 +693,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
- if(ANDROID
-    OR IOS
-    OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
--  set(INTERN_BUILD_MOBILE ON)
-+  # set(INTERN_BUILD_MOBILE ON)
-   message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
-   set(BUILD_LAZY_TS_BACKEND OFF)
- 
 @@ -715,10 +745,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
@@ -178,10 +169,10 @@ index c8af5f00b5c..fdd765ddb50 100644
  endif()
  
 +# todo xiao
-+set(Python_LIBRARIES ${PYTHON_LIBRARIES})
-+set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-+message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
-+message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
++# set(Python_LIBRARIES ${PYTHON_LIBRARIES})
++# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
++# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
++# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
 +
  include(cmake/Summary.cmake)
  caffe2_print_configuration_summary()
