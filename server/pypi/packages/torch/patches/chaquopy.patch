@@ -387,7 +387,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..52894fe438d 100644
+index 84e4dad32d3..f9e36c8fff7 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -305,11 +305,30 @@ class CMake:
@@ -418,7 +418,7 @@ index 84e4dad32d3..52894fe438d 100644
 +            # BLAS="OpenBLAS",
 +            # NATIVE_BUILD_DIR=build_sleef_native,
              TORCH_BUILD_VERSION=version,
-+            USE_CUDA=0,
++            # USE_CUDA="0",
 +            # USE_VULKAN="0",  # Disable for now to simplify the build.
              **build_options,
          )
