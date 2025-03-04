@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..3ae46941a04 100644
+index c8af5f00b5c..91549c16f76 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,30 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -143,15 +143,21 @@ index c8af5f00b5c..3ae46941a04 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -715,7 +739,7 @@ if(INTERN_BUILD_MOBILE)
+@@ -715,10 +739,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
 -  set(BUILD_PYTHON OFF)
++  # todo xiao
 +  # set(BUILD_PYTHON OFF)
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
-   set(NO_API ON)
+-  set(NO_API ON)
++  # todo xiao
++  # set(NO_API ON)
+   set(USE_FBGEMM OFF)
+   set(INTERN_DISABLE_ONNX ON)
+   if(USE_BLAS)
 diff --git a/aten/src/ATen/CMakeLists.txt b/aten/src/ATen/CMakeLists.txt
 index f0868ea0489..91dbbbff8cb 100644
 --- a/aten/src/ATen/CMakeLists.txt
