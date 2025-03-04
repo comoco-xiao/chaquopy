@@ -218,7 +218,7 @@ index 1813f4418a2..3b2f1f3f015 100644
      if(HAVE_SHM_OPEN)
        add_definitions(-DHAVE_SHM_OPEN=1)
 diff --git a/setup.py b/setup.py
-index a6a6db7b033..54cb93ee6b4 100644
+index a6a6db7b033..c2eeb6f5699 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -483,11 +483,13 @@ def build_deps():
@@ -262,16 +262,15 @@ index a6a6db7b033..54cb93ee6b4 100644
      }
  
      if not BUILD_LIBTORCH_WHL:
-@@ -1435,7 +1448,7 @@ def main():
-         long_description_content_type="text/markdown",
+@@ -1436,6 +1449,7 @@ def main():
          ext_modules=extensions,
          cmdclass=cmdclass,
--        packages=packages,
-+        packages=packages + ["chaquopy"],
+         packages=packages,
++        # packages=packages + ["chaquopy"],
          entry_points=entry_points,
          install_requires=install_requires,
          extras_require=extras_require,
-@@ -1445,6 +1458,9 @@ def main():
+@@ -1445,6 +1459,9 @@ def main():
          author="PyTorch Team",
          author_email="packages@pytorch.org",
          python_requires=f">={python_min_version_str}",
