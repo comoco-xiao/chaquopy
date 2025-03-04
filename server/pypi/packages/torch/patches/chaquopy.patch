@@ -287,11 +287,16 @@ index f53aa209..9c20f150 100644
  # Extract project version from source
  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..ea0a01ef1b1 100644
+index 84e4dad32d3..6bca49e3e41 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,7 +308,9 @@ class CMake:
- 
+@@ -305,10 +305,13 @@ class CMake:
+             )
+             sys.exit(1)
+         build_options.update(cmake__options)
+-
++        
++        print(f"--------------------cmake args = {args}")
          CMake.defines(
              args,
 -            Python_EXECUTABLE=sys.executable,
