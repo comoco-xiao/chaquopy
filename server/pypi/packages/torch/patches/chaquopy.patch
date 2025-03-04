@@ -295,7 +295,7 @@ index 330c3c7..deb60c5 100644
      { free(ptr); }
 Submodule third_party/protobuf contains modified content
 diff --git a/third_party/protobuf/cmake/libprotobuf.cmake b/third_party/protobuf/cmake/libprotobuf.cmake
-index 0c12596c2..77f4768eb 100644
+index 0c12596c2..f332095e4 100644
 --- a/third_party/protobuf/cmake/libprotobuf.cmake
 +++ b/third_party/protobuf/cmake/libprotobuf.cmake
 @@ -118,6 +118,10 @@ target_link_libraries(libprotobuf ${CMAKE_THREAD_LIBS_INIT})
@@ -304,7 +304,7 @@ index 0c12596c2..77f4768eb 100644
  endif()
 +
 +# Chaquopy: used by src/google/protobuf/stubs/common.cc
-+target_link_libraries(libprotobuf INTERFACE log)
++# target_link_libraries(libprotobuf INTERFACE log)
 +
  if(protobuf_LINK_LIBATOMIC)
    target_link_libraries(libprotobuf atomic)
