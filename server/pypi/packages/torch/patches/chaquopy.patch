@@ -286,6 +286,21 @@ index f53aa209..9c20f150 100644
  
  # Extract project version from source
  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
+diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
+index 84e4dad32d3..ea0a01ef1b1 100644
+--- a/tools/setup_helpers/cmake.py
++++ b/tools/setup_helpers/cmake.py
+@@ -308,7 +308,9 @@ class CMake:
+ 
+         CMake.defines(
+             args,
+-            Python_EXECUTABLE=sys.executable,
++            # Python_EXECUTABLE=sys.executable,
++            # Chaquopy: see "CMake variables" comment in setup.py.
++            CMAKE_TOOLCHAIN_FILE=os.path.abspath("../chaquopy.toolchain.cmake"),
+             TORCH_BUILD_VERSION=version,
+             **build_options,
+         )
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
 index b123023d2fd..1e8c039baf5 100644
 --- a/torch/CMakeLists.txt
