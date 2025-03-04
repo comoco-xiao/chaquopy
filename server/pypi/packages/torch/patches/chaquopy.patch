@@ -467,7 +467,7 @@ index 84e4dad32d3..f9e36c8fff7 100644
          )
  
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..d5fb5df2589 100644
+index b123023d2fd..0b2f4a24d47 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -9,6 +9,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
@@ -492,13 +492,12 @@ index b123023d2fd..d5fb5df2589 100644
  
  set(TORCH_PYTHON_LINK_LIBRARIES
 -    Python::Module
--    pybind::pybind11
++# todo xiao
++    # Python::Module
+     pybind::pybind11
 -    opentelemetry::api
 -    httplib
 -    nlohmann
-+# todo xiao
-+    # Python::Module
-+    # pybind::pybind11
 +    # opentelemetry::api
 +    # httplib
 +    # nlohmann
