@@ -196,14 +196,15 @@ index 1813f4418a2..91533b0acf6 100644
        caffe2_interface_library(onnx onnx_library)
      endif()
 diff --git a/setup.py b/setup.py
-index a6a6db7b033..45d3c89e98c 100644
+index a6a6db7b033..71b2076a8d1 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -483,11 +483,12 @@ def build_deps():
+@@ -483,11 +483,13 @@ def build_deps():
      check_submodules()
      check_pydep("yaml", "pyyaml")
      build_python = not BUILD_LIBTORCH_WHL
 +    print(f"++++++++++++++++++++++++++++++++++++---build_python = {build_python}")
++    print(f"++++++++++++++++++++++++++++++++++++---cmake_python_library = {cmake_python_library}")
      build_pytorch(
          version=version,
          cmake_python_library=cmake_python_library,
@@ -213,7 +214,7 @@ index a6a6db7b033..45d3c89e98c 100644
          cmake_only=CMAKE_ONLY,
          cmake=cmake,
      )
-@@ -1167,7 +1168,15 @@ def main():
+@@ -1167,7 +1169,15 @@ def main():
          long_description = f.read()
  
      version_range_max = max(sys.version_info[1], 13) + 1
@@ -229,7 +230,7 @@ index a6a6db7b033..45d3c89e98c 100644
          "py.typed",
          "bin/*",
          "test/*",
-@@ -1416,6 +1425,9 @@ def main():
+@@ -1416,6 +1426,9 @@ def main():
      ]
      package_data = {
          "torch": torch_package_data,
@@ -239,7 +240,7 @@ index a6a6db7b033..45d3c89e98c 100644
      }
  
      if not BUILD_LIBTORCH_WHL:
-@@ -1445,6 +1457,9 @@ def main():
+@@ -1445,6 +1458,9 @@ def main():
          author="PyTorch Team",
          author_email="packages@pytorch.org",
          python_requires=f">={python_min_version_str}",
