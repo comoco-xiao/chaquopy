@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..067e6de32c7 100644
+index c8af5f00b5c..ad090a4324d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,36 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -149,18 +149,6 @@ index c8af5f00b5c..067e6de32c7 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,9 +693,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
- if(ANDROID
-    OR IOS
-    OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
--  set(INTERN_BUILD_MOBILE ON)
-+  # set(INTERN_BUILD_MOBILE ON)
-   message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
--  set(BUILD_LAZY_TS_BACKEND OFF)
-+  # set(BUILD_LAZY_TS_BACKEND OFF)
- 
-   # Set -ffunction-sections and -fdata-sections so that each method has its own
-   # text section. This allows the linker to remove unused section when the flag
 @@ -715,10 +745,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
