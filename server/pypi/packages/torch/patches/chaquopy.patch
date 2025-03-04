@@ -479,7 +479,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..e78d5cbaa53 100644
+index 84e4dad32d3..51499e94db6 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -305,11 +305,31 @@ class CMake:
@@ -493,13 +493,13 @@ index 84e4dad32d3..e78d5cbaa53 100644
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 +            os.mkdir(build_sleef_native)
 +            sleef_env = os.environ.copy()
-+            # for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
-+            #              "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-+            #              "NM", "RANLIB", "READELF", "STRIP"]:
-+            for name in ["AR", "ARFLAGS", "AS", "CPPFLAGS", "F77", "F90", "FARCH", "FC"]:
++            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++                         "NM", "RANLIB", "READELF", "STRIP"]:
++            # for name in ["AR", "ARFLAGS", "AS", "CPPFLAGS", "F77", "F90", "FARCH", "FC"]:
 +                sleef_env.pop(name, None)
 +            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            check_call(["cmake", "-DCMAKE_BINARY_DIR=" + build_sleef_native, "../third_party/sleef"], **kwargs)
++            check_call(["cmake", "-DCMAKE_BINARY_DIR=" + build_sleef_native, "--trace-expand", "../third_party/sleef"], **kwargs)
 +            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
 +            
          CMake.defines(
