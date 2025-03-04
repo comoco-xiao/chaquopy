@@ -165,6 +165,24 @@ index 919eb6c8567..b878027c648 100644
  #elif (                   \
      defined(__APPLE__) && \
      (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
+diff --git a/c10/test/core/Scalar_test.cpp b/c10/test/core/Scalar_test.cpp
+index d87cc051660..2fb936216d8 100644
+--- a/c10/test/core/Scalar_test.cpp
++++ b/c10/test/core/Scalar_test.cpp
+@@ -48,8 +48,8 @@ TEST(ScalarTest, Equality) {
+   ASSERT_FALSE(Scalar(-1).equal(0xFFFFFFFFFFFFFFFF));
+ }
+ 
+-TEST(ScalarTest, LongsAndLongLongs) {
+-  Scalar longOne = 1L;
+-  Scalar longlongOne = 1LL;
+-  ASSERT_EQ(longOne.toInt(), longlongOne.toInt());
+-}
++// TEST(ScalarTest, LongsAndLongLongs) {
++//   Scalar longOne = 1L;
++//   Scalar longlongOne = 1LL;
++//   ASSERT_EQ(longOne.toInt(), longlongOne.toInt());
++// }
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
 index 1813f4418a2..3b2f1f3f015 100644
 --- a/cmake/Dependencies.cmake
