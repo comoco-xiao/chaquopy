@@ -294,6 +294,20 @@ index 1813f4418a2..2e5258644e5 100644
      CHECK_FUNCTION_EXISTS(shm_open HAVE_SHM_OPEN)
      if(HAVE_SHM_OPEN)
        add_definitions(-DHAVE_SHM_OPEN=1)
+diff --git a/functorch/CMakeLists.txt b/functorch/CMakeLists.txt
+index bdfa4bfe455..a47e9948e27 100644
+--- a/functorch/CMakeLists.txt
++++ b/functorch/CMakeLists.txt
+@@ -22,7 +22,8 @@ else()
+   # functorch cannot use the alias to build on windows
+   target_link_libraries(${PROJECT_NAME} PRIVATE torch torch_python)
+ endif()
+-target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
++# todo xiao
++# target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
+ 
+ set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+       ${CMAKE_BINARY_DIR}/functorch)
 diff --git a/setup.py b/setup.py
 index a6a6db7b033..54cb93ee6b4 100644
 --- a/setup.py
