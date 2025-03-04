@@ -478,6 +478,20 @@ index 19a153f..bcb96f6 100644
  
  # Compiler feature detection
  
+diff --git a/third_party/sleef/src/libm/sleefsimddp.c b/third_party/sleef/src/libm/sleefsimddp.c
+index 1600969..fb397f0 100644
+--- a/third_party/sleef/src/libm/sleefsimddp.c
++++ b/third_party/sleef/src/libm/sleefsimddp.c
+@@ -120,7 +120,8 @@ extern const double Sleef_rempitabdp[];
+ #include "helperadvsimd.h"
+ #ifdef DORENAME
+ #ifdef ENABLE_GNUABI
+-#include "renameadvsimd_gnuabi.h"
++// todo xiao
++// #include "renameadvsimd_gnuabi.h"
+ #else
+ #include "renameadvsimd.h"
+ #endif
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
 index 84e4dad32d3..9aae957a0b8 100644
 --- a/tools/setup_helpers/cmake.py
