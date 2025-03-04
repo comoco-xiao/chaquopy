@@ -397,3 +397,27 @@ index f58eb93d86d..b72d68cf59b 100644
  
  
  def throw_abstract_impl_not_imported_error(opname, module, context):
+diff --git a/torch/lib/libshm/manager.cpp b/torch/lib/libshm/manager.cpp
+index 6aa70d8c211..4ef34873977 100644
+--- a/torch/lib/libshm/manager.cpp
++++ b/torch/lib/libshm/manager.cpp
+@@ -70,7 +70,8 @@ void print_init_message(std::string_view message) {
+ }
+ 
+ bool object_exists(const char* name) {
+-  int fd = shm_open(name, O_RDONLY, 0);
++  // int fd = shm_open(name, O_RDONLY, 0);
++  int fd = -1;   // Chaquopy: removed shm_open, which isn't supported on Android.
+   if (fd >= 0) {
+     close(fd);
+     return true;
+@@ -180,7 +181,8 @@ int main(int argc, char* argv[]) {
+ 
+   for (auto& obj_name : used_objects) {
+     DEBUG("freeing %s", obj_name.c_str());
+-    shm_unlink(obj_name.c_str());
++    // shm_unlink(obj_name.c_str());
++    // Chaquopy: removed shm_unlink, which isn't supported on Android.
+   }
+ 
+   // Clean up file descriptors
