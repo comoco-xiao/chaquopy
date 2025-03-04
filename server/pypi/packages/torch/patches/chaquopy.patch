@@ -387,7 +387,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..f9e36c8fff7 100644
+index 84e4dad32d3..82417051adc 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -305,11 +305,30 @@ class CMake:
@@ -418,8 +418,8 @@ index 84e4dad32d3..f9e36c8fff7 100644
 +            # BLAS="OpenBLAS",
 +            # NATIVE_BUILD_DIR=build_sleef_native,
              TORCH_BUILD_VERSION=version,
-+            # USE_CUDA="0",
-+            # USE_VULKAN="0",  # Disable for now to simplify the build.
++            USE_CUDA="0",
++            USE_VULKAN="0",  # Disable for now to simplify the build.
              **build_options,
          )
  
@@ -446,16 +446,14 @@ index b123023d2fd..d74797351c1 100644
  if(USE_NUMPY)
    target_link_libraries(torch_python PRIVATE Python::NumPy)
 diff --git a/torch/_utils_internal.py b/torch/_utils_internal.py
-index f58eb93d86d..b72d68cf59b 100644
+index f58eb93d86d..bbcd41ddba7 100644
 --- a/torch/_utils_internal.py
 +++ b/torch/_utils_internal.py
-@@ -63,7 +63,8 @@ def prepare_multiprocessing_environment(path: str) -> None:
- 
+@@ -64,6 +64,7 @@ def prepare_multiprocessing_environment(path: str) -> None:
  
  def resolve_library_path(path: str) -> str:
--    return os.path.realpath(path)
-+    # return os.path.realpath(path)
-+    return os.path.abspath(path)  # Chaquopy: was realpath. This patch is no longer necessary on newer versions of Chaquopy, which call realpath early in the importer.
+     return os.path.realpath(path)
++    # return os.path.abspath(path)  # Chaquopy: was realpath. This patch is no longer necessary on newer versions of Chaquopy, which call realpath early in the importer.
  
  
  def throw_abstract_impl_not_imported_error(opname, module, context):
