@@ -478,39 +478,11 @@ index 19a153f..bcb96f6 100644
  
  # Compiler feature detection
  
-diff --git a/third_party/sleef/src/libm/sleefsimddp.c b/third_party/sleef/src/libm/sleefsimddp.c
-index 1600969..fb397f0 100644
---- a/third_party/sleef/src/libm/sleefsimddp.c
-+++ b/third_party/sleef/src/libm/sleefsimddp.c
-@@ -120,7 +120,8 @@ extern const double Sleef_rempitabdp[];
- #include "helperadvsimd.h"
- #ifdef DORENAME
- #ifdef ENABLE_GNUABI
--#include "renameadvsimd_gnuabi.h"
-+// todo xiao
-+// #include "renameadvsimd_gnuabi.h"
- #else
- #include "renameadvsimd.h"
- #endif
-diff --git a/third_party/sleef/src/libm/sleefsimdsp.c b/third_party/sleef/src/libm/sleefsimdsp.c
-index cf08a2e..2bf22e8 100644
---- a/third_party/sleef/src/libm/sleefsimdsp.c
-+++ b/third_party/sleef/src/libm/sleefsimdsp.c
-@@ -156,7 +156,8 @@ extern const float Sleef_rempitabsp[];
- #endif
- #ifdef DORENAME
- #ifdef ENABLE_GNUABI
--#include "renameadvsimd_gnuabi.h"
-+// todo xiao
-+// #include "renameadvsimd_gnuabi.h"
- #else
- #include "renameadvsimd.h"
- #endif
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..9aae957a0b8 100644
+index 84e4dad32d3..e78d5cbaa53 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -305,11 +305,30 @@ class CMake:
+@@ -305,11 +305,31 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -521,12 +493,13 @@ index 84e4dad32d3..9aae957a0b8 100644
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 +            os.mkdir(build_sleef_native)
 +            sleef_env = os.environ.copy()
-+            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
-+                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-+                         "NM", "RANLIB", "READELF", "STRIP"]:
++            # for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++            #              "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++            #              "NM", "RANLIB", "READELF", "STRIP"]:
++            for name in ["AR", "ARFLAGS", "AS", "CPPFLAGS", "F77", "F90", "FARCH", "FC"]:
 +                sleef_env.pop(name, None)
 +            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            check_call(["cmake", "../third_party/sleef"], **kwargs)
++            check_call(["cmake", "-DCMAKE_BINARY_DIR=" + build_sleef_native, "../third_party/sleef"], **kwargs)
 +            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
 +            
          CMake.defines(
