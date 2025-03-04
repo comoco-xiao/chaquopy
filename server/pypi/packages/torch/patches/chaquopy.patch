@@ -292,6 +292,22 @@ index 330c3c7..deb60c5 100644
    }
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
+Submodule third_party/protobuf contains modified content
+diff --git a/third_party/protobuf/cmake/libprotobuf.cmake b/third_party/protobuf/cmake/libprotobuf.cmake
+index 0c12596c2..77f4768eb 100644
+--- a/third_party/protobuf/cmake/libprotobuf.cmake
++++ b/third_party/protobuf/cmake/libprotobuf.cmake
+@@ -118,6 +118,10 @@ target_link_libraries(libprotobuf ${CMAKE_THREAD_LIBS_INIT})
+ if(protobuf_WITH_ZLIB)
+   target_link_libraries(libprotobuf ${ZLIB_LIBRARIES})
+ endif()
++
++# Chaquopy: used by src/google/protobuf/stubs/common.cc
++target_link_libraries(libprotobuf INTERFACE log)
++
+ if(protobuf_LINK_LIBATOMIC)
+   target_link_libraries(libprotobuf atomic)
+ endif()
 Submodule third_party/pybind11 contains modified content
 diff --git a/third_party/pybind11/CMakeLists.txt b/third_party/pybind11/CMakeLists.txt
 index f53aa209..9c20f150 100644
