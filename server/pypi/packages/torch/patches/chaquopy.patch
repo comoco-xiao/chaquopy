@@ -178,7 +178,7 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..3b2f1f3f015 100644
+index 1813f4418a2..dc6e4264834 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -863,6 +863,7 @@ if(${Python_VERSION} VERSION_LESS 3.8)
@@ -197,7 +197,22 @@ index 1813f4418a2..3b2f1f3f015 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
-@@ -1290,7 +1292,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -898,9 +900,11 @@ else()
+             FILES_MATCHING PATTERN "*.h")
+ endif()
+ message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
+-add_library(pybind::pybind11 INTERFACE IMPORTED)
+-target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
+-target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
++# todo xiao
++# add_library(pybind::pybind11 INTERFACE IMPORTED)
++# target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
++# target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
++include_directories(SYSTEM ${pybind11_INCLUDE_DIRS})
+ 
+ # ---[ OpenTelemetry API headers
+ find_package(OpenTelemetryApi)
+@@ -1290,7 +1294,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
@@ -207,7 +222,7 @@ index 1813f4418a2..3b2f1f3f015 100644
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1500,8 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1502,8 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
@@ -424,7 +439,7 @@ index 84e4dad32d3..f9e36c8fff7 100644
          )
  
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..d74797351c1 100644
+index b123023d2fd..d5fb5df2589 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -9,6 +9,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
@@ -435,7 +450,34 @@ index b123023d2fd..d74797351c1 100644
  if(NOT BUILD_PYTHON)
    return()
  endif()
-@@ -324,7 +325,8 @@ if(CAFFE2_USE_MKL AND BUILD_LIBTORCHLESS)
+@@ -70,6 +71,8 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
+     ${TORCH_ROOT}/third_party/kineto/libkineto/include
+     ${TORCH_ROOT}/third_party/cpp-httplib
+     ${TORCH_ROOT}/third_party/nlohmann/include
++    # todo xiao
++    ${pybind11_INCLUDE_DIRS}
+ 
+     ${TORCH_SRC_DIR}/csrc
+     ${TORCH_SRC_DIR}/csrc/api/include
+@@ -79,11 +82,12 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
+ list(APPEND TORCH_PYTHON_INCLUDE_DIRECTORIES ${LIBSHM_SRCDIR})
+ 
+ set(TORCH_PYTHON_LINK_LIBRARIES
+-    Python::Module
+-    pybind::pybind11
+-    opentelemetry::api
+-    httplib
+-    nlohmann
++# todo xiao
++    # Python::Module
++    # pybind::pybind11
++    # opentelemetry::api
++    # httplib
++    # nlohmann
+     shm
+     fmt::fmt-header-only
+     ATEN_CPU_FILES_GEN_LIB)
+@@ -324,7 +328,8 @@ if(CAFFE2_USE_MKL AND BUILD_LIBTORCHLESS)
    target_link_libraries(torch_python PRIVATE caffe2::mkl)
  endif()
  
