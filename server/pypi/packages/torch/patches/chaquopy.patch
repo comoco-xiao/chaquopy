@@ -311,27 +311,14 @@ index f53aa209..9c20f150 100644
  # Extract project version from source
  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..95a4278d423 100644
+index 84e4dad32d3..467343e065c 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -305,11 +305,30 @@ class CMake:
+@@ -305,11 +305,16 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
 -
-+        
-+        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
-+        build_sleef_native = os.path.abspath("build-sleef-native")
-+        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
-+            os.mkdir(build_sleef_native)
-+            sleef_env = os.environ.copy()
-+            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
-+                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-+                         "NM", "RANLIB", "READELF", "STRIP"]:
-+                sleef_env.pop(name, None)
-+            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            check_call(["cmake", "../third_party/sleef"], **kwargs)
-+            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
 +            
          CMake.defines(
              args,
@@ -340,7 +327,6 @@ index 84e4dad32d3..95a4278d423 100644
 +            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
 +            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
 +            # BLAS="OpenBLAS",
-+            NATIVE_BUILD_DIR=build_sleef_native,
              TORCH_BUILD_VERSION=version,
 +            USE_CUDA="0",
 +            USE_VULKAN="0",  # Disable for now to simplify the build.
