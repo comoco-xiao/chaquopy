@@ -412,15 +412,13 @@ index 84e4dad32d3..82417051adc 100644
          )
  
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..1e8c039baf5 100644
+index b123023d2fd..d74797351c1 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
-@@ -8,7 +8,8 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
-   option(USE_CUDA "Use CUDA" ON)
+@@ -9,6 +9,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
  endif()
--
-+set(BUILD_PYTHON ON)
+ 
 +message(+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+----------------BUILD_PYTHON = ${BUILD_PYTHON})
  if(NOT BUILD_PYTHON)
    return()
