@@ -1,3 +1,113 @@
+diff --git a/.gitmodules b/.gitmodules
+index 36d5becb57c..9a2ad2a6bcf 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,93 +1,82 @@
+ [submodule "third_party/pybind11"]
+-    ignore = dirty
+     path = third_party/pybind11
+     url = https://github.com/pybind/pybind11.git
+ [submodule "third_party/eigen"]
+-    ignore = dirty
+     path = third_party/eigen
+     url = https://gitlab.com/libeigen/eigen.git
+ [submodule "third_party/googletest"]
+-    ignore = dirty
+     path = third_party/googletest
+     url = https://github.com/google/googletest.git
+ [submodule "third_party/benchmark"]
+-    ignore = dirty
+     path = third_party/benchmark
+     url = https://github.com/google/benchmark.git
+ [submodule "third_party/protobuf"]
+-    ignore = dirty
+     path = third_party/protobuf
+     url = https://github.com/protocolbuffers/protobuf.git
+ [submodule "third_party/NNPACK"]
+-    ignore = dirty
+     path = third_party/NNPACK
+     url = https://github.com/Maratyszcza/NNPACK.git
+ [submodule "third_party/gloo"]
+-    ignore = dirty
+     path = third_party/gloo
+     url = https://github.com/facebookincubator/gloo
+ [submodule "third_party/NNPACK_deps/pthreadpool"]
+-    ignore = dirty
+     path = third_party/pthreadpool
+     url = https://github.com/Maratyszcza/pthreadpool.git
+ [submodule "third_party/NNPACK_deps/FXdiv"]
+-    ignore = dirty
+     path = third_party/FXdiv
+     url = https://github.com/Maratyszcza/FXdiv.git
+ [submodule "third_party/NNPACK_deps/FP16"]
+-    ignore = dirty
+     path = third_party/FP16
+     url = https://github.com/Maratyszcza/FP16.git
+ [submodule "third_party/NNPACK_deps/psimd"]
+-    ignore = dirty
+     path = third_party/psimd
+     url = https://github.com/Maratyszcza/psimd.git
+ [submodule "third_party/cpuinfo"]
+-    ignore = dirty
++    
+     path = third_party/cpuinfo
+     url = https://github.com/pytorch/cpuinfo.git
+ [submodule "third_party/python-peachpy"]
+-    ignore = dirty
++    
+     path = third_party/python-peachpy
+     url = https://github.com/malfet/PeachPy.git
+ [submodule "third_party/onnx"]
+-    ignore = dirty
++    
+     path = third_party/onnx
+     url = https://github.com/onnx/onnx.git
+ [submodule "third_party/sleef"]
+-    ignore = dirty
++    
+     path = third_party/sleef
+     url = https://github.com/shibatch/sleef
+ [submodule "third_party/ideep"]
+-    ignore = dirty
++    
+     path = third_party/ideep
+     url = https://github.com/intel/ideep
+ [submodule "third_party/nccl/nccl"]
+-    ignore = dirty
++    
+     path = third_party/nccl/nccl
+     url = https://github.com/NVIDIA/nccl
+ [submodule "third_party/gemmlowp/gemmlowp"]
+-    ignore = dirty
++    
+     path = third_party/gemmlowp/gemmlowp
+     url = https://github.com/google/gemmlowp.git
+ [submodule "third_party/fbgemm"]
+-    ignore = dirty
++    
+     path = third_party/fbgemm
+     url = https://github.com/pytorch/fbgemm
+ [submodule "android/libs/fbjni"]
+-    ignore = dirty
++    
+     path = android/libs/fbjni
+     url = https://github.com/facebookincubator/fbjni.git
+ [submodule "third_party/XNNPACK"]
+-    ignore = dirty
++    
+     path = third_party/XNNPACK
+     url = https://github.com/google/XNNPACK.git
+ [submodule "third_party/fmt"]
+-    ignore = dirty
++    
+     path = third_party/fmt
+     url = https://github.com/fmtlib/fmt.git
+ [submodule "third_party/tensorpipe"]
+-    ignore = dirty
++    
+     path = third_party/tensorpipe
+     url = https://github.com/pytorch/tensorpipe.git
+ [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index c8af5f00b5c..bfa30ded1e2 100644
 --- a/CMakeLists.txt
@@ -115,6 +225,25 @@ index a6a6db7b033..45d3c89e98c 100644
          # PyPI package information.
          classifiers=[
              "Development Status :: 5 - Production/Stable",
+Submodule third_party/onnx contains modified content
+Submodule third_party/pybind11 contains modified content
+diff --git a/third_party/onnx/third_party/pybind11/CMakeLists.txt b/third_party/onnx/third_party/pybind11/CMakeLists.txt
+index 7db1bf66..21e0588b 100644
+--- a/third_party/onnx/third_party/pybind11/CMakeLists.txt
++++ b/third_party/onnx/third_party/pybind11/CMakeLists.txt
+@@ -26,10 +26,12 @@ if(_pybind11_cmp0148)
+   unset(_pybind11_cmp0148)
+ endif()
+ 
++message(---------------------third_party-Onnx-third_party-pybind11-CMakeLists--1---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
+ # Avoid infinite recursion if tests include this as a subdirectory
+ if(DEFINED PYBIND11_MASTER_PROJECT)
+   return()
+ endif()
++message(---------------------third_party-Onnx-third_party-pybind11-CMakeLists--2---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
+ 
+ # Extract project version from source
+ file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
 index 330c3c7..deb60c5 100644
@@ -139,6 +268,24 @@ index 330c3c7..deb60c5 100644
    }
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
+Submodule third_party/pybind11 contains modified content
+diff --git a/third_party/pybind11/CMakeLists.txt b/third_party/pybind11/CMakeLists.txt
+index f53aa209..9c20f150 100644
+--- a/third_party/pybind11/CMakeLists.txt
++++ b/third_party/pybind11/CMakeLists.txt
+@@ -26,10 +26,12 @@ if(_pybind11_cmp0148)
+   unset(_pybind11_cmp0148)
+ endif()
+ 
++message(---------------------third_party-pybind11-CMakeLists--1---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
+ # Avoid infinite recursion if tests include this as a subdirectory
+ if(DEFINED PYBIND11_MASTER_PROJECT)
+   return()
+ endif()
++message(---------------------third_party-pybind11-CMakeLists--2---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
+ 
+ # Extract project version from source
+ file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
 index b123023d2fd..1e8c039baf5 100644
 --- a/torch/CMakeLists.txt
