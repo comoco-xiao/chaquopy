@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..9e617b8a047 100644
+index c8af5f00b5c..a2062ae66ca 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,36 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -197,6 +197,21 @@ index c8af5f00b5c..9e617b8a047 100644
  # Parse custom debug info
  if(DEFINED USE_CUSTOM_DEBINFO)
    string(REPLACE ";" " " SOURCE_FILES "${USE_CUSTOM_DEBINFO}")
+@@ -1389,7 +1430,7 @@ if(DEFINED USE_CUSTOM_DEBINFO)
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -g")
+   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -g")
+ endif()
+-
++message(---------------------------test---5)
+ # Bundle PTXAS if needed
+ if(BUILD_BUNDLE_PTXAS AND USE_CUDA)
+   if(NOT EXISTS "${PROJECT_SOURCE_DIR}/build/bin/ptxas")
+@@ -1400,3 +1441,4 @@ if(BUILD_BUNDLE_PTXAS AND USE_CUDA)
+   install(PROGRAMS "${PROJECT_BINARY_DIR}/ptxas"
+           DESTINATION "${CMAKE_INSTALL_BINDIR}")
+ endif()
++message(---------------------------test---6)
+\ No newline at end of file
 diff --git a/aten/src/ATen/CMakeLists.txt b/aten/src/ATen/CMakeLists.txt
 index f0868ea0489..91dbbbff8cb 100644
 --- a/aten/src/ATen/CMakeLists.txt
