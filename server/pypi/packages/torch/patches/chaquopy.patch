@@ -311,23 +311,28 @@ index f53aa209..9c20f150 100644
  # Extract project version from source
  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..dc2a7d0614c 100644
+index 84e4dad32d3..69709798516 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -305,10 +305,11 @@ class CMake:
+@@ -305,11 +305,16 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
 -
 +        
-+        print(f"--------------------cmake **build_options = {build_options}")
          CMake.defines(
              args,
 -            Python_EXECUTABLE=sys.executable,
 +            # Python_EXECUTABLE=sys.executable,
++            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            BLAS="OpenBLAS",
              TORCH_BUILD_VERSION=version,
++            USE_CUDA="0",
++            USE_VULKAN="0",  # Disable for now to simplify the build.
              **build_options,
          )
+ 
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
 index b123023d2fd..1e8c039baf5 100644
 --- a/torch/CMakeLists.txt
