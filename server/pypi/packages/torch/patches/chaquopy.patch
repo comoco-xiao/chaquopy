@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..16fbb0c6a1e 100644
+index c8af5f00b5c..cb605da5a81 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,36 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -117,7 +117,7 @@ index c8af5f00b5c..16fbb0c6a1e 100644
  endif()
  
 +# --------------------------------- chaquopy begin ------------------------------------
-+set(BUILD_CUSTOM_PROTOBUF OFF)
++# set(BUILD_CUSTOM_PROTOBUF OFF)
 +# set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
 +set(BUILD_TEST OFF)
 +set(BUILD_BINARY OFF)
