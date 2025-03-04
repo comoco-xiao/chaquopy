@@ -492,6 +492,20 @@ index 1600969..fb397f0 100644
  #else
  #include "renameadvsimd.h"
  #endif
+diff --git a/third_party/sleef/src/libm/sleefsimdsp.c b/third_party/sleef/src/libm/sleefsimdsp.c
+index cf08a2e..2bf22e8 100644
+--- a/third_party/sleef/src/libm/sleefsimdsp.c
++++ b/third_party/sleef/src/libm/sleefsimdsp.c
+@@ -156,7 +156,8 @@ extern const float Sleef_rempitabsp[];
+ #endif
+ #ifdef DORENAME
+ #ifdef ENABLE_GNUABI
+-#include "renameadvsimd_gnuabi.h"
++// todo xiao
++// #include "renameadvsimd_gnuabi.h"
+ #else
+ #include "renameadvsimd.h"
+ #endif
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
 index 84e4dad32d3..9aae957a0b8 100644
 --- a/tools/setup_helpers/cmake.py
