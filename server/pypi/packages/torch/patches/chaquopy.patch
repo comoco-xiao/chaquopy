@@ -109,10 +109,10 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..91549c16f76 100644
+index c8af5f00b5c..6b0d0e2267c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,30 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,31 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
    message(FATAL_ERROR "In-source build are not supported")
  endif()
  
@@ -138,12 +138,13 @@ index c8af5f00b5c..91549c16f76 100644
 +set(USE_OPENMP OFF)
 +set(BUILD_PYTHON ON)
 +set(USE_NUMPY OFF)
++set(BUILD_MOBILE_AUTOGRAD ON)
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -715,10 +739,12 @@ if(INTERN_BUILD_MOBILE)
+@@ -715,10 +740,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
