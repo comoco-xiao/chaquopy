@@ -152,7 +152,7 @@ index c8af5f00b5c..bfa30ded1e2 100644
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
-index 919eb6c8567..364e192d5fe 100644
+index 919eb6c8567..b878027c648 100644
 --- a/c10/macros/Macros.h
 +++ b/c10/macros/Macros.h
 @@ -433,7 +433,8 @@ __host__ __device__
@@ -160,7 +160,7 @@ index 919eb6c8567..364e192d5fe 100644
  #if defined(__ANDROID__)
  #define C10_ANDROID 1
 -#define C10_MOBILE 1
-++// Chaquopy: this disables things required by the Python build.
++// Chaquopy: this disables things required by the Python build.
 +// #define C10_MOBILE 1
  #elif (                   \
      defined(__APPLE__) && \
