@@ -151,6 +151,20 @@ index c8af5f00b5c..bfa30ded1e2 100644
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
    set(NO_API ON)
+diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
+index 919eb6c8567..364e192d5fe 100644
+--- a/c10/macros/Macros.h
++++ b/c10/macros/Macros.h
+@@ -433,7 +433,8 @@ __host__ __device__
+ 
+ #if defined(__ANDROID__)
+ #define C10_ANDROID 1
+-#define C10_MOBILE 1
+++// Chaquopy: this disables things required by the Python build.
++// #define C10_MOBILE 1
+ #elif (                   \
+     defined(__APPLE__) && \
+     (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
 index 1813f4418a2..1b99cd65012 100644
 --- a/cmake/Dependencies.cmake
