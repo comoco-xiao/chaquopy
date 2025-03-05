@@ -224,7 +224,7 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..16d8c62e138 100644
+index 1813f4418a2..6cd5bc9efd8 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -844,11 +844,32 @@ if(NOT Python_EXECUTABLE)
@@ -236,7 +236,8 @@ index 1813f4418a2..16d8c62e138 100644
    if(USE_NUMPY)
      list(APPEND PYTHON_COMPONENTS NumPy)
    endif()
-   find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS ${PYTHON_COMPONENTS})
+-  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS ${PYTHON_COMPONENTS})
++  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
 +  # 打印核心信息
 +message(STATUS "===== Python 配置信息 =====")
 +message(STATUS "解释器路径: ${Python_EXECUTABLE}")
