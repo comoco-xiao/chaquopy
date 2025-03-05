@@ -109,10 +109,10 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..c5a5e017bb5 100644
+index c8af5f00b5c..819715eba47 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,36 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,39 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
    message(FATAL_ERROR "In-source build are not supported")
  endif()
  
@@ -138,6 +138,9 @@ index c8af5f00b5c..c5a5e017bb5 100644
 +set(USE_OPENMP OFF)
 +set(BUILD_PYTHON ON)
 +set(USE_NUMPY OFF)
++
++# dependencies
++set(USE_VULKAN OFF)
 +# set(BUILD_MOBILE_AUTOGRAD ON)
 +
 +# set(Python_LIBRARIES ${PYTHON_LIBRARIES})
@@ -149,7 +152,7 @@ index c8af5f00b5c..c5a5e017bb5 100644
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,7 +693,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+@@ -663,7 +696,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
  if(ANDROID
     OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
@@ -158,7 +161,7 @@ index c8af5f00b5c..c5a5e017bb5 100644
    message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
    set(BUILD_LAZY_TS_BACKEND OFF)
  
-@@ -715,10 +745,12 @@ if(INTERN_BUILD_MOBILE)
+@@ -715,10 +748,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
@@ -173,7 +176,7 @@ index c8af5f00b5c..c5a5e017bb5 100644
    set(USE_FBGEMM OFF)
    set(INTERN_DISABLE_ONNX ON)
    if(USE_BLAS)
-@@ -1355,6 +1387,12 @@ if(BUILD_JNI)
+@@ -1355,6 +1390,12 @@ if(BUILD_JNI)
    add_subdirectory(android/pytorch_android)
  endif()
  
@@ -213,10 +216,18 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..2e5258644e5 100644
+index 1813f4418a2..9a436b8a430 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
-@@ -863,23 +863,25 @@ if(${Python_VERSION} VERSION_LESS 3.8)
+@@ -844,6 +844,7 @@ if(NOT Python_EXECUTABLE)
+ endif()
+ 
+ if(BUILD_PYTHON)
++  message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---Development.Module = ${Development.Module})
+   set(PYTHON_COMPONENTS Development.Module)
+   if(USE_NUMPY)
+     list(APPEND PYTHON_COMPONENTS NumPy)
+@@ -863,23 +864,25 @@ if(${Python_VERSION} VERSION_LESS 3.8)
  endif()
  
  # ---[ Python + Numpy
@@ -259,7 +270,7 @@ index 1813f4418a2..2e5258644e5 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
-@@ -898,9 +900,11 @@ else()
+@@ -898,9 +901,11 @@ else()
              FILES_MATCHING PATTERN "*.h")
  endif()
  message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
@@ -274,7 +285,7 @@ index 1813f4418a2..2e5258644e5 100644
  
  # ---[ OpenTelemetry API headers
  find_package(OpenTelemetryApi)
-@@ -1290,7 +1294,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -1290,7 +1295,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
@@ -284,7 +295,7 @@ index 1813f4418a2..2e5258644e5 100644
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1502,8 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1503,8 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
