@@ -1,8 +1,40 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 958c1209e3a..0c1deba76e6 100644
+index 958c1209e3a..f19321e4269 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -749,7 +749,7 @@ if(INTERN_BUILD_MOBILE)
+@@ -26,26 +26,21 @@ endif()
+ set(BUILD_CUSTOM_PROTOBUF ON)
+ # set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
+ set(BUILD_TEST OFF)
+-set(BUILD_BINARY OFF)
+ set(BUILD_LITE_INTERPRETER OFF)
+-set(TRACING_BASED OFF)
+ set(USE_LIGHTWEIGHT_DISPATCH OFF)
+ 
+-set(BUILD_MOBILE_BENCHMARK OFF)
+-set(BUILD_MOBILE_TEST OFF)
+-
+ set(USE_CUDA OFF)
+ 
+-set(USE_ITT OFF)
+-set(USE_GFLAGS OFF)
++# set(USE_ITT OFF)
++# set(USE_GFLAGS OFF)
+ set(USE_OPENCV OFF)
+-set(USE_MPI OFF)
++# set(USE_MPI OFF)
+ 
+-set(USE_OPENMP OFF)
++# set(USE_OPENMP OFF)
+ set(BUILD_PYTHON ON)
+ 
+ # dependencies
+-set(USE_NUMPY ON)
++# set(USE_NUMPY ON)
+ set(USE_VULKAN OFF)
+ # set(BUILD_MOBILE_AUTOGRAD ON)
+ 
+@@ -749,7 +744,7 @@ if(INTERN_BUILD_MOBILE)
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
    # todo xiao
