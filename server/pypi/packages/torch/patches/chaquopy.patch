@@ -1,3 +1,44 @@
+diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
+index 2da257b9483..f921ed6c32b 100644
+--- a/cmake/Dependencies.cmake
++++ b/cmake/Dependencies.cmake
+@@ -33,6 +33,11 @@ macro(enable_ubsan)
+   endif()
+ endmacro()
+ 
++message(-------------------------cmake path = ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
++list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
++# include(eigen)
++# include(pybind11)
++
+ # ---[ CUDA
+ if(USE_CUDA)
+   # public/*.cmake uses CAFFE2_USE_*
+Submodule third_party/flatbuffers contains modified content
+diff --git a/third_party/flatbuffers/android/.project b/third_party/flatbuffers/android/.project
+index 3ed7298f..17ddcb3e 100644
+--- a/third_party/flatbuffers/android/.project
++++ b/third_party/flatbuffers/android/.project
+@@ -1,12 +1,18 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <projectDescription>
+-	<name>FlatBufferTest</name>
++	<name>FlatbuffersTest-android</name>
+ 	<comment></comment>
+ 	<projects>
+ 	</projects>
+ 	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
+ 	</buildSpec>
+ 	<natures>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
+ 	</natures>
+ 	<filteredResources>
+ 		<filter>
 Submodule third_party/onnx contains modified content
 Submodule third_party/pybind11 contains modified content
 diff --git a/third_party/onnx/third_party/pybind11/CMakeLists.txt b/third_party/onnx/third_party/pybind11/CMakeLists.txt
