@@ -258,14 +258,13 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..8a8a581b4df 100644
+index 70bf31375a8..d4b7e8dacb3 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -307,18 +307,18 @@ class CMake:
-         build_options.update(cmake__options)
+@@ -308,17 +308,17 @@ class CMake:
          
          # todo xiao
--        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
+         # Chaquopy: see https://github.com/shibatch/sleef/issues/249
 -        # build_sleef_native = os.path.abspath("build-sleef-native")
 -        # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 -        #     os.mkdir(build_sleef_native)
@@ -277,7 +276,6 @@ index 70bf31375a8..8a8a581b4df 100644
 -        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
 -        #     check_call(["cmake", "../third_party/sleef"], **kwargs)
 -        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
-+        Chaquopy: see https://github.com/shibatch/sleef/issues/249
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 +            os.mkdir(build_sleef_native)
