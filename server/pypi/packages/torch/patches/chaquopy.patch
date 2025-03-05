@@ -109,7 +109,7 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..ab080a3ed06 100644
+index c8af5f00b5c..f1201a45ed3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,35 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -176,8 +176,8 @@ index c8af5f00b5c..ab080a3ed06 100644
  # The only solution is to include(cmake/Dependencies.cmake), and defer the
  # aotriton build decision later.
  
-+set(Python_LIBRARIES ${PYTHON_LIBRARIES})
-+set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
++set(Python_LIBRARIES ${PYTHON_LIBRARIES} CACHE PATH "Python include directory" FORCE)
++set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS} CACHE FILEPATH "Python library" FORCE)
 +message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
 +message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
 +
