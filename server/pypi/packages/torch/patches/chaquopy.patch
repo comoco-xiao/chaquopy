@@ -1,3 +1,16 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 958c1209e3a..0c1deba76e6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -749,7 +749,7 @@ if(INTERN_BUILD_MOBILE)
+   set(BUILD_FUNCTORCH OFF)
+   set(USE_DISTRIBUTED OFF)
+   # todo xiao
+-  # set(NO_API ON)
++  set(NO_API ON)
+   set(USE_FBGEMM OFF)
+   set(INTERN_DISABLE_ONNX ON)
+   if(USE_BLAS)
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
 index 2da257b9483..7664479dd5b 100644
 --- a/cmake/Dependencies.cmake
