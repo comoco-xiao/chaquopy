@@ -1,5 +1,5 @@
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 2da257b9483..7dcbcc9550d 100644
+index 2da257b9483..7664479dd5b 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -33,6 +33,9 @@ macro(enable_ubsan)
@@ -12,7 +12,7 @@ index 2da257b9483..7dcbcc9550d 100644
  # ---[ CUDA
  if(USE_CUDA)
    # public/*.cmake uses CAFFE2_USE_*
-@@ -889,26 +892,35 @@ endif()
+@@ -889,26 +892,36 @@ endif()
  message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---2---BUILD_PYTHON = ${BUILD_PYTHON})
  
  # ---[ pybind11
@@ -35,6 +35,7 @@ index 2da257b9483..7dcbcc9550d 100644
 -
 -add_library(pybind::pybind11 INTERFACE IMPORTED)
 -target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
+-target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
 +# if(USE_SYSTEM_PYBIND11)
 +#   find_package(pybind11 CONFIG)
 +#   if(NOT pybind11_FOUND)
@@ -57,16 +58,29 @@ index 2da257b9483..7dcbcc9550d 100644
 +# target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
 +
 +message(STATUS "----------------------1---Successfully included pybind11")
-+add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/pybind11)
++# add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/pybind11)
++include(pybind11)
 +message(STATUS "----------------------2---Successfully included pybind11")
-+add_library(pybind::pybind11 ALIAS pybind11::pybind11)
-+# include(pybind11)
++# add_library(pybind::pybind11 ALIAS pybind11::pybind11)
++
 +message(STATUS "----------------------3---Successfully included pybind11")
- target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
++target_link_libraries(pybind11::pybind11 INTERFACE Python::Module)
 +message(STATUS "----------------------4---Successfully included pybind11")
  
  # ---[ OpenTelemetry API headers
  find_package(OpenTelemetryApi)
+diff --git a/cmake/pybind11.cmake b/cmake/pybind11.cmake
+index 1cf1a77c877..d883c53875b 100644
+--- a/cmake/pybind11.cmake
++++ b/cmake/pybind11.cmake
+@@ -6,7 +6,6 @@ include(FetchContent)
+ FetchContent_Declare(
+   pybind11
+   GIT_REPOSITORY https://github.com/pybind/pybind11.git
+-  GIT_TAG smart_holder
+   GIT_SHALLOW TRUE
+   GIT_PROGRESS TRUE
+ )
 Submodule third_party/flatbuffers contains modified content
 diff --git a/third_party/flatbuffers/android/.project b/third_party/flatbuffers/android/.project
 index 3ed7298f..17ddcb3e 100644
