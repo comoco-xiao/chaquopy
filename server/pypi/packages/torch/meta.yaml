@@ -9,7 +9,7 @@ build:
 
 source:
   git_url: https://github.com/comoco-xiao/pytorch.git
-  git_rev: 8ff72c0c47829088d1025ae658452766a24858ee
+  git_rev: 296d2aeacd91ab98ad9a5faf420991c90160eac6
 
 requirements:
   build:
