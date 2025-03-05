@@ -224,55 +224,31 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..6a95f021306 100644
+index 1813f4418a2..abb8f7a66ce 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
-@@ -844,11 +844,32 @@ if(NOT Python_EXECUTABLE)
- endif()
- 
- if(BUILD_PYTHON)
-+  message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---Development.Module = ${Development.Module})
-   set(PYTHON_COMPONENTS Development.Module)
+@@ -848,7 +848,7 @@ if(BUILD_PYTHON)
    if(USE_NUMPY)
      list(APPEND PYTHON_COMPONENTS NumPy)
    endif()
 -  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS ${PYTHON_COMPONENTS})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
-+  # 打印核心信息
-+message(STATUS "===== Python 配置信息 =====")
-+message(STATUS "解释器路径: ${Python_EXECUTABLE}")
-+message(STATUS "解释器是否找到: ${Python_Interpreter_FOUND}")
-+
-+# 打印可选组件状态
-+message(STATUS "Development 组件状态: ${Python_Development_FOUND}")
-+message(STATUS "NumPy 组件状态: ${Python_NumPy_FOUND}")
-+
-+# 打印开发组件路径（如果找到）
-+if(Python_Development_FOUND)
-+    message(STATUS "头文件目录: ${Python_INCLUDE_DIRS}")
-+    message(STATUS "库文件路径: ${Python_LIBRARIES}")
-+endif()
-+
-+# 打印 NumPy 路径（如果找到）
-+if(Python_NumPy_FOUND)
-+    message(STATUS "NumPy 头文件目录: ${Python_NumPy_INCLUDE_DIRS}")
-+endif()
-+message(STATUS "============================")
  else()
    find_package(Python COMPONENTS Interpreter)
  endif()
-@@ -863,7 +884,10 @@ if(${Python_VERSION} VERSION_LESS 3.8)
+@@ -863,7 +863,11 @@ if(${Python_VERSION} VERSION_LESS 3.8)
  endif()
  
  # ---[ Python + Numpy
 +message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---1---BUILD_PYTHON = ${BUILD_PYTHON})
++message(STATUS "NumPy 头文件目录: ${Python_NumPy_INCLUDE_DIRS}")
  if(BUILD_PYTHON)
 +  message(STATUS "Python_Development.Module_FOUND状态: ${Python_Development.Module_FOUND}")
 +  message(STATUS "Python_NumPy_FOUND状态: ${Python_NumPy_FOUND}")
    if(Python_Development.Module_FOUND)
      if(USE_NUMPY)
        if(NOT Python_NumPy_FOUND)
-@@ -880,6 +904,7 @@ if(BUILD_PYTHON)
+@@ -880,6 +884,7 @@ if(BUILD_PYTHON)
      caffe2_update_option(BUILD_PYTHON OFF)
    endif()
  endif()
@@ -280,7 +256,7 @@ index 1813f4418a2..6a95f021306 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
-@@ -898,9 +923,11 @@ else()
+@@ -898,9 +903,11 @@ else()
              FILES_MATCHING PATTERN "*.h")
  endif()
  message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
@@ -295,7 +271,7 @@ index 1813f4418a2..6a95f021306 100644
  
  # ---[ OpenTelemetry API headers
  find_package(OpenTelemetryApi)
-@@ -1290,7 +1317,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -1290,7 +1297,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
@@ -305,7 +281,7 @@ index 1813f4418a2..6a95f021306 100644
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1525,8 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1505,8 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
