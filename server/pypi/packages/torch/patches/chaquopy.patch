@@ -224,7 +224,7 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..4d089c8d58d 100644
+index 1813f4418a2..6a95f021306 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -844,11 +844,32 @@ if(NOT Python_EXECUTABLE)
@@ -261,7 +261,7 @@ index 1813f4418a2..4d089c8d58d 100644
  else()
    find_package(Python COMPONENTS Interpreter)
  endif()
-@@ -863,23 +884,27 @@ if(${Python_VERSION} VERSION_LESS 3.8)
+@@ -863,7 +884,10 @@ if(${Python_VERSION} VERSION_LESS 3.8)
  endif()
  
  # ---[ Python + Numpy
@@ -270,32 +270,10 @@ index 1813f4418a2..4d089c8d58d 100644
 +  message(STATUS "Python_Development.Module_FOUND状态: ${Python_Development.Module_FOUND}")
 +  message(STATUS "Python_NumPy_FOUND状态: ${Python_NumPy_FOUND}")
    if(Python_Development.Module_FOUND)
--    if(USE_NUMPY)
--      if(NOT Python_NumPy_FOUND)
--        message(WARNING "NumPy could not be found. Not building with NumPy. Suppress this warning with -DUSE_NUMPY=OFF")
--        caffe2_update_option(USE_NUMPY OFF)
--      else()
--        caffe2_update_option(USE_NUMPY ON)
--      endif()
--    endif()
--    # Observers are required in the python build
--    caffe2_update_option(USE_OBSERVERS ON)
--  else()
--    message(WARNING "Python dependencies not met. Not compiling with python. Suppress this warning with -DBUILD_PYTHON=OFF")
--    caffe2_update_option(BUILD_PYTHON OFF)
-+#     if(USE_NUMPY)
-+#       if(NOT Python_NumPy_FOUND)
-+#         message(WARNING "NumPy could not be found. Not building with NumPy. Suppress this warning with -DUSE_NUMPY=OFF")
-+#         caffe2_update_option(USE_NUMPY OFF)
-+#       else()
-+#         caffe2_update_option(USE_NUMPY ON)
-+#       endif()
-+#     endif()
-+#     # Observers are required in the python build
-+#     caffe2_update_option(USE_OBSERVERS ON)
-+#   else()
-+#     message(WARNING "Python dependencies not met. Not compiling with python. Suppress this warning with -DBUILD_PYTHON=OFF")
-+#     caffe2_update_option(BUILD_PYTHON OFF)
+     if(USE_NUMPY)
+       if(NOT Python_NumPy_FOUND)
+@@ -880,6 +904,7 @@ if(BUILD_PYTHON)
+     caffe2_update_option(BUILD_PYTHON OFF)
    endif()
  endif()
 +message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---2---BUILD_PYTHON = ${BUILD_PYTHON})
