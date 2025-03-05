@@ -1,19 +1,67 @@
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 2da257b9483..f921ed6c32b 100644
+index 2da257b9483..14d65d378b8 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
-@@ -33,6 +33,11 @@ macro(enable_ubsan)
+@@ -33,6 +33,9 @@ macro(enable_ubsan)
    endif()
  endmacro()
  
-+message(-------------------------cmake path = ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
-+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
-+# include(eigen)
-+# include(pybind11)
++message(-------------------------cmake path = ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
++list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 +
  # ---[ CUDA
  if(USE_CUDA)
    # public/*.cmake uses CAFFE2_USE_*
+@@ -889,26 +892,30 @@ endif()
+ message(+++++++++++++++++++++++++++++++++++++++++++Dependencies---2---BUILD_PYTHON = ${BUILD_PYTHON})
+ 
+ # ---[ pybind11
+-if(USE_SYSTEM_PYBIND11)
+-  find_package(pybind11 CONFIG)
+-  if(NOT pybind11_FOUND)
+-    find_package(pybind11)
+-  endif()
+-  if(NOT pybind11_FOUND)
+-    message(FATAL "Cannot find system pybind11")
+-  endif()
+-else()
+-    message(STATUS "Using third_party/pybind11.")
+-    set(pybind11_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../third_party/pybind11/include)
+-    install(DIRECTORY ${pybind11_INCLUDE_DIRS}
+-            DESTINATION ${CMAKE_INSTALL_PREFIX}
+-            FILES_MATCHING PATTERN "*.h")
+-endif()
+-message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
+-
+-add_library(pybind::pybind11 INTERFACE IMPORTED)
+-target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
++# if(USE_SYSTEM_PYBIND11)
++#   find_package(pybind11 CONFIG)
++#   if(NOT pybind11_FOUND)
++#     find_package(pybind11)
++#   endif()
++#   if(NOT pybind11_FOUND)
++#     message(FATAL "Cannot find system pybind11")
++#   endif()
++# else()
++#     message(STATUS "Using third_party/pybind11.")
++#     set(pybind11_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../third_party/pybind11/include)
++#     install(DIRECTORY ${pybind11_INCLUDE_DIRS}
++#             DESTINATION ${CMAKE_INSTALL_PREFIX}
++#             FILES_MATCHING PATTERN "*.h")
++# endif()
++# message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
++
++# add_library(pybind::pybind11 INTERFACE IMPORTED)
++# target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
++# target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
++include(pybind11)
++message(STATUS "----------------------1---Successfully included pybind11")
+ target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
++message(STATUS "----------------------2---Successfully included pybind11")
+ 
+ # ---[ OpenTelemetry API headers
+ find_package(OpenTelemetryApi)
 Submodule third_party/flatbuffers contains modified content
 diff --git a/third_party/flatbuffers/android/.project b/third_party/flatbuffers/android/.project
 index 3ed7298f..17ddcb3e 100644
