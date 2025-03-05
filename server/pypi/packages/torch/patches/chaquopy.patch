@@ -109,10 +109,10 @@ index 36d5becb57c..9a2ad2a6bcf 100644
      url = https://github.com/pytorch/tensorpipe.git
  [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..819715eba47 100644
+index c8af5f00b5c..ab080a3ed06 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,39 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,35 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
    message(FATAL_ERROR "In-source build are not supported")
  endif()
  
@@ -143,16 +143,12 @@ index c8af5f00b5c..819715eba47 100644
 +set(USE_VULKAN OFF)
 +# set(BUILD_MOBILE_AUTOGRAD ON)
 +
-+# set(Python_LIBRARIES ${PYTHON_LIBRARIES})
-+# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-+# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
-+# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,7 +696,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+@@ -663,7 +692,7 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
  if(ANDROID
     OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
@@ -161,7 +157,7 @@ index c8af5f00b5c..819715eba47 100644
    message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
    set(BUILD_LAZY_TS_BACKEND OFF)
  
-@@ -715,10 +748,12 @@ if(INTERN_BUILD_MOBILE)
+@@ -715,10 +744,12 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
@@ -176,7 +172,19 @@ index c8af5f00b5c..819715eba47 100644
    set(USE_FBGEMM OFF)
    set(INTERN_DISABLE_ONNX ON)
    if(USE_BLAS)
-@@ -1355,6 +1390,12 @@ if(BUILD_JNI)
+@@ -855,6 +886,11 @@ endif()
+ # The only solution is to include(cmake/Dependencies.cmake), and defer the
+ # aotriton build decision later.
+ 
++set(Python_LIBRARIES ${PYTHON_LIBRARIES})
++set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
++message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
++message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
++
+ include(cmake/Dependencies.cmake)
+ 
+ cmake_dependent_option(
+@@ -1355,6 +1391,12 @@ if(BUILD_JNI)
    add_subdirectory(android/pytorch_android)
  endif()
  
