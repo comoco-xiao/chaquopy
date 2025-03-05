@@ -224,7 +224,7 @@ index 919eb6c8567..bc4eacda0a3 100644
  #elif (                   \
      defined(__APPLE__) && \
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..abb8f7a66ce 100644
+index 1813f4418a2..1a57a3a4a47 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -848,7 +848,7 @@ if(BUILD_PYTHON)
@@ -256,21 +256,18 @@ index 1813f4418a2..abb8f7a66ce 100644
  
  # ---[ pybind11
  if(USE_SYSTEM_PYBIND11)
-@@ -898,9 +903,11 @@ else()
+@@ -898,8 +903,10 @@ else()
              FILES_MATCHING PATTERN "*.h")
  endif()
  message(STATUS "pybind11 include dirs: " "${pybind11_INCLUDE_DIRS}")
--add_library(pybind::pybind11 INTERFACE IMPORTED)
--target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
--target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
 +# todo xiao
-+# add_library(pybind::pybind11 INTERFACE IMPORTED)
+ add_library(pybind::pybind11 INTERFACE IMPORTED)
+-target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
 +# target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
-+# target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
-+include_directories(SYSTEM ${pybind11_INCLUDE_DIRS})
++target_include_directories(pybind::pybind11 PUBLIC INTERFACE ${pybind11_INCLUDE_DIRS})
+ target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
  
  # ---[ OpenTelemetry API headers
- find_package(OpenTelemetryApi)
 @@ -1290,7 +1297,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
