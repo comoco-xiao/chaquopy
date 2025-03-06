@@ -271,7 +271,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..6c047b69d0d 100644
+index 70bf31375a8..48118511042 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -308,18 +308,33 @@ class CMake:
@@ -308,12 +308,12 @@ index 70bf31375a8..6c047b69d0d 100644
 +            # check_call(["cmake", "../third_party/sleef"], **kwargs)
 +            # check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
 +            print(f"--------------------build sleef native---1")
-+            check_call(["cmake", "-S", "../third_party/sleef", "-B", build_sleef_native])
++            check_call(["cmake", "-S", "third_party/sleef", "-B", build_sleef_native])
 +            print(f"--------------------build sleef native---2")
 +            check_call(["cmake", "--build", build_sleef_native, "-j", "--clean-first"])
 +            tool_chain_file=os.path.abspath("../chaquopy.toolchain.cmake")
 +            print(f"--------------------build sleef cross---tool_chain_file = {tool_chain_file}")
-+            check_call(["cmake", "-S", "../third_party/sleef", "-B", build_sleef_cross, f"-DCMAKE_TOOLCHAIN_FILE={tool_chain_file}", f"-DNATIVE_BUILD_DIR={build_sleef_native}"])
++            check_call(["cmake", "-S", "third_party/sleef", "-B", build_sleef_cross, f"-DCMAKE_TOOLCHAIN_FILE={tool_chain_file}", f"-DNATIVE_BUILD_DIR={build_sleef_native}"])
 +            print(f"--------------------build sleef cross---2")
 +        print(f"--------------------setup args = {args}")
 +        print(f"--------------------setup build_options = {build_options}")
