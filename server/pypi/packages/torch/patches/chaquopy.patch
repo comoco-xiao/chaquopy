@@ -424,6 +424,18 @@ index fed2e3b5d61..eb5a660b64c 100644
  #pragma once
  
  #include <ATen/ATen.h>
+diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
+index 1642ee4beca..8681b4cd740 100644
+--- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
++++ b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <torch/csrc/inductor/aoti_eager/kernel_meta_info.h>
+ #include <iostream>
+ #include <utility>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h b/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
 index 24d3c05bc35..1d3528bce0d 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
