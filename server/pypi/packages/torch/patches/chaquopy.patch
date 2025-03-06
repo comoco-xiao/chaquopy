@@ -104,6 +104,20 @@ index 1cf1a77c877..d883c53875b 100644
    GIT_SHALLOW TRUE
    GIT_PROGRESS TRUE
  )
+diff --git a/functorch/CMakeLists.txt b/functorch/CMakeLists.txt
+index a47e9948e27..bdfa4bfe455 100644
+--- a/functorch/CMakeLists.txt
++++ b/functorch/CMakeLists.txt
+@@ -22,8 +22,7 @@ else()
+   # functorch cannot use the alias to build on windows
+   target_link_libraries(${PROJECT_NAME} PRIVATE torch torch_python)
+ endif()
+-# todo xiao
+-# target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
++target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
+ 
+ set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+       ${CMAKE_BINARY_DIR}/functorch)
 Submodule third_party/flatbuffers contains modified content
 diff --git a/third_party/flatbuffers/android/.project b/third_party/flatbuffers/android/.project
 index 3ed7298f..17ddcb3e 100644
