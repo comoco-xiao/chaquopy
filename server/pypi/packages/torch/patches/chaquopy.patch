@@ -230,6 +230,19 @@ index f53aa209..9c20f150 100644
  # Extract project version from source
  file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
 Submodule third_party/sleef contains modified content
+diff --git a/third_party/sleef/CMakeLists.txt b/third_party/sleef/CMakeLists.txt
+index ad31386..59b102a 100644
+--- a/third_party/sleef/CMakeLists.txt
++++ b/third_party/sleef/CMakeLists.txt
+@@ -12,7 +12,7 @@ option(SLEEF_BUILD_DFT "libsleefdft will be built." OFF)
+ option(SLEEF_BUILD_QUAD "libsleefquad will be built." OFF)
+ option(SLEEF_BUILD_GNUABI_LIBS "libsleefgnuabi will be built." ON)
+ option(SLEEF_BUILD_SCALAR_LIB "libsleefscalar will be built." OFF)
+-option(SLEEF_BUILD_TESTS "Tests will be built." ON)
++option(SLEEF_BUILD_TESTS "Tests will be built." OFF)
+ option(SLEEF_BUILD_INLINE_HEADERS "Build header for inlining whole SLEEF functions" OFF)
+ 
+ option(SLEEF_TEST_ALL_IUT "Perform tests on implementations with all vector extensions" OFF)
 diff --git a/third_party/sleef/Configure.cmake b/third_party/sleef/Configure.cmake
 index 19a153f..bcb96f6 100644
 --- a/third_party/sleef/Configure.cmake
@@ -258,10 +271,10 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..d4b7e8dacb3 100644
+index 70bf31375a8..ca2b0dfb756 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,17 +308,17 @@ class CMake:
+@@ -308,18 +308,20 @@ class CMake:
          
          # todo xiao
          # Chaquopy: see https://github.com/shibatch/sleef/issues/249
@@ -276,6 +289,7 @@ index 70bf31375a8..d4b7e8dacb3 100644
 -        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
 -        #     check_call(["cmake", "../third_party/sleef"], **kwargs)
 -        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
+-        
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 +            os.mkdir(build_sleef_native)
@@ -285,12 +299,15 @@ index 70bf31375a8..d4b7e8dacb3 100644
 +                         "NM", "RANLIB", "READELF", "STRIP"]:
 +                sleef_env.pop(name, None)
 +            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++            print(f"--------------------setup build_sleef_native = {kwargs}")
 +            check_call(["cmake", "../third_party/sleef"], **kwargs)
 +            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
-         
++        print(f"--------------------setup args = {args}")
++        print(f"--------------------setup build_options = {build_options}")
          # todo xiao
          CMake.defines(
-@@ -327,7 +327,7 @@ class CMake:
+             args,
+@@ -327,7 +329,7 @@ class CMake:
              CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
