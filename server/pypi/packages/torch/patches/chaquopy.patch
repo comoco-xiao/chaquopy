@@ -271,15 +271,14 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..c4dec8c8352 100644
+index 70bf31375a8..0723c4e02db 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,7 +308,14 @@ class CMake:
-         
+@@ -309,6 +309,14 @@ class CMake:
          # todo xiao
          # Chaquopy: see https://github.com/shibatch/sleef/issues/249
--        # build_sleef_native = os.path.abspath("build-sleef-native")
-+        build_sleef_native = os.path.abspath("build-sleef-native")
+         # build_sleef_native = os.path.abspath("build-sleef-native")
++        build_sleef_native="/home/ubuntu/workspace/sleef/build-native"
 +        build_sleef_cross = os.path.abspath("build-sleef-cross")
 +        src_path = os.path.abspath("")
 +        print(f"--------------------build_sleef_native = {build_sleef_native}")
@@ -290,7 +289,7 @@ index 70bf31375a8..c4dec8c8352 100644
          # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
          #     os.mkdir(build_sleef_native)
          #     sleef_env = os.environ.copy()
-@@ -316,10 +323,20 @@ class CMake:
+@@ -316,10 +324,20 @@ class CMake:
          #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
          #                  "NM", "RANLIB", "READELF", "STRIP"]:
          #         sleef_env.pop(name, None)
@@ -315,12 +314,12 @@ index 70bf31375a8..c4dec8c8352 100644
          # todo xiao
          CMake.defines(
              args,
-@@ -327,7 +344,7 @@ class CMake:
+@@ -327,7 +345,7 @@ class CMake:
              CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
 -            # NATIVE_BUILD_DIR=build_sleef_native,
-+            # NATIVE_BUILD_DIR=build_sleef_cross,
++            NATIVE_BUILD_DIR=build_sleef_native,
              TORCH_BUILD_VERSION=version,
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
