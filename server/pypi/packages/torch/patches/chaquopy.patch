@@ -105,7 +105,7 @@ index 1cf1a77c877..d883c53875b 100644
    GIT_PROGRESS TRUE
  )
 diff --git a/functorch/CMakeLists.txt b/functorch/CMakeLists.txt
-index a47e9948e27..bdfa4bfe455 100644
+index a47e9948e27..0207bc9e623 100644
 --- a/functorch/CMakeLists.txt
 +++ b/functorch/CMakeLists.txt
 @@ -22,8 +22,7 @@ else()
@@ -114,7 +114,7 @@ index a47e9948e27..bdfa4bfe455 100644
  endif()
 -# todo xiao
 -# target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
-+target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
++target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11 Python::Module)
  
  set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
        ${CMAKE_BINARY_DIR}/functorch)
