@@ -271,52 +271,45 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..aef8dc29ba4 100644
+index 70bf31375a8..c4dec8c8352 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,18 +308,35 @@ class CMake:
+@@ -308,7 +308,14 @@ class CMake:
          
          # todo xiao
          # Chaquopy: see https://github.com/shibatch/sleef/issues/249
 -        # build_sleef_native = os.path.abspath("build-sleef-native")
--        # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
--        #     os.mkdir(build_sleef_native)
--        #     sleef_env = os.environ.copy()
--        #     for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
--        #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
--        #                  "NM", "RANLIB", "READELF", "STRIP"]:
--        #         sleef_env.pop(name, None)
--        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
--        #     check_call(["cmake", "../third_party/sleef"], **kwargs)
--        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
--        
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        build_sleef_cross = os.path.abspath("build-sleef-cross")
 +        src_path = os.path.abspath("")
 +        print(f"--------------------build_sleef_native = {build_sleef_native}")
 +        print(f"--------------------build_sleef_cross = {build_sleef_cross}")
 +        print(f"--------------------src_path = {src_path}")
-+        if not os.path.exists(build_sleef_cross):
-+            os.mkdir(build_sleef_cross)
-+        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
-+            os.mkdir(build_sleef_native)
-+            sleef_env = os.environ.copy()
-+            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
-+                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-+                         "NM", "RANLIB", "READELF", "STRIP"]:
-+                sleef_env.pop(name, None)
-+            # todo xiao
-+            # kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            # check_call(["cmake", "../third_party/sleef"], **kwargs)
-+            # check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
-+            print(f"--------------------build sleef native---1")
-+            check_call(["/home/ubuntu/workspace/pkg/cmake-3.31.4/bin/cmake", "-S", f"{src_path}/third_party/sleef", "-B", build_sleef_native])
-+            # print(f"--------------------build sleef native---2")
-+            # check_call(["/home/ubuntu/workspace/pkg/cmake-3.31.4/bin/cmake", "--build", build_sleef_native, "-j", "--clean-first"])
-+            # tool_chain_file=os.path.abspath("../chaquopy.toolchain.cmake")
-+            # print(f"--------------------build sleef cross---tool_chain_file = {tool_chain_file}")
-+            # check_call(["cmake", "-S", f"{src_path}/third_party/sleef", "-B", build_sleef_cross, f"-DCMAKE_TOOLCHAIN_FILE={tool_chain_file}", f"-DNATIVE_BUILD_DIR={build_sleef_native}"])
-+            # print(f"--------------------build sleef cross---2")
++        # if not os.path.exists(build_sleef_cross):
++        #     os.mkdir(build_sleef_cross)
+         # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
+         #     os.mkdir(build_sleef_native)
+         #     sleef_env = os.environ.copy()
+@@ -316,10 +323,20 @@ class CMake:
+         #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
+         #                  "NM", "RANLIB", "READELF", "STRIP"]:
+         #         sleef_env.pop(name, None)
+-        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
+-        #     check_call(["cmake", "../third_party/sleef"], **kwargs)
+-        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
+-        
++        #     # todo xiao
++        #     # kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++        #     # check_call(["cmake", "../third_party/sleef"], **kwargs)
++        #     # check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
++        #     print(f"--------------------build sleef native---1")
++        #     check_call(["/home/ubuntu/workspace/pkg/cmake-3.31.4/bin/cmake", "-S", f"{src_path}/third_party/sleef", "-B", build_sleef_native])
++        #     # print(f"--------------------build sleef native---2")
++        #     # check_call(["/home/ubuntu/workspace/pkg/cmake-3.31.4/bin/cmake", "--build", build_sleef_native, "-j", "--clean-first"])
++        #     # tool_chain_file=os.path.abspath("../chaquopy.toolchain.cmake")
++        #     # print(f"--------------------build sleef cross---tool_chain_file = {tool_chain_file}")
++        #     # check_call(["cmake", "-S", f"{src_path}/third_party/sleef", "-B", build_sleef_cross, f"-DCMAKE_TOOLCHAIN_FILE={tool_chain_file}", f"-DNATIVE_BUILD_DIR={build_sleef_native}"])
++        #     # print(f"--------------------build sleef cross---2")
 +        print(f"--------------------setup args = {args}")
 +        print(f"--------------------setup build_options = {build_options}")
          # todo xiao
@@ -327,7 +320,7 @@ index 70bf31375a8..aef8dc29ba4 100644
              ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
 -            # NATIVE_BUILD_DIR=build_sleef_native,
-+            NATIVE_BUILD_DIR=build_sleef_cross,
++            # NATIVE_BUILD_DIR=build_sleef_cross,
              TORCH_BUILD_VERSION=version,
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
