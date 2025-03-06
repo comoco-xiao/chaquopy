@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 958c1209e3a..89b369e3ef7 100644
+index 958c1209e3a..d0b0ca7d002 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -23,32 +23,26 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -23,32 +23,25 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
  endif()
  
  # --------------------------------- chaquopy begin ------------------------------------
@@ -38,11 +38,19 @@ index 958c1209e3a..89b369e3ef7 100644
  set(USE_VULKAN OFF)
 -# set(BUILD_MOBILE_AUTOGRAD ON)
 -
-+set(BUILD_LAZY_TS_BACKEND OFF)
  # --------------------------------- chaquopy end ------------------------------------
  
  # ---[ Project and semantic versioning.
-@@ -744,12 +738,10 @@ if(INTERN_BUILD_MOBILE)
+@@ -694,7 +687,7 @@ if(ANDROID
+    OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
+   # set(INTERN_BUILD_MOBILE ON)
+   message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
+-  set(BUILD_LAZY_TS_BACKEND OFF)
++  # set(BUILD_LAZY_TS_BACKEND OFF)
+ 
+   # Set -ffunction-sections and -fdata-sections so that each method has its own
+   # text section. This allows the linker to remove unused section when the flag
+@@ -744,12 +737,10 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
