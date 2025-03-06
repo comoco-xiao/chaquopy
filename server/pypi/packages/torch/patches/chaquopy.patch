@@ -448,6 +448,18 @@ index 88be54ea4f2..d4db7a365b1 100644
  #pragma once
  
  #include <ATen/Tensor.h>
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
+index 41dfd588d48..cc7be1702e7 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <ATen/DynamicLibrary.h>
+ 
+ #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.h b/torch/csrc/inductor/aoti_runner/model_container_runner.h
 index 76bda78ff23..25ce626b5c8 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.h
