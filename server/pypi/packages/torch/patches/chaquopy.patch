@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 958c1209e3a..4cee7ef8a55 100644
+index 958c1209e3a..fce2292beaf 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -23,29 +23,24 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -38,10 +38,16 @@ index 958c1209e3a..4cee7ef8a55 100644
  set(USE_VULKAN OFF)
  # set(BUILD_MOBILE_AUTOGRAD ON)
  
-@@ -749,7 +744,7 @@ if(INTERN_BUILD_MOBILE)
+@@ -744,12 +739,10 @@ if(INTERN_BUILD_MOBILE)
+   else()
+     set(INTERN_DISABLE_AUTOGRAD ON)
+   endif()
+-  # todo xiao
+-  # set(BUILD_PYTHON OFF)
++  set(BUILD_PYTHON OFF)
    set(BUILD_FUNCTORCH OFF)
    set(USE_DISTRIBUTED OFF)
-   # todo xiao
+-  # todo xiao
 -  # set(NO_API ON)
 +  set(NO_API ON)
    set(USE_FBGEMM OFF)
@@ -105,7 +111,7 @@ index 1cf1a77c877..d883c53875b 100644
    GIT_PROGRESS TRUE
  )
 diff --git a/functorch/CMakeLists.txt b/functorch/CMakeLists.txt
-index a47e9948e27..0207bc9e623 100644
+index a47e9948e27..bdfa4bfe455 100644
 --- a/functorch/CMakeLists.txt
 +++ b/functorch/CMakeLists.txt
 @@ -22,8 +22,7 @@ else()
@@ -114,7 +120,7 @@ index a47e9948e27..0207bc9e623 100644
  endif()
 -# todo xiao
 -# target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
-+target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11 Python::Module)
++target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
  
  set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
        ${CMAKE_BINARY_DIR}/functorch)
@@ -299,7 +305,7 @@ index 70bf31375a8..0723c4e02db 100644
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index a7d95309d4f..34566411fb1 100644
+index a7d95309d4f..3bdd9928ba8 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -71,8 +71,6 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
@@ -339,6 +345,15 @@ index a7d95309d4f..34566411fb1 100644
  # Avoid numpy for the DEPLOY build
  if(USE_NUMPY)
    target_link_libraries(torch_python PRIVATE Python::NumPy)
+@@ -433,7 +429,7 @@ endif()
+ 
+ target_compile_definitions(torch_python PRIVATE "-DTHP_BUILD_MAIN_LIB")
+ 
+-target_link_libraries(torch_python PRIVATE ${TORCH_LIB} ${TORCH_PYTHON_LINK_LIBRARIES})
++target_link_libraries(torch_python PRIVATE ${TORCH_LIB} ${TORCH_PYTHON_LINK_LIBRARIES} ${PYTHON_LIBRARIES})
+ 
+ target_compile_definitions(torch_python PRIVATE ${TORCH_PYTHON_COMPILE_DEFINITIONS})
+ 
 @@ -487,20 +483,19 @@ add_dependencies(torch_python gen_torch_version)
  
  # Skip building this library under MacOS, since it is currently failing to build on Mac
