@@ -271,10 +271,10 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..ca2b0dfb756 100644
+index 70bf31375a8..93eee6bb587 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,18 +308,20 @@ class CMake:
+@@ -308,18 +308,27 @@ class CMake:
          
          # todo xiao
          # Chaquopy: see https://github.com/shibatch/sleef/issues/249
@@ -291,6 +291,9 @@ index 70bf31375a8..ca2b0dfb756 100644
 -        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
 -        
 +        build_sleef_native = os.path.abspath("build-sleef-native")
++        build_sleef_cross = os.path.abspath("build-sleef-cross")
++        if not os.path.exists(build_sleef_cross):
++            os.mkdir(build_sleef_cross)
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
 +            os.mkdir(build_sleef_native)
 +            sleef_env = os.environ.copy()
@@ -298,21 +301,25 @@ index 70bf31375a8..ca2b0dfb756 100644
 +                         "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
 +                         "NM", "RANLIB", "READELF", "STRIP"]:
 +                sleef_env.pop(name, None)
-+            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            print(f"--------------------setup build_sleef_native = {kwargs}")
-+            check_call(["cmake", "../third_party/sleef"], **kwargs)
-+            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
++            # todo xiao
++            # kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++            # check_call(["cmake", "../third_party/sleef"], **kwargs)
++            # check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
++
++            check_call(["cmake", "-S", "../third_party/sleef", "-B", build_sleef_native])
++            check_call(["cmake", "--build", build_sleef_native, "-j", "--clean-first"])
++            check_call(["cmake", "-S", "../third_party/sleef", "-B", build_sleef_cross, f"-DCMAKE_TOOLCHAIN_FILE={os.path.abspath("../chaquopy.toolchain.cmake")}", f"-DNATIVE_BUILD_DIR={build_sleef_native}"])
 +        print(f"--------------------setup args = {args}")
 +        print(f"--------------------setup build_options = {build_options}")
          # todo xiao
          CMake.defines(
              args,
-@@ -327,7 +329,7 @@ class CMake:
+@@ -327,7 +336,7 @@ class CMake:
              CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
 -            # NATIVE_BUILD_DIR=build_sleef_native,
-+            NATIVE_BUILD_DIR=build_sleef_native,
++            NATIVE_BUILD_DIR=build_sleef_cross,
              TORCH_BUILD_VERSION=version,
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
