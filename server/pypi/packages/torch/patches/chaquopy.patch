@@ -271,7 +271,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..3614955e446 100644
+index 70bf31375a8..0723c4e02db 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -309,6 +309,14 @@ class CMake:
@@ -289,7 +289,7 @@ index 70bf31375a8..3614955e446 100644
          # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
          #     os.mkdir(build_sleef_native)
          #     sleef_env = os.environ.copy()
-@@ -316,18 +324,28 @@ class CMake:
+@@ -316,10 +324,20 @@ class CMake:
          #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
          #                  "NM", "RANLIB", "READELF", "STRIP"]:
          #         sleef_env.pop(name, None)
@@ -314,11 +314,9 @@ index 70bf31375a8..3614955e446 100644
          # todo xiao
          CMake.defines(
              args,
-             # Python_EXECUTABLE=sys.executable,
--            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
--            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
-+            # CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
-+            # ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
+@@ -327,7 +345,7 @@ class CMake:
+             CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
+             ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
 -            # NATIVE_BUILD_DIR=build_sleef_native,
 +            NATIVE_BUILD_DIR=build_sleef_native,
