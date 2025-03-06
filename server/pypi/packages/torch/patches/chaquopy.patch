@@ -284,6 +284,28 @@ index 70bf31375a8..0723c4e02db 100644
              TORCH_BUILD_VERSION=version,
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
+diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
+index a7d95309d4f..f90f653d7c3 100644
+--- a/torch/CMakeLists.txt
++++ b/torch/CMakeLists.txt
+@@ -82,12 +82,11 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
+ list(APPEND TORCH_PYTHON_INCLUDE_DIRECTORIES ${LIBSHM_SRCDIR})
+ 
+ set(TORCH_PYTHON_LINK_LIBRARIES
+-# todo xiao
+-    # Python::Module
+-    # pybind::pybind11
+-    # opentelemetry::api
+-    # httplib
+-    # nlohmann
++    Python::Module
++    pybind::pybind11
++    opentelemetry::api
++    httplib
++    nlohmann
+     shm
+     fmt::fmt-header-only
+     ATEN_CPU_FILES_GEN_LIB)
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.h b/torch/csrc/inductor/aoti_eager/kernel_holder.h
 index fed2e3b5d61..eb5a660b64c 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.h
