@@ -317,7 +317,7 @@ index 70bf31375a8..0723c4e02db 100644
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index a7d95309d4f..042a28db61c 100644
+index a7d95309d4f..1491d840e64 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -71,8 +71,6 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
@@ -366,7 +366,7 @@ index a7d95309d4f..042a28db61c 100644
  
  target_compile_definitions(torch_python PRIVATE ${TORCH_PYTHON_COMPILE_DEFINITIONS})
  
-@@ -487,20 +483,21 @@ add_dependencies(torch_python gen_torch_version)
+@@ -487,20 +483,19 @@ add_dependencies(torch_python gen_torch_version)
  
  # Skip building this library under MacOS, since it is currently failing to build on Mac
  # Github issue #61930
@@ -392,11 +392,9 @@ index a7d95309d4f..042a28db61c 100644
 +          )
 +  # Pybind11 requires explicit linking of the torch_python library
 +  if(BUILD_LIBTORCHLESS)
-+    message(---------------------------------BUILD_LIBTORCHLESS---1)
 +    target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
 +  else()
-+  message(---------------------------------BUILD_LIBTORCHLESS---2)
-+    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11)
++    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11 ${PYTHON_LIBRARIES})
 +  endif()
 +endif()
  
