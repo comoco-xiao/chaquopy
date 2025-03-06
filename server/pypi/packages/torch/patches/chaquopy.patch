@@ -284,6 +284,18 @@ index 70bf31375a8..0723c4e02db 100644
              TORCH_BUILD_VERSION=version,
              # USE_CUDA="0",
              # USE_VULKAN="0",  # Disable for now to simplify the build.
+diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.h b/torch/csrc/inductor/aoti_package/model_package_loader.h
+index 88be54ea4f2..d4db7a365b1 100644
+--- a/torch/csrc/inductor/aoti_package/model_package_loader.h
++++ b/torch/csrc/inductor/aoti_package/model_package_loader.h
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #pragma once
+ 
+ #include <ATen/Tensor.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.h b/torch/csrc/inductor/aoti_runner/model_container_runner.h
 index 76bda78ff23..25ce626b5c8 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.h
