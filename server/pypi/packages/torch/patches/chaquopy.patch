@@ -400,6 +400,18 @@ index a7d95309d4f..3bdd9928ba8 100644
  
  set(TORCH_PYTHON_COMPILE_OPTIONS ${TORCH_PYTHON_COMPILE_OPTIONS} PARENT_SCOPE)
  set(TORCH_PYTHON_LINK_FLAGS ${TORCH_PYTHON_LINK_FLAGS} PARENT_SCOPE)
+diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
+index 6b2ee88df9c..279a0384f43 100644
+--- a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
++++ b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <torch/csrc/inductor/aoti_eager/kernel_holder.h>
+ 
+ #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.h b/torch/csrc/inductor/aoti_eager/kernel_holder.h
 index fed2e3b5d61..eb5a660b64c 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.h
