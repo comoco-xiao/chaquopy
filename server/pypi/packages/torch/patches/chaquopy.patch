@@ -448,6 +448,18 @@ index 24d3c05bc35..1d3528bce0d 100644
  #pragma once
  
  #include <ATen/ATen.h>
+diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.cpp b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
+index 1aa408bcafd..4cb78af9940 100644
+--- a/torch/csrc/inductor/aoti_package/model_package_loader.cpp
++++ b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ 
+ #include <c10/util/error.h>
+ #include <torch/csrc/inductor/aoti_package/model_package_loader.h>
 diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.h b/torch/csrc/inductor/aoti_package/model_package_loader.h
 index 88be54ea4f2..d4db7a365b1 100644
 --- a/torch/csrc/inductor/aoti_package/model_package_loader.h
@@ -484,6 +496,18 @@ index 76bda78ff23..25ce626b5c8 100644
  #pragma once
  
  #include <ATen/Tensor.h>
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
+index ecae588be2f..853eb22d84e 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h>
+ 
+ namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
 index 7a38dab5c2f..1f157b443d3 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
@@ -496,3 +520,51 @@ index 7a38dab5c2f..1f157b443d3 100644
  #pragma once
  
  #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
+index c5abd97f759..1c864831e29 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h>
+ 
+ namespace torch::inductor {
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
+index 654da9da036..030957c6eb4 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #pragma once
+ 
+ #include <c10/cuda/CUDAStream.h>
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
+index 97dcd1c5913..9c45c811985 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #include <torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h>
+ 
+ namespace torch::inductor {
+diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
+index 563d2047f6c..caca0f49916 100644
+--- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
++++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
+@@ -1,4 +1,6 @@
+-#if !defined(C10_MOBILE) && !defined(ANDROID)
++// todo xiao
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
++#if !defined(C10_MOBILE)
+ #pragma once
+ 
+ #include <c10/xpu/XPUStream.h>
