@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 958c1209e3a..fce2292beaf 100644
+index 958c1209e3a..89b369e3ef7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -23,29 +23,24 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -23,32 +23,26 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
  endif()
  
  # --------------------------------- chaquopy begin ------------------------------------
@@ -36,9 +36,13 @@ index 958c1209e3a..fce2292beaf 100644
 -set(USE_NUMPY ON)
 +# set(USE_NUMPY ON)
  set(USE_VULKAN OFF)
- # set(BUILD_MOBILE_AUTOGRAD ON)
+-# set(BUILD_MOBILE_AUTOGRAD ON)
+-
++set(BUILD_LAZY_TS_BACKEND OFF)
+ # --------------------------------- chaquopy end ------------------------------------
  
-@@ -744,12 +739,10 @@ if(INTERN_BUILD_MOBILE)
+ # ---[ Project and semantic versioning.
+@@ -744,12 +738,10 @@ if(INTERN_BUILD_MOBILE)
    else()
      set(INTERN_DISABLE_AUTOGRAD ON)
    endif()
