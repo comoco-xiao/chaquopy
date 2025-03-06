@@ -271,10 +271,10 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..48118511042 100644
+index 70bf31375a8..c7ed9b2053c 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -308,18 +308,33 @@ class CMake:
+@@ -308,18 +308,35 @@ class CMake:
          
          # todo xiao
          # Chaquopy: see https://github.com/shibatch/sleef/issues/249
@@ -292,8 +292,10 @@ index 70bf31375a8..48118511042 100644
 -        
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        build_sleef_cross = os.path.abspath("build-sleef-cross")
++        src_path = os.path.abspath()
 +        print(f"--------------------build_sleef_native = {build_sleef_native}")
 +        print(f"--------------------build_sleef_cross = {build_sleef_cross}")
++        print(f"--------------------src_path = {src_path}")
 +        if not os.path.exists(build_sleef_cross):
 +            os.mkdir(build_sleef_cross)
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
@@ -320,7 +322,7 @@ index 70bf31375a8..48118511042 100644
          # todo xiao
          CMake.defines(
              args,
-@@ -327,7 +342,7 @@ class CMake:
+@@ -327,7 +344,7 @@ class CMake:
              CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
              # BLAS="OpenBLAS",
