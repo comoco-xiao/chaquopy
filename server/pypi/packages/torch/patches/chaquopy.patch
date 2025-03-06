@@ -271,7 +271,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..c7ed9b2053c 100644
+index 70bf31375a8..8f7943b53e1 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -308,18 +308,35 @@ class CMake:
@@ -292,7 +292,7 @@ index 70bf31375a8..c7ed9b2053c 100644
 -        
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        build_sleef_cross = os.path.abspath("build-sleef-cross")
-+        src_path = os.path.abspath()
++        src_path = os.path.abspath("")
 +        print(f"--------------------build_sleef_native = {build_sleef_native}")
 +        print(f"--------------------build_sleef_cross = {build_sleef_cross}")
 +        print(f"--------------------src_path = {src_path}")
