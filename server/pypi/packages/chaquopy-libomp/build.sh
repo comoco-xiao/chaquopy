@@ -12,3 +12,6 @@ fi
 
 mkdir -p $PREFIX/lib
 cp $toolchain/lib/clang/$PKG_VERSION/lib/linux/$arch/libomp.so $PREFIX/lib
+
+echo '----------------libomp---1---'$toolchain'/lib/clang/$PKG_VERSION/lib/linux/$arch/libomp.so'
+echo '----------------libomp---2---'$PREFIX/lib
