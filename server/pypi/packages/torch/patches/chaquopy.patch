@@ -336,25 +336,19 @@ index a6a6db7b033..6383a9b319a 100644
              "Development Status :: 5 - Production/Stable",
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
-index 330c3c7..deb60c5 100644
+index 330c3c7..d6bc88b 100644
 --- a/third_party/pocketfft/pocketfft_hdronly.h
 +++ b/third_party/pocketfft/pocketfft_hdronly.h
-@@ -156,9 +156,15 @@ template<> struct VLEN<double> { static constexpr size_t val=2; };
- inline void *aligned_alloc(size_t align, size_t size)
-   {
-   // aligned_alloc() requires that the requested size is a multiple of "align"
--  void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
--  if (!ptr) throw std::bad_alloc();
--  return ptr;
-+  // void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
-+  // if (!ptr) throw std::bad_alloc();
-+  // return ptr;
-+    void *ptr = nullptr;
-+    int ret = posix_memalign(&ptr, align, size);
-+    if (ret != 0) {
-+        throw std::bad_alloc();
-+    }
-+    return ptr;
+@@ -159,6 +159,12 @@ inline void *aligned_alloc(size_t align, size_t size)
+   void *ptr = ::aligned_alloc(align,(size+align-1)&(~(align-1)));
+   if (!ptr) throw std::bad_alloc();
+   return ptr;
++    // void *ptr = nullptr;
++    // int ret = posix_memalign(&ptr, align, size);
++    // if (ret != 0) {
++    //     throw std::bad_alloc();
++    // }
++    // return ptr;
    }
  inline void aligned_dealloc(void *ptr)
      { free(ptr); }
