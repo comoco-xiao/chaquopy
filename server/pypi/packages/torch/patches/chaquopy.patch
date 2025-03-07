@@ -263,15 +263,14 @@ index b123023d2fd..4ebd88274ae 100644
  endif()
  
 diff --git a/torch/_utils_internal.py b/torch/_utils_internal.py
-index f58eb93d86d..c3c7a50c26b 100644
+index f58eb93d86d..b72d68cf59b 100644
 --- a/torch/_utils_internal.py
 +++ b/torch/_utils_internal.py
-@@ -63,7 +63,9 @@ def prepare_multiprocessing_environment(path: str) -> None:
+@@ -63,7 +63,8 @@ def prepare_multiprocessing_environment(path: str) -> None:
  
  
  def resolve_library_path(path: str) -> str:
 -    return os.path.realpath(path)
-+    # todo xiao
 +    # return os.path.realpath(path)
 +    return os.path.abspath(path)  # Chaquopy: was realpath. This patch is no longer necessary on newer versions of Chaquopy, which call realpath early in the importer.
  
