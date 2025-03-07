@@ -8,8 +8,8 @@ build:
   number: 3
 
 source:
-  git_url: https://github.com/comoco-xiao/pytorch.git
-  git_rev: 6245144d399554cc78ca944b198b0a42258984f0
+  git_url: https://github.com/pytorch/pytorch.git
+  git_rev: v{{ version }}
 
 requirements:
   build:

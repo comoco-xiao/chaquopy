@@ -1,143 +1,201 @@
+diff --git a/.gitmodules b/.gitmodules
+index 36d5becb57c..a9f9d995458 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,93 +1,70 @@
+ [submodule "third_party/pybind11"]
+-    ignore = dirty
+     path = third_party/pybind11
+     url = https://github.com/pybind/pybind11.git
+ [submodule "third_party/eigen"]
+-    ignore = dirty
+     path = third_party/eigen
+     url = https://gitlab.com/libeigen/eigen.git
+ [submodule "third_party/googletest"]
+-    ignore = dirty
+     path = third_party/googletest
+     url = https://github.com/google/googletest.git
+ [submodule "third_party/benchmark"]
+-    ignore = dirty
+     path = third_party/benchmark
+     url = https://github.com/google/benchmark.git
+ [submodule "third_party/protobuf"]
+-    ignore = dirty
+     path = third_party/protobuf
+     url = https://github.com/protocolbuffers/protobuf.git
+ [submodule "third_party/NNPACK"]
+-    ignore = dirty
+     path = third_party/NNPACK
+     url = https://github.com/Maratyszcza/NNPACK.git
+ [submodule "third_party/gloo"]
+-    ignore = dirty
+     path = third_party/gloo
+     url = https://github.com/facebookincubator/gloo
+ [submodule "third_party/NNPACK_deps/pthreadpool"]
+-    ignore = dirty
+     path = third_party/pthreadpool
+     url = https://github.com/Maratyszcza/pthreadpool.git
+ [submodule "third_party/NNPACK_deps/FXdiv"]
+-    ignore = dirty
+     path = third_party/FXdiv
+     url = https://github.com/Maratyszcza/FXdiv.git
+ [submodule "third_party/NNPACK_deps/FP16"]
+-    ignore = dirty
+     path = third_party/FP16
+     url = https://github.com/Maratyszcza/FP16.git
+ [submodule "third_party/NNPACK_deps/psimd"]
+-    ignore = dirty
+     path = third_party/psimd
+     url = https://github.com/Maratyszcza/psimd.git
+ [submodule "third_party/cpuinfo"]
+-    ignore = dirty
+     path = third_party/cpuinfo
+     url = https://github.com/pytorch/cpuinfo.git
+ [submodule "third_party/python-peachpy"]
+-    ignore = dirty
+     path = third_party/python-peachpy
+     url = https://github.com/malfet/PeachPy.git
+ [submodule "third_party/onnx"]
+-    ignore = dirty
+     path = third_party/onnx
+     url = https://github.com/onnx/onnx.git
+ [submodule "third_party/sleef"]
+-    ignore = dirty
+     path = third_party/sleef
+     url = https://github.com/shibatch/sleef
+ [submodule "third_party/ideep"]
+-    ignore = dirty
+     path = third_party/ideep
+     url = https://github.com/intel/ideep
+ [submodule "third_party/nccl/nccl"]
+-    ignore = dirty
+     path = third_party/nccl/nccl
+     url = https://github.com/NVIDIA/nccl
+ [submodule "third_party/gemmlowp/gemmlowp"]
+-    ignore = dirty
+     path = third_party/gemmlowp/gemmlowp
+     url = https://github.com/google/gemmlowp.git
+ [submodule "third_party/fbgemm"]
+-    ignore = dirty
+     path = third_party/fbgemm
+     url = https://github.com/pytorch/fbgemm
+ [submodule "android/libs/fbjni"]
+-    ignore = dirty
+     path = android/libs/fbjni
+     url = https://github.com/facebookincubator/fbjni.git
+ [submodule "third_party/XNNPACK"]
+-    ignore = dirty
+     path = third_party/XNNPACK
+     url = https://github.com/google/XNNPACK.git
+ [submodule "third_party/fmt"]
+-    ignore = dirty
+     path = third_party/fmt
+     url = https://github.com/fmtlib/fmt.git
+ [submodule "third_party/tensorpipe"]
+-    ignore = dirty
+     path = third_party/tensorpipe
+     url = https://github.com/pytorch/tensorpipe.git
+ [submodule "third_party/cudnn_frontend"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 958c1209e3a..d0b0ca7d002 100644
+index c8af5f00b5c..656f7d122f0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -23,32 +23,25 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,28 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+   message(FATAL_ERROR "In-source build are not supported")
  endif()
  
- # --------------------------------- chaquopy begin ------------------------------------
--set(BUILD_CUSTOM_PROTOBUF ON)
++# --------------------------------- chaquopy begin ------------------------------------
 +# set(BUILD_CUSTOM_PROTOBUF ON)
- # set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
- set(BUILD_TEST OFF)
--set(BUILD_BINARY OFF)
- set(BUILD_LITE_INTERPRETER OFF)
--set(TRACING_BASED OFF)
- set(USE_LIGHTWEIGHT_DISPATCH OFF)
- 
--set(BUILD_MOBILE_BENCHMARK OFF)
--set(BUILD_MOBILE_TEST OFF)
--
- set(USE_CUDA OFF)
- 
--set(USE_ITT OFF)
--set(USE_GFLAGS OFF)
++# set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
++set(BUILD_TEST OFF)
++# set(BUILD_LITE_INTERPRETER OFF)
++# set(USE_LIGHTWEIGHT_DISPATCH OFF)
++
++set(USE_CUDA OFF)
++
 +# set(USE_ITT OFF)
 +# set(USE_GFLAGS OFF)
- set(USE_OPENCV OFF)
--set(USE_MPI OFF)
++set(USE_OPENCV OFF)
 +# set(USE_MPI OFF)
- 
--set(USE_OPENMP OFF)
++
 +# set(USE_OPENMP OFF)
- set(BUILD_PYTHON ON)
- 
- # dependencies
--set(USE_NUMPY ON)
++set(BUILD_PYTHON ON)
++
++# dependencies
 +# set(USE_NUMPY ON)
- set(USE_VULKAN OFF)
--# set(BUILD_MOBILE_AUTOGRAD ON)
--
- # --------------------------------- chaquopy end ------------------------------------
- 
++set(USE_VULKAN OFF)
++# --------------------------------- chaquopy end ------------------------------------
++
  # ---[ Project and semantic versioning.
-@@ -694,7 +687,7 @@ if(ANDROID
+ project(Torch CXX C)
+ 
+@@ -663,9 +685,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+ if(ANDROID
+    OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
-   # set(INTERN_BUILD_MOBILE ON)
+-  set(INTERN_BUILD_MOBILE ON)
++  # set(INTERN_BUILD_MOBILE ON)
    message(WARNING "INTERN_BUILD_MOBILE is on, disabling BUILD_LAZY_TS_BACKEND")
 -  set(BUILD_LAZY_TS_BACKEND OFF)
 +  # set(BUILD_LAZY_TS_BACKEND OFF)
  
    # Set -ffunction-sections and -fdata-sections so that each method has its own
    # text section. This allows the linker to remove unused section when the flag
-@@ -744,12 +737,10 @@ if(INTERN_BUILD_MOBILE)
-   else()
-     set(INTERN_DISABLE_AUTOGRAD ON)
-   endif()
--  # todo xiao
--  # set(BUILD_PYTHON OFF)
-+  set(BUILD_PYTHON OFF)
-   set(BUILD_FUNCTORCH OFF)
-   set(USE_DISTRIBUTED OFF)
--  # todo xiao
--  # set(NO_API ON)
-+  set(NO_API ON)
-   set(USE_FBGEMM OFF)
-   set(INTERN_DISABLE_ONNX ON)
-   if(USE_BLAS)
+@@ -855,6 +877,11 @@ endif()
+ # The only solution is to include(cmake/Dependencies.cmake), and defer the
+ # aotriton build decision later.
+ 
++set(Python_LIBRARIES ${PYTHON_LIBRARIES} CACHE PATH "Python include directory" FORCE)
++set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS} CACHE FILEPATH "Python library" FORCE)
++message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
++message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
++
+ include(cmake/Dependencies.cmake)
+ 
+ cmake_dependent_option(
+@@ -1355,6 +1382,12 @@ if(BUILD_JNI)
+   add_subdirectory(android/pytorch_android)
+ endif()
+ 
++# todo xiao
++# set(Python_LIBRARIES ${PYTHON_LIBRARIES})
++# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
++# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
++# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
++
+ include(cmake/Summary.cmake)
+ caffe2_print_configuration_summary()
+ 
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
-index 6146255b5d9..d6799b21229 100644
+index 919eb6c8567..d6799b21229 100644
 --- a/c10/macros/Macros.h
 +++ b/c10/macros/Macros.h
-@@ -435,7 +435,7 @@ __host__ __device__
+@@ -433,7 +433,9 @@ __host__ __device__
+ 
+ #if defined(__ANDROID__)
  #define C10_ANDROID 1
- // todo xiao
- // Chaquopy: this disables things required by the Python build.
 -#define C10_MOBILE 1
++// todo xiao
++// Chaquopy: this disables things required by the Python build.
 +// #define C10_MOBILE 1
  #elif (                   \
      defined(__APPLE__) && \
      (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
-diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 2da257b9483..8a1c519f1d3 100644
---- a/cmake/Dependencies.cmake
-+++ b/cmake/Dependencies.cmake
-@@ -33,6 +33,9 @@ macro(enable_ubsan)
-   endif()
- endmacro()
- 
-+message(-------------------------cmake path = ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-+
- # ---[ CUDA
- if(USE_CUDA)
-   # public/*.cmake uses CAFFE2_USE_*
-@@ -910,6 +913,17 @@ add_library(pybind::pybind11 INTERFACE IMPORTED)
- target_include_directories(pybind::pybind11 SYSTEM INTERFACE ${pybind11_INCLUDE_DIRS})
- target_link_libraries(pybind::pybind11 INTERFACE Python::Module)
- 
-+# todo xiao
-+# message(STATUS "----------------------1---Successfully included pybind11")
-+# # add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/pybind11)
-+# include(pybind11)
-+# message(STATUS "----------------------2---Successfully included pybind11")
-+# # add_library(pybind::pybind11 ALIAS pybind11::pybind11)
-+
-+# message(STATUS "----------------------3---Successfully included pybind11")
-+# target_link_libraries(pybind11::pybind11 INTERFACE Python::Module)
-+# message(STATUS "----------------------4---Successfully included pybind11")
-+
- # ---[ OpenTelemetry API headers
- find_package(OpenTelemetryApi)
- if(NOT OpenTelemetryApi_FOUND)
-diff --git a/cmake/pybind11.cmake b/cmake/pybind11.cmake
-index 1cf1a77c877..d883c53875b 100644
---- a/cmake/pybind11.cmake
-+++ b/cmake/pybind11.cmake
-@@ -6,7 +6,6 @@ include(FetchContent)
- FetchContent_Declare(
-   pybind11
-   GIT_REPOSITORY https://github.com/pybind/pybind11.git
--  GIT_TAG smart_holder
-   GIT_SHALLOW TRUE
-   GIT_PROGRESS TRUE
- )
 diff --git a/functorch/CMakeLists.txt b/functorch/CMakeLists.txt
-index a47e9948e27..9e3b4643097 100644
+index bdfa4bfe455..9e3b4643097 100644
 --- a/functorch/CMakeLists.txt
 +++ b/functorch/CMakeLists.txt
-@@ -22,8 +22,7 @@ else()
+@@ -22,7 +22,7 @@ else()
    # functorch cannot use the alias to build on windows
    target_link_libraries(${PROJECT_NAME} PRIVATE torch torch_python)
  endif()
--# todo xiao
--# target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
+-target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11)
 +target_link_libraries(${PROJECT_NAME} PRIVATE pybind::pybind11 ${PYTHON_LIBRARIES})
  
  set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
        ${CMAKE_BINARY_DIR}/functorch)
 diff --git a/setup.py b/setup.py
-index 54cb93ee6b4..6383a9b319a 100644
+index a6a6db7b033..6383a9b319a 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -368,7 +368,9 @@ if BUILD_LIBTORCH_WHL:
@@ -151,50 +209,66 @@ index 54cb93ee6b4..6383a9b319a 100644
  report(f"Building wheel {package_name}-{version}")
  
  cmake = CMake()
-Submodule third_party/flatbuffers contains modified content
-diff --git a/third_party/flatbuffers/android/.project b/third_party/flatbuffers/android/.project
-index 3ed7298f..17ddcb3e 100644
---- a/third_party/flatbuffers/android/.project
-+++ b/third_party/flatbuffers/android/.project
-@@ -1,12 +1,18 @@
- <?xml version="1.0" encoding="UTF-8"?>
- <projectDescription>
--	<name>FlatBufferTest</name>
-+	<name>FlatbuffersTest-android</name>
- 	<comment></comment>
- 	<projects>
- 	</projects>
- 	<buildSpec>
-+		<buildCommand>
-+			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-+			<arguments>
-+			</arguments>
-+		</buildCommand>
- 	</buildSpec>
- 	<natures>
-+		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
- 	</natures>
- 	<filteredResources>
- 		<filter>
-Submodule third_party/onnx contains modified content
-Submodule third_party/pybind11 contains modified content
-diff --git a/third_party/onnx/third_party/pybind11/CMakeLists.txt b/third_party/onnx/third_party/pybind11/CMakeLists.txt
-index 7db1bf66..21e0588b 100644
---- a/third_party/onnx/third_party/pybind11/CMakeLists.txt
-+++ b/third_party/onnx/third_party/pybind11/CMakeLists.txt
-@@ -26,10 +26,12 @@ if(_pybind11_cmp0148)
-   unset(_pybind11_cmp0148)
- endif()
+@@ -483,11 +485,13 @@ def build_deps():
+     check_submodules()
+     check_pydep("yaml", "pyyaml")
+     build_python = not BUILD_LIBTORCH_WHL
++    print(f"++++++++++++++++++++++++++++++++++++---build_python = {build_python}")
++    print(f"++++++++++++++++++++++++++++++++++++---cmake_python_library = {cmake_python_library}")
+     build_pytorch(
+         version=version,
+         cmake_python_library=cmake_python_library,
+         build_python=build_python,
+-        rerun_cmake=RERUN_CMAKE,
++        rerun_cmake=True,
+         cmake_only=CMAKE_ONLY,
+         cmake=cmake,
+     )
+@@ -1167,7 +1171,15 @@ def main():
+         long_description = f.read()
  
-+message(---------------------third_party-Onnx-third_party-pybind11-CMakeLists--1---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
- # Avoid infinite recursion if tests include this as a subdirectory
- if(DEFINED PYBIND11_MASTER_PROJECT)
-   return()
- endif()
-+message(---------------------third_party-Onnx-third_party-pybind11-CMakeLists--2---PYBIND11_MASTER_PROJECT = ${PYBIND11_MASTER_PROJECT})
+     version_range_max = max(sys.version_info[1], 13) + 1
++    
++    # Chaquopy: see package_data below.
++    if os.path.exists("chaquopy"):
++        shutil.rmtree("chaquopy")
++    os.mkdir("chaquopy")
++    os.symlink("../torch/lib", "chaquopy/lib")
++    
+     torch_package_data = [
++        'lib/libtorch_global_deps.so',  # Chaquopy: see comment at top of package_data.
+         "py.typed",
+         "bin/*",
+         "test/*",
+@@ -1416,6 +1428,9 @@ def main():
+     ]
+     package_data = {
+         "torch": torch_package_data,
++        'chaquopy': [
++            'lib/*.so*'  # See exclude_package_data below.
++        ],
+     }
  
- # Extract project version from source
- file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11/detail/common.h"
+     if not BUILD_LIBTORCH_WHL:
+@@ -1435,7 +1450,7 @@ def main():
+         long_description_content_type="text/markdown",
+         ext_modules=extensions,
+         cmdclass=cmdclass,
+-        packages=packages,
++        packages=packages + ["chaquopy"],
+         entry_points=entry_points,
+         install_requires=install_requires,
+         extras_require=extras_require,
+@@ -1445,6 +1460,9 @@ def main():
+         author="PyTorch Team",
+         author_email="packages@pytorch.org",
+         python_requires=f">={python_min_version_str}",
++        
++        exclude_package_data={'chaquopy': ['lib/libtorch_global_deps.so']},
++        
+         # PyPI package information.
+         classifiers=[
+             "Development Status :: 5 - Production/Stable",
 Submodule third_party/pocketfft contains modified content
 diff --git a/third_party/pocketfft/pocketfft_hdronly.h b/third_party/pocketfft/pocketfft_hdronly.h
 index 330c3c7..deb60c5 100644
@@ -279,13 +353,18 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 70bf31375a8..0723c4e02db 100644
+index 84e4dad32d3..0723c4e02db 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -309,6 +309,14 @@ class CMake:
-         # todo xiao
-         # Chaquopy: see https://github.com/shibatch/sleef/issues/249
-         # build_sleef_native = os.path.abspath("build-sleef-native")
+@@ -305,11 +305,50 @@ class CMake:
+             )
+             sys.exit(1)
+         build_options.update(cmake__options)
+-
++        
++        # todo xiao
++        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
++        # build_sleef_native = os.path.abspath("build-sleef-native")
 +        build_sleef_native="/home/ubuntu/workspace/sleef/build-native"
 +        build_sleef_cross = os.path.abspath("build-sleef-cross")
 +        src_path = os.path.abspath("")
@@ -294,17 +373,13 @@ index 70bf31375a8..0723c4e02db 100644
 +        print(f"--------------------src_path = {src_path}")
 +        # if not os.path.exists(build_sleef_cross):
 +        #     os.mkdir(build_sleef_cross)
-         # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
-         #     os.mkdir(build_sleef_native)
-         #     sleef_env = os.environ.copy()
-@@ -316,10 +324,20 @@ class CMake:
-         #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-         #                  "NM", "RANLIB", "READELF", "STRIP"]:
-         #         sleef_env.pop(name, None)
--        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
--        #     check_call(["cmake", "../third_party/sleef"], **kwargs)
--        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
--        
++        # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
++        #     os.mkdir(build_sleef_native)
++        #     sleef_env = os.environ.copy()
++        #     for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++        #                  "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++        #                  "NM", "RANLIB", "READELF", "STRIP"]:
++        #         sleef_env.pop(name, None)
 +        #     # todo xiao
 +        #     # kwargs = dict(cwd=build_sleef_native, env=sleef_env)
 +        #     # check_call(["cmake", "../third_party/sleef"], **kwargs)
@@ -319,60 +394,34 @@ index 70bf31375a8..0723c4e02db 100644
 +        #     # print(f"--------------------build sleef cross---2")
 +        print(f"--------------------setup args = {args}")
 +        print(f"--------------------setup build_options = {build_options}")
-         # todo xiao
++        # todo xiao
          CMake.defines(
              args,
-@@ -327,7 +345,7 @@ class CMake:
-             CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
-             ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
-             # BLAS="OpenBLAS",
--            # NATIVE_BUILD_DIR=build_sleef_native,
+-            Python_EXECUTABLE=sys.executable,
++            # Python_EXECUTABLE=sys.executable,
++            CAFFE2_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
++            # BLAS="OpenBLAS",
 +            NATIVE_BUILD_DIR=build_sleef_native,
              TORCH_BUILD_VERSION=version,
-             # USE_CUDA="0",
-             # USE_VULKAN="0",  # Disable for now to simplify the build.
++            # USE_CUDA="0",
++            # USE_VULKAN="0",  # Disable for now to simplify the build.
+             **build_options,
+         )
+ 
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index a7d95309d4f..1491d840e64 100644
+index b123023d2fd..1491d840e64 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
-@@ -71,8 +71,6 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
-     ${TORCH_ROOT}/third_party/kineto/libkineto/include
-     ${TORCH_ROOT}/third_party/cpp-httplib
-     ${TORCH_ROOT}/third_party/nlohmann/include
--    # todo xiao
--    ${pybind11_INCLUDE_DIRS}
- 
-     ${TORCH_SRC_DIR}/csrc
-     ${TORCH_SRC_DIR}/csrc/api/include
-@@ -82,12 +80,11 @@ set(TORCH_PYTHON_INCLUDE_DIRECTORIES
- list(APPEND TORCH_PYTHON_INCLUDE_DIRECTORIES ${LIBSHM_SRCDIR})
- 
- set(TORCH_PYTHON_LINK_LIBRARIES
--# todo xiao
--    # Python::Module
--    # pybind::pybind11
--    # opentelemetry::api
--    # httplib
--    # nlohmann
-+    Python::Module
-+    pybind::pybind11
-+    opentelemetry::api
-+    httplib
-+    nlohmann
-     shm
-     fmt::fmt-header-only
-     ATEN_CPU_FILES_GEN_LIB)
-@@ -328,8 +325,7 @@ if(CAFFE2_USE_MKL AND BUILD_LIBTORCHLESS)
-   target_link_libraries(torch_python PRIVATE caffe2::mkl)
+@@ -9,6 +9,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
+   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
  endif()
  
--# todo xiao
--# add_dependencies(torch_python onnx_proto)
-+add_dependencies(torch_python onnx_proto)
- # Avoid numpy for the DEPLOY build
- if(USE_NUMPY)
-   target_link_libraries(torch_python PRIVATE Python::NumPy)
-@@ -433,7 +429,7 @@ endif()
++message(+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+----------------BUILD_PYTHON = ${BUILD_PYTHON})
+ if(NOT BUILD_PYTHON)
+   return()
+ endif()
+@@ -428,7 +429,7 @@ endif()
  
  target_compile_definitions(torch_python PRIVATE "-DTHP_BUILD_MAIN_LIB")
  
@@ -381,205 +430,193 @@ index a7d95309d4f..1491d840e64 100644
  
  target_compile_definitions(torch_python PRIVATE ${TORCH_PYTHON_COMPILE_DEFINITIONS})
  
-@@ -487,20 +483,19 @@ add_dependencies(torch_python gen_torch_version)
- 
- # Skip building this library under MacOS, since it is currently failing to build on Mac
- # Github issue #61930
--# todo xiao
--# if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
--#   # Add Android Nnapi delegate library
--#   add_library(nnapi_backend SHARED
--#           ${TORCH_SRC_DIR}/csrc/jit/backends/nnapi/nnapi_backend_lib.cpp
--#           ${TORCH_SRC_DIR}/csrc/jit/backends/nnapi/nnapi_backend_preprocess.cpp
--#           )
--#   # Pybind11 requires explicit linking of the torch_python library
--#   if(BUILD_LIBTORCHLESS)
--#     target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
--#   else()
--#     target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11)
--#   endif()
--# endif()
-+if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-+  # Add Android Nnapi delegate library
-+  add_library(nnapi_backend SHARED
-+          ${TORCH_SRC_DIR}/csrc/jit/backends/nnapi/nnapi_backend_lib.cpp
-+          ${TORCH_SRC_DIR}/csrc/jit/backends/nnapi/nnapi_backend_preprocess.cpp
-+          )
-+  # Pybind11 requires explicit linking of the torch_python library
-+  if(BUILD_LIBTORCHLESS)
-+    target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
-+  else()
+@@ -492,7 +493,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   if(BUILD_LIBTORCHLESS)
+     target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
+   else()
+-    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11)
 +    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11 ${PYTHON_LIBRARIES})
-+  endif()
-+endif()
+   endif()
+ endif()
  
- set(TORCH_PYTHON_COMPILE_OPTIONS ${TORCH_PYTHON_COMPILE_OPTIONS} PARENT_SCOPE)
- set(TORCH_PYTHON_LINK_FLAGS ${TORCH_PYTHON_LINK_FLAGS} PARENT_SCOPE)
+diff --git a/torch/_utils_internal.py b/torch/_utils_internal.py
+index f58eb93d86d..c3c7a50c26b 100644
+--- a/torch/_utils_internal.py
++++ b/torch/_utils_internal.py
+@@ -63,7 +63,9 @@ def prepare_multiprocessing_environment(path: str) -> None:
+ 
+ 
+ def resolve_library_path(path: str) -> str:
+-    return os.path.realpath(path)
++    # todo xiao
++    # return os.path.realpath(path)
++    return os.path.abspath(path)  # Chaquopy: was realpath. This patch is no longer necessary on newer versions of Chaquopy, which call realpath early in the importer.
+ 
+ 
+ def throw_abstract_impl_not_imported_error(opname, module, context):
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
-index 6b2ee88df9c..279a0384f43 100644
+index 6b2ee88df9c..00324f05442 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
 +++ b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_eager/kernel_holder.h>
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.h b/torch/csrc/inductor/aoti_eager/kernel_holder.h
-index fed2e3b5d61..eb5a660b64c 100644
+index fed2e3b5d61..9535884190a 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.h
 +++ b/torch/csrc/inductor/aoti_eager/kernel_holder.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
-index 1642ee4beca..8681b4cd740 100644
+index 1642ee4beca..362c2025009 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
 +++ b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_eager/kernel_meta_info.h>
  #include <iostream>
  #include <utility>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h b/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
-index 24d3c05bc35..1d3528bce0d 100644
+index 24d3c05bc35..fcce01ac9cc 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
 +++ b/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.cpp b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
-index 1aa408bcafd..4cb78af9940 100644
+index 1aa408bcafd..c5dfdbdf7f1 100644
 --- a/torch/csrc/inductor/aoti_package/model_package_loader.cpp
 +++ b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  
  #include <c10/util/error.h>
  #include <torch/csrc/inductor/aoti_package/model_package_loader.h>
 diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.h b/torch/csrc/inductor/aoti_package/model_package_loader.h
-index 88be54ea4f2..d4db7a365b1 100644
+index 88be54ea4f2..f9c84f89c4b 100644
 --- a/torch/csrc/inductor/aoti_package/model_package_loader.h
 +++ b/torch/csrc/inductor/aoti_package/model_package_loader.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/Tensor.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
-index 41dfd588d48..cc7be1702e7 100644
+index 41dfd588d48..8fa9b1f6235 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <ATen/DynamicLibrary.h>
  
  #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.h b/torch/csrc/inductor/aoti_runner/model_container_runner.h
-index 76bda78ff23..25ce626b5c8 100644
+index 76bda78ff23..2c00bcdb0cf 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/Tensor.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
-index ecae588be2f..853eb22d84e 100644
+index ecae588be2f..b0a67a2f682 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
-index 7a38dab5c2f..1f157b443d3 100644
+index 7a38dab5c2f..5875daf890a 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
-index c5abd97f759..1c864831e29 100644
+index c5abd97f759..451aa6ed84c 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
-index 654da9da036..030957c6eb4 100644
+index 654da9da036..fe45a8c9063 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <c10/cuda/CUDAStream.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
-index 97dcd1c5913..9c45c811985 100644
+index 97dcd1c5913..c2bd76b0832 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
-index 563d2047f6c..caca0f49916 100644
+index 563d2047f6c..db5a2527ad0 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
-@@ -1,4 +1,6 @@
+@@ -1,4 +1,4 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
-+// todo xiao
-+// #if !defined(C10_MOBILE) && !defined(ANDROID)
-+#if !defined(C10_MOBILE)
++#ifndef C10_MOBILE
  #pragma once
  
  #include <c10/xpu/XPUStream.h>
+diff --git a/torch/lib/libshm/manager.cpp b/torch/lib/libshm/manager.cpp
+index 6aa70d8c211..b7c06d8c409 100644
+--- a/torch/lib/libshm/manager.cpp
++++ b/torch/lib/libshm/manager.cpp
+@@ -70,7 +70,9 @@ void print_init_message(std::string_view message) {
+ }
+ 
+ bool object_exists(const char* name) {
+-  int fd = shm_open(name, O_RDONLY, 0);
++  // todo xiao
++  // int fd = shm_open(name, O_RDONLY, 0);
++  int fd = -1;   // Chaquopy: removed shm_open, which isn't supported on Android.
+   if (fd >= 0) {
+     close(fd);
+     return true;
+@@ -180,7 +182,9 @@ int main(int argc, char* argv[]) {
+ 
+   for (auto& obj_name : used_objects) {
+     DEBUG("freeing %s", obj_name.c_str());
+-    shm_unlink(obj_name.c_str());
++    // todo xiao
++    // shm_unlink(obj_name.c_str());
++    // Chaquopy: removed shm_unlink, which isn't supported on Android.
+   }
+ 
+   // Clean up file descriptors
