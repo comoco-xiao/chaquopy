@@ -17,7 +17,7 @@ index 36d5becb57c..2ce2cae1055 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..656f7d122f0 100644
+index c8af5f00b5c..b6703c035f6 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,28 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -65,27 +65,14 @@ index c8af5f00b5c..656f7d122f0 100644
  # The only solution is to include(cmake/Dependencies.cmake), and defer the
  # aotriton build decision later.
  
-+set(Python_LIBRARIES ${PYTHON_LIBRARIES} CACHE PATH "Python include directory" FORCE)
-+set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS} CACHE FILEPATH "Python library" FORCE)
-+message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
-+message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
++# set(Python_LIBRARIES ${PYTHON_LIBRARIES} CACHE PATH "Python include directory" FORCE)
++# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS} CACHE FILEPATH "Python library" FORCE)
++# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
++# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
 +
  include(cmake/Dependencies.cmake)
  
  cmake_dependent_option(
-@@ -1355,6 +1382,12 @@ if(BUILD_JNI)
-   add_subdirectory(android/pytorch_android)
- endif()
- 
-+# todo xiao
-+# set(Python_LIBRARIES ${PYTHON_LIBRARIES})
-+# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-+# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
-+# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
-+
- include(cmake/Summary.cmake)
- caffe2_print_configuration_summary()
- 
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
 index 919eb6c8567..d6799b21229 100644
 --- a/c10/macros/Macros.h
