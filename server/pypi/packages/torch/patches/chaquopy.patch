@@ -392,18 +392,10 @@ index 84e4dad32d3..f54fbd715a6 100644
              **build_options,
          )
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..1491d840e64 100644
+index b123023d2fd..4ebd88274ae 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
-@@ -9,6 +9,7 @@ if(NOT CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO)
-   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
- endif()
- 
-+message(+-+-+-+-+-+-+-+-+-+-+-+-+-+--+-+-+-+----------------BUILD_PYTHON = ${BUILD_PYTHON})
- if(NOT BUILD_PYTHON)
-   return()
- endif()
-@@ -428,7 +429,7 @@ endif()
+@@ -428,7 +428,7 @@ endif()
  
  target_compile_definitions(torch_python PRIVATE "-DTHP_BUILD_MAIN_LIB")
  
@@ -412,7 +404,7 @@ index b123023d2fd..1491d840e64 100644
  
  target_compile_definitions(torch_python PRIVATE ${TORCH_PYTHON_COMPILE_DEFINITIONS})
  
-@@ -492,7 +493,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+@@ -492,7 +492,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    if(BUILD_LIBTORCHLESS)
      target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
    else()
