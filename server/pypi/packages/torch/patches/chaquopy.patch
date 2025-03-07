@@ -42,22 +42,21 @@ index c8af5f00b5c..2d0e4d0263f 100644
    # Set -ffunction-sections and -fdata-sections so that each method has its own
    # text section. This allows the linker to remove unused section when the flag
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
-index 919eb6c8567..d6799b21229 100644
+index 919eb6c8567..b878027c648 100644
 --- a/c10/macros/Macros.h
 +++ b/c10/macros/Macros.h
-@@ -433,7 +433,9 @@ __host__ __device__
+@@ -433,7 +433,8 @@ __host__ __device__
  
  #if defined(__ANDROID__)
  #define C10_ANDROID 1
 -#define C10_MOBILE 1
-+// todo xiao
 +// Chaquopy: this disables things required by the Python build.
 +// #define C10_MOBILE 1
  #elif (                   \
      defined(__APPLE__) && \
      (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..27104a73726 100644
+index 1813f4418a2..68713203497 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -848,7 +848,9 @@ if(BUILD_PYTHON)
@@ -65,29 +64,28 @@ index 1813f4418a2..27104a73726 100644
      list(APPEND PYTHON_COMPONENTS NumPy)
    endif()
 -  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS ${PYTHON_COMPONENTS})
-+  # todo xiao
++  # Chaquopy
 +  # find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS ${PYTHON_COMPONENTS})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
  else()
    find_package(Python COMPONENTS Interpreter)
  endif()
-@@ -1290,7 +1292,9 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -1290,7 +1292,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
 -      caffe2_interface_library(onnx_proto onnx_library)
-+      # todo xiao
 +      # caffe2_interface_library(onnx_proto onnx_library)
 +      caffe2_interface_library(onnx onnx_library)  # Chaquopy: `onnx` was `onnx_proto`.
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1501,9 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1500,9 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
 -    add_definitions(-D_FILE_OFFSET_BITS=64)
-+    # todo xiao
++
 +    # Chaquopy: see https://android.googlesource.com/platform/bionic/+/master/docs/32-bit-abi.md
 +    # add_definitions(-D_FILE_OFFSET_BITS=64)
      CHECK_FUNCTION_EXISTS(shm_open HAVE_SHM_OPEN)
@@ -280,166 +278,192 @@ index f58eb93d86d..c3c7a50c26b 100644
  
  def throw_abstract_impl_not_imported_error(opname, module, context):
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
-index 6b2ee88df9c..00324f05442 100644
+index 6b2ee88df9c..8ca22541dec 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
 +++ b/torch/csrc/inductor/aoti_eager/kernel_holder.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_eager/kernel_holder.h>
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_holder.h b/torch/csrc/inductor/aoti_eager/kernel_holder.h
-index fed2e3b5d61..9535884190a 100644
+index fed2e3b5d61..0b28c4f2852 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_holder.h
 +++ b/torch/csrc/inductor/aoti_eager/kernel_holder.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
-index 1642ee4beca..362c2025009 100644
+index 1642ee4beca..ba0a022843b 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
 +++ b/torch/csrc/inductor/aoti_eager/kernel_meta_info.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_eager/kernel_meta_info.h>
  #include <iostream>
  #include <utility>
 diff --git a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h b/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
-index 24d3c05bc35..fcce01ac9cc 100644
+index 24d3c05bc35..d192e11a836 100644
 --- a/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
 +++ b/torch/csrc/inductor/aoti_eager/kernel_meta_info.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/ATen.h>
 diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.cpp b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
-index 1aa408bcafd..c5dfdbdf7f1 100644
+index 1aa408bcafd..cc516609e21 100644
 --- a/torch/csrc/inductor/aoti_package/model_package_loader.cpp
 +++ b/torch/csrc/inductor/aoti_package/model_package_loader.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  
  #include <c10/util/error.h>
  #include <torch/csrc/inductor/aoti_package/model_package_loader.h>
 diff --git a/torch/csrc/inductor/aoti_package/model_package_loader.h b/torch/csrc/inductor/aoti_package/model_package_loader.h
-index 88be54ea4f2..f9c84f89c4b 100644
+index 88be54ea4f2..62958b79614 100644
 --- a/torch/csrc/inductor/aoti_package/model_package_loader.h
 +++ b/torch/csrc/inductor/aoti_package/model_package_loader.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/Tensor.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
-index 41dfd588d48..8fa9b1f6235 100644
+index 41dfd588d48..a943acd1a9a 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <ATen/DynamicLibrary.h>
  
  #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner.h b/torch/csrc/inductor/aoti_runner/model_container_runner.h
-index 76bda78ff23..2c00bcdb0cf 100644
+index 76bda78ff23..6bd04331235 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <ATen/Tensor.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
-index ecae588be2f..b0a67a2f682 100644
+index ecae588be2f..702d9467508 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
-index 7a38dab5c2f..5875daf890a 100644
+index 7a38dab5c2f..fc8ac7f2312 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cpu.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <torch/csrc/inductor/aoti_runner/model_container_runner.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
-index c5abd97f759..451aa6ed84c 100644
+index c5abd97f759..9e7f0418d92 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
-index 654da9da036..fe45a8c9063 100644
+index 654da9da036..954da3c95fb 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_cuda.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <c10/cuda/CUDAStream.h>
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
-index 97dcd1c5913..c2bd76b0832 100644
+index 97dcd1c5913..57bd67968e2 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.cpp
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #include <torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h>
  
  namespace torch::inductor {
 diff --git a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
-index 563d2047f6c..db5a2527ad0 100644
+index 563d2047f6c..9aa36225f3e 100644
 --- a/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
 +++ b/torch/csrc/inductor/aoti_runner/model_container_runner_xpu.h
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,6 @@
 -#if !defined(C10_MOBILE) && !defined(ANDROID)
++// Chaquopy
++// #if !defined(C10_MOBILE) && !defined(ANDROID)
 +#ifndef C10_MOBILE
  #pragma once
  
  #include <c10/xpu/XPUStream.h>
 diff --git a/torch/lib/libshm/manager.cpp b/torch/lib/libshm/manager.cpp
-index 6aa70d8c211..b7c06d8c409 100644
+index 6aa70d8c211..4ef34873977 100644
 --- a/torch/lib/libshm/manager.cpp
 +++ b/torch/lib/libshm/manager.cpp
-@@ -70,7 +70,9 @@ void print_init_message(std::string_view message) {
+@@ -70,7 +70,8 @@ void print_init_message(std::string_view message) {
  }
  
  bool object_exists(const char* name) {
 -  int fd = shm_open(name, O_RDONLY, 0);
-+  // todo xiao
 +  // int fd = shm_open(name, O_RDONLY, 0);
 +  int fd = -1;   // Chaquopy: removed shm_open, which isn't supported on Android.
    if (fd >= 0) {
      close(fd);
      return true;
-@@ -180,7 +182,9 @@ int main(int argc, char* argv[]) {
+@@ -180,7 +181,8 @@ int main(int argc, char* argv[]) {
  
    for (auto& obj_name : used_objects) {
      DEBUG("freeing %s", obj_name.c_str());
 -    shm_unlink(obj_name.c_str());
-+    // todo xiao
 +    // shm_unlink(obj_name.c_str());
 +    // Chaquopy: removed shm_unlink, which isn't supported on Android.
    }
