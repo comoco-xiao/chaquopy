@@ -17,39 +17,25 @@ index 36d5becb57c..2ce2cae1055 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..b6703c035f6 100644
+index c8af5f00b5c..2d0e4d0263f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,28 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,14 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
    message(FATAL_ERROR "In-source build are not supported")
  endif()
  
 +# --------------------------------- chaquopy begin ------------------------------------
-+# set(BUILD_CUSTOM_PROTOBUF ON)
-+# set(CMAKE_TOOLCHAIN_FILE "/home/ubuntu/workspace/android-sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake")
 +set(BUILD_TEST OFF)
-+# set(BUILD_LITE_INTERPRETER OFF)
-+# set(USE_LIGHTWEIGHT_DISPATCH OFF)
-+
 +set(USE_CUDA OFF)
-+
-+# set(USE_ITT OFF)
-+# set(USE_GFLAGS OFF)
 +set(USE_OPENCV OFF)
-+# set(USE_MPI OFF)
-+
-+# set(USE_OPENMP OFF)
-+set(BUILD_PYTHON ON)
-+
-+# dependencies
-+# set(USE_NUMPY ON)
 +set(USE_VULKAN OFF)
++set(BUILD_PYTHON ON)
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,9 +685,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+@@ -663,9 +671,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
  if(ANDROID
     OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
@@ -61,18 +47,6 @@ index c8af5f00b5c..b6703c035f6 100644
  
    # Set -ffunction-sections and -fdata-sections so that each method has its own
    # text section. This allows the linker to remove unused section when the flag
-@@ -855,6 +877,11 @@ endif()
- # The only solution is to include(cmake/Dependencies.cmake), and defer the
- # aotriton build decision later.
- 
-+# set(Python_LIBRARIES ${PYTHON_LIBRARIES} CACHE PATH "Python include directory" FORCE)
-+# set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS} CACHE FILEPATH "Python library" FORCE)
-+# message(---------------------------Python_LIBRARIES = ${Python_LIBRARIES})
-+# message(---------------------------Python_INCLUDE_DIRS = ${Python_INCLUDE_DIRS})
-+
- include(cmake/Dependencies.cmake)
- 
- cmake_dependent_option(
 diff --git a/c10/macros/Macros.h b/c10/macros/Macros.h
 index 919eb6c8567..d6799b21229 100644
 --- a/c10/macros/Macros.h
@@ -139,7 +113,7 @@ index bdfa4bfe455..9e3b4643097 100644
  set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
        ${CMAKE_BINARY_DIR}/functorch)
 diff --git a/setup.py b/setup.py
-index a6a6db7b033..6383a9b319a 100644
+index a6a6db7b033..6a9a09d8a43 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -368,7 +368,9 @@ if BUILD_LIBTORCH_WHL:
@@ -153,13 +127,7 @@ index a6a6db7b033..6383a9b319a 100644
  report(f"Building wheel {package_name}-{version}")
  
  cmake = CMake()
-@@ -483,11 +485,13 @@ def build_deps():
-     check_submodules()
-     check_pydep("yaml", "pyyaml")
-     build_python = not BUILD_LIBTORCH_WHL
-+    print(f"++++++++++++++++++++++++++++++++++++---build_python = {build_python}")
-+    print(f"++++++++++++++++++++++++++++++++++++---cmake_python_library = {cmake_python_library}")
-     build_pytorch(
+@@ -487,7 +489,7 @@ def build_deps():
          version=version,
          cmake_python_library=cmake_python_library,
          build_python=build_python,
@@ -168,7 +136,7 @@ index a6a6db7b033..6383a9b319a 100644
          cmake_only=CMAKE_ONLY,
          cmake=cmake,
      )
-@@ -1167,7 +1171,15 @@ def main():
+@@ -1167,7 +1169,15 @@ def main():
          long_description = f.read()
  
      version_range_max = max(sys.version_info[1], 13) + 1
@@ -184,7 +152,7 @@ index a6a6db7b033..6383a9b319a 100644
          "py.typed",
          "bin/*",
          "test/*",
-@@ -1416,6 +1428,9 @@ def main():
+@@ -1416,6 +1426,9 @@ def main():
      ]
      package_data = {
          "torch": torch_package_data,
@@ -194,7 +162,7 @@ index a6a6db7b033..6383a9b319a 100644
      }
  
      if not BUILD_LIBTORCH_WHL:
-@@ -1435,7 +1450,7 @@ def main():
+@@ -1435,7 +1448,7 @@ def main():
          long_description_content_type="text/markdown",
          ext_modules=extensions,
          cmdclass=cmdclass,
@@ -203,7 +171,7 @@ index a6a6db7b033..6383a9b319a 100644
          entry_points=entry_points,
          install_requires=install_requires,
          extras_require=extras_require,
-@@ -1445,6 +1460,9 @@ def main():
+@@ -1445,6 +1458,9 @@ def main():
          author="PyTorch Team",
          author_email="packages@pytorch.org",
          python_requires=f">={python_min_version_str}",
