@@ -215,7 +215,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..ec7027d1f38 100644
+index 84e4dad32d3..74066506e54 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -226,7 +226,7 @@ index 84e4dad32d3..ec7027d1f38 100644
  import sysconfig
  from distutils.version import LooseVersion
  from subprocess import CalledProcessError, check_call, check_output
-@@ -305,10 +306,36 @@ class CMake:
+@@ -305,10 +306,35 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -250,8 +250,7 @@ index 84e4dad32d3..ec7027d1f38 100644
 +                "-DCMAKE_TOOLCHAIN_FILE="], check=True, text=True)
 +            print(f"--------------------build sleef native---2")
 +            subprocess.run(["cmake",
-+                "-DBUILD_TOOLS=ON",
-+                "--build", build_sleef_native], check=True, text=True)
++                "-DBUILD_TOOLS=ON"], check=True, text=True)
 +            print(f"--------------------build sleef native---3")
 +        
          CMake.defines(
