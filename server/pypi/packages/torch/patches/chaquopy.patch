@@ -174,19 +174,6 @@ index a6a6db7b033..6a9a09d8a43 100644
          classifiers=[
              "Development Status :: 5 - Production/Stable",
 Submodule third_party/sleef contains modified content
-diff --git a/third_party/sleef/CMakeLists.txt b/third_party/sleef/CMakeLists.txt
-index ad31386..59b102a 100644
---- a/third_party/sleef/CMakeLists.txt
-+++ b/third_party/sleef/CMakeLists.txt
-@@ -12,7 +12,7 @@ option(SLEEF_BUILD_DFT "libsleefdft will be built." OFF)
- option(SLEEF_BUILD_QUAD "libsleefquad will be built." OFF)
- option(SLEEF_BUILD_GNUABI_LIBS "libsleefgnuabi will be built." ON)
- option(SLEEF_BUILD_SCALAR_LIB "libsleefscalar will be built." OFF)
--option(SLEEF_BUILD_TESTS "Tests will be built." ON)
-+option(SLEEF_BUILD_TESTS "Tests will be built." OFF)
- option(SLEEF_BUILD_INLINE_HEADERS "Build header for inlining whole SLEEF functions" OFF)
- 
- option(SLEEF_TEST_ALL_IUT "Perform tests on implementations with all vector extensions" OFF)
 diff --git a/third_party/sleef/Configure.cmake b/third_party/sleef/Configure.cmake
 index 19a153f..bcb96f6 100644
 --- a/third_party/sleef/Configure.cmake
