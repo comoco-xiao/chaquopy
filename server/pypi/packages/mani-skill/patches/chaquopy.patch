@@ -21,7 +21,7 @@ index 43701e2..0b678ed 100644
  
  setup(
 -    name="mani_skill",
-+    name="chaquopy_mani_skill",
++    name="mani_skill",
      version=__version__,
      description="ManiSkill3: A Unified Benchmark for Generalizable Manipulation Skills",
      long_description=long_description,
