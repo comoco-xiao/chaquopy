@@ -215,7 +215,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..34586e3fff8 100644
+index 84e4dad32d3..a4434cb9974 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -226,13 +226,12 @@ index 84e4dad32d3..34586e3fff8 100644
  import sysconfig
  from distutils.version import LooseVersion
  from subprocess import CalledProcessError, check_call, check_output
-@@ -305,10 +306,28 @@ class CMake:
+@@ -305,10 +306,27 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
 -
 +        
-+        # todo xiao
 +        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
