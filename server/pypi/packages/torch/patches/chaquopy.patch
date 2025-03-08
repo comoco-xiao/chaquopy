@@ -215,7 +215,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..f45813cd037 100644
+index 84e4dad32d3..cfe6f3bb727 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -240,36 +240,36 @@ index 84e4dad32d3..f45813cd037 100644
 +        build_sleef_native = os.path.abspath("build-sleef-native")
 +        print(f"--------------------build_sleef_native = {build_sleef_native}")
 +        
-+        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
-+            os.mkdir(build_sleef_native)
++        # if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
++        #     os.mkdir(build_sleef_native)
 +             
-+            # print(f"--------------------build sleef native---1")
-+            # subprocess.run(["cmake",
-+            #     "-S", "third_party/sleef",
-+            #     "-B", build_sleef_native,
-+            #     "-DCMAKE_TOOLCHAIN_FILE="], check=True, text=True)
-+            # print(f"--------------------build sleef native---2")
-+            # subprocess.run(["cmake",
-+            #     "-DBUILD_TOOLS=ON"], check=True, text=True)
-+            # print(f"--------------------build sleef native---3")
-+            print(f"--------------------build sleef native---1")
-+            sleef_env = os.environ.copy()
-+            for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
-+                        "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
-+                        "NM", "RANLIB", "READELF", "STRIP"]:
-+                sleef_env.pop(name, None)
-+            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            check_call(["cmake", "../third_party/sleef", "-DBUILD_TOOLS=ON"], **kwargs)
-+            # subprocess.run(["cmake",
-+            #     "-S", "third_party/sleef",
-+            #     "-B", build_sleef_native,
-+            #     "-DCMAKE_TOOLCHAIN_FILE="], check=True, text=True)
-+            print(f"--------------------build sleef native---2")
-+            # subprocess.run(["cmake",
-+            #     "-DBUILD_TOOLS=ON"], check=True, text=True)
-+            # check_call(["cmake", "-DBUILD_TOOLS=ON"], **kwargs)
-+            check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
-+            print(f"--------------------build sleef native---3")
++        #     # print(f"--------------------build sleef native---1")
++        #     # subprocess.run(["cmake",
++        #     #     "-S", "third_party/sleef",
++        #     #     "-B", build_sleef_native,
++        #     #     "-DCMAKE_TOOLCHAIN_FILE="], check=True, text=True)
++        #     # print(f"--------------------build sleef native---2")
++        #     # subprocess.run(["cmake",
++        #     #     "-DBUILD_TOOLS=ON"], check=True, text=True)
++        #     # print(f"--------------------build sleef native---3")
++        #     print(f"--------------------build sleef native---1")
++        #     sleef_env = os.environ.copy()
++        #     for name in ["AR", "ARFLAGS", "AS", "CC", "CFLAGS", "CPP", "CPPFLAGS", "CXX",
++        #                 "CXXFLAGS", "F77", "F90", "FARCH", "FC", "LD", "LDFLAGS", "LDSHARED",
++        #                 "NM", "RANLIB", "READELF", "STRIP"]:
++        #         sleef_env.pop(name, None)
++        #     kwargs = dict(cwd=build_sleef_native, env=sleef_env)
++        #     check_call(["cmake", "../third_party/sleef", "-DBUILD_TOOLS=ON"], **kwargs)
++        #     # subprocess.run(["cmake",
++        #     #     "-S", "third_party/sleef",
++        #     #     "-B", build_sleef_native,
++        #     #     "-DCMAKE_TOOLCHAIN_FILE="], check=True, text=True)
++        #     print(f"--------------------build sleef native---2")
++        #     # subprocess.run(["cmake",
++        #     #     "-DBUILD_TOOLS=ON"], check=True, text=True)
++        #     # check_call(["cmake", "-DBUILD_TOOLS=ON"], **kwargs)
++        #     check_call(["cmake", "--build", "." , "--", "-j", str(os.cpu_count())], **kwargs)
++        #     print(f"--------------------build sleef native---3")
 +        
          CMake.defines(
              args,
