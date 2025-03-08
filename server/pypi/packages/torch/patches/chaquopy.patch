@@ -215,7 +215,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..fc0438bb7f5 100644
+index 84e4dad32d3..964440bea14 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -259,7 +259,7 @@ index 84e4dad32d3..fc0438bb7f5 100644
 +                        "NM", "RANLIB", "READELF", "STRIP", "CMAKE_TOOLCHAIN_FILE"]:
 +                sleef_env.pop(name, None)
 +            kwargs = dict(cwd=build_sleef_native, env=sleef_env)
-+            check_call(["cmake", "../third_party/sleef", "-DBUILD_TOOLS=ON"], **kwargs)
++            check_call(["cmake", "../third_party/sleef"], **kwargs)
 +        #     # subprocess.run(["cmake",
 +        #     #     "-S", "third_party/sleef",
 +        #     #     "-B", build_sleef_native,
