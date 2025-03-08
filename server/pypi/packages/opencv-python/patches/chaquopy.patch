@@ -1,19 +1,18 @@
 Submodule opencv contains modified content
 diff --git a/opencv/CMakeLists.txt b/opencv/CMakeLists.txt
-index 45fc6de72a..87760094ae 100644
+index 45fc6de72a..a49b1fe24b 100644
 --- a/opencv/CMakeLists.txt
 +++ b/opencv/CMakeLists.txt
-@@ -131,7 +131,8 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)  # https://cmake.org/cmake/help/
-   endif()
+@@ -14,6 +14,8 @@ FATAL: In-source builds are not allowed.
+ ")
  endif()
  
--enable_testing()
-+# todo xiao
-+# enable_testing()
++# -DCMAKE_VERBOSE_MAKEFILE=ON
++set(CMAKE_VERBOSE_MAKEFILE ON)
  
- project(OpenCV CXX C)
+ include(cmake/OpenCVMinDepVersions.cmake)
  
-@@ -411,7 +412,7 @@ OCV_OPTION(WITH_GPHOTO2 "Include gPhoto2 library support" OFF
+@@ -411,7 +413,7 @@ OCV_OPTION(WITH_GPHOTO2 "Include gPhoto2 library support" OFF
    VISIBLE_IF UNIX AND NOT ANDROID AND NOT IOS
    VERIFY HAVE_GPHOTO2)
  OCV_OPTION(WITH_LAPACK "Include Lapack library support" (NOT CV_DISABLE_OPTIMIZATION)
