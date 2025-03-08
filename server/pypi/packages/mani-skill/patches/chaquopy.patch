@@ -13,11 +13,16 @@ index 0845901..4d1dfb7 100644
          enhanced_determinism: bool = False,
      ):
 diff --git a/setup.py b/setup.py
-index 43701e2..5e30ce2 100644
+index 43701e2..0bb16be 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -27,9 +27,9 @@ setup(
-         "numpy>=1.22,<2.0.0",
+@@ -24,12 +24,13 @@ setup(
+     python_requires=">=3.9",
+     setup_requires=["setuptools>=62.3.0"],
+     install_requires=[
+-        "numpy>=1.22,<2.0.0",
++        # "numpy>=1.22,<2.0.0",
++        "numpy==1.23.3",
          "scipy",
          "dacite",
 -        "gymnasium==0.29.1",
@@ -29,7 +34,7 @@ index 43701e2..5e30ce2 100644
          "pyyaml",
          "tqdm",
          "GitPython",
-@@ -37,13 +37,13 @@ setup(
+@@ -37,13 +38,13 @@ setup(
          "transforms3d",
          "trimesh",
          "imageio",
