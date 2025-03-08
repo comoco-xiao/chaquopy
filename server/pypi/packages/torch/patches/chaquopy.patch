@@ -215,10 +215,18 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..f54fbd715a6 100644
+index 84e4dad32d3..3858d789c9c 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -305,10 +305,19 @@ class CMake:
+@@ -6,6 +6,7 @@ import multiprocessing
+ import os
+ import platform
+ import sys
++import subprocess
+ import sysconfig
+ from distutils.version import LooseVersion
+ from subprocess import CalledProcessError, check_call, check_output
+@@ -305,10 +306,36 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -227,7 +235,24 @@ index 84e4dad32d3..f54fbd715a6 100644
 +        # todo xiao
 +        # Chaquopy: see https://github.com/shibatch/sleef/issues/249
 +        # build_sleef_native = os.path.abspath("build-sleef-native")
-+        build_sleef_native="/home/ubuntu/workspace/sleef/build-native"
++        # build_sleef_native="/home/ubuntu/workspace/sleef/build-native"
++        
++        build_sleef_native = os.path.abspath("build-sleef-native")
++        print(f"--------------------build_sleef_native = {build_sleef_native}")
++        
++        if not os.path.exists(build_sleef_native):  # For rerunning with build-wheel.py --no-unpack
++            os.mkdir(build_sleef_native)
++             
++            print(f"--------------------build sleef native---1")
++            subprocess.run(["cmake",
++                "-S", "../third_party/sleef",
++                "-B", build_sleef_native,
++                "cwd=build_sleef_native"], check=True, text=True)
++            print(f"--------------------build sleef native---2")
++            subprocess.run(["cmake",
++                "--build", build_sleef_native,
++                "-j", "--clean-first"], check=True, text=True)
++            print(f"--------------------build sleef native---3")
 +        
          CMake.defines(
              args,
