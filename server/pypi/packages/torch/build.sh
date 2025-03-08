@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
-# mkdir -p build-sleef-native
-echo '----------------------torch---build---'
-echo "当前路径（pwd）: $(pwd)"
+build_sleef_native=$PWD/build-sleef-native
+
+cd third_party/sleef
+cmake -S . -B $build_sleef_native
+cmake --build $build_sleef_native -j --clean-first
