@@ -215,7 +215,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..78b4dc19f7a 100644
+index 84e4dad32d3..d74c8999721 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -267,7 +267,7 @@ index 84e4dad32d3..78b4dc19f7a 100644
 +            print(f"--------------------build sleef native---2")
 +            # subprocess.run(["cmake",
 +            #     "-DBUILD_TOOLS=ON"], check=True, text=True)
-+            check_call(["cmake", "-DBUILD_TOOLS=ON", str(os.cpu_count())], **kwargs)
++            check_call(["cmake", "-DBUILD_TOOLS=ON"], **kwargs)
 +            print(f"--------------------build sleef native---3")
 +        
          CMake.defines(
