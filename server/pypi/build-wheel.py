@@ -173,16 +173,19 @@ class BuildWheel:
         else:
             print("---------------------------------chaquopy---unpack_and_build---7")
             with self.env_vars():
+                print("---------------------------------chaquopy---unpack_and_build---8")
                 self.create_dummy_libs()
+                print("---------------------------------chaquopy---unpack_and_build---9")
                 wheel_filename = self.build_wheel()
+                print("---------------------------------chaquopy---unpack_and_build---10")
                 wheel_dir = self.fix_wheel(wheel_filename)
-            print("---------------------------------chaquopy---unpack_and_build---8")
+            print("---------------------------------chaquopy---unpack_and_build---11")
             # Package outside of env_vars to make sure we run `wheel pack` in the same
             # environment as this script.
             self.package_wheel(
                 wheel_dir,
                 ensure_dir(f"{PYPI_DIR}/dist/{normalize_name_pypi(self.package)}"))
-        print("---------------------------------chaquopy---unpack_and_build---9")
+        print("---------------------------------chaquopy---unpack_and_build---12")
 
     def parse_args(self):
         ap = argparse.ArgumentParser(add_help=False)
@@ -428,7 +431,9 @@ class BuildWheel:
                 run(f"patch -p1 -i {patches_dir}/{patch_filename}")
 
     def build_wheel(self):
+        print("---------------------------------chaquopy---build_wheel---1")
         cd(self.src_dir)
+        print("---------------------------------chaquopy---build_wheel---2")
         build_script = f"{self.package_dir}/build.sh"
         if exists(build_script):
             return self.build_with_script(build_script)
@@ -502,8 +507,10 @@ class BuildWheel:
     # On Android, some libraries are incorporated into libc. Create empty .a files so we
     # don't have to patch everything that links against them.
     def create_dummy_libs(self):
+        print("---------------------------------chaquopy---create_dummy_libs---1")
         for name in ["pthread", "rt"]:
             run(f"{os.environ['AR']} rc {self.host_env}/chaquopy/lib/lib{name}.a")
+        print("---------------------------------chaquopy---create_dummy_libs---2")
 
     def extract_target(self):
         chaquopy_dir = f"{self.host_env}/chaquopy"
@@ -554,14 +561,16 @@ class BuildWheel:
         run(f"rm -r {chaquopy_dir}/jniLibs")
 
     def build_with_script(self, build_script):
+        print("---------------------------------chaquopy---build_with_script---1")
         prefix_dir = f"{self.build_dir}/prefix"
         ensure_empty(prefix_dir)
         os.environ["PREFIX"] = ensure_dir(f"{prefix_dir}/chaquopy")  # Conda variable name
-
+        print("---------------------------------chaquopy---build_with_script---2")
         if self.needs_python:
             run(f". {self.build_env}/bin/activate; {build_script}", shell=True)
         else:
             run(build_script)
+        print("---------------------------------chaquopy---build_with_script---3")
         return self.package_wheel(prefix_dir, self.src_dir)
 
     def build_with_pep517(self):
@@ -763,11 +772,12 @@ class BuildWheel:
                     """), file=toolchain_file)
 
     def fix_wheel(self, in_filename):
+        print("---------------------------------chaquopy---fix_wheel---1")
         tmp_dir = f"{self.build_dir}/fix_wheel"
         ensure_empty(tmp_dir)
         run(f"unzip -d {tmp_dir} -q {in_filename}")
         info_dir = assert_isdir(f"{tmp_dir}/{self.name_version}.dist-info")
-
+        print("---------------------------------chaquopy---fix_wheel---2")
         # This can't be done before the build, because sentencepiece generates a license file
         # in the source directory during the build.
         license_files = (find_license_files(self.src_dir) +
@@ -783,7 +793,7 @@ class BuildWheel:
         else:
             raise CommandError("Couldn't find license file: see license_file in "
                                "meta-schema.yaml")
-
+        print("---------------------------------chaquopy---fix_wheel---3")
         SO_PATTERN = r"\.so(\.|$)"
         available_libs = set(self.standard_libs)
         for dir_name in [f"{self.host_env}/chaquopy/lib", tmp_dir]:
@@ -795,7 +805,7 @@ class BuildWheel:
                             and not islink(f"{dirpath}/{name}")
                         ):
                             available_libs.add(name)
-
+        print("---------------------------------chaquopy---fix_wheel---4")
         reqs = set()
         log("Processing native binaries")
         for path, _, _ in csv.reader(open(f"{info_dir}/RECORD")):
@@ -825,7 +835,7 @@ class BuildWheel:
                 # use $ORIGIN, but that isn't supported until API level 24
                 # (https://github.com/aosp-mirror/platform_bionic/blob/master/android-changes-for-ndk-developers.md).
                 run(f"patchelf --remove-rpath {fixed_path}")
-
+        print("---------------------------------chaquopy---fix_wheel---5")
         reqs.update(self.get_requirements("host"))
         if reqs:
             update_requirements(f"{info_dir}/METADATA", reqs)
@@ -833,7 +843,7 @@ class BuildWheel:
             info_metadata_json = f"{info_dir}/metadata.json"
             if exists(info_metadata_json):
                 run(f"rm {info_metadata_json}")
-
+        print("---------------------------------chaquopy---fix_wheel---6")
         return tmp_dir
 
     def package_wheel(self, in_dir, out_dir):
