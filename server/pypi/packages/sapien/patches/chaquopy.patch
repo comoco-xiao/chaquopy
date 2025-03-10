@@ -1,3 +1,24 @@
+diff --git a/3rd_party/sapien-vulkan-2/src/core/instance.cpp b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
+index b4afa3de..2a36927d 100644
+--- a/3rd_party/sapien-vulkan-2/src/core/instance.cpp
++++ b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
+@@ -77,7 +77,7 @@ namespace svulkan2::core {
+ #endif
+   )
+           : mApiVersion(apiVersion), mLayer(layer) {
+-
++    LOGI("-------------------------Instance::Instance---mLayer == null (%d)", mLayer == nullptr);
+ #ifdef USE_OPENXR
+     // Initialize vulkan loader
+     try {
+@@ -692,6 +692,7 @@ namespace svulkan2::core {
+   vk::UniqueSurfaceKHR uniqueSurface = mInstance->createMetalSurfaceEXTUnique(surfaceCreateInfo);
+   tmpSurface = uniqueSurface.get();
+ #elif defined(VK_USE_PLATFORM_ANDROID_KHR)
++  LOGI("-------------------------Instance::summarizePhysicalDevices---mLayer == null (%d)", mLayer == nullptr);
+   vk::AndroidSurfaceCreateInfoKHR surfaceCreateInfo = {};
+   surfaceCreateInfo.flags = vk::AndroidSurfaceCreateFlagsKHR();
+   surfaceCreateInfo.setWindow(const_cast<ANativeWindow*>(static_cast<const ANativeWindow*>(mLayer)));
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index dcd94d91..a267e655 100644
 --- a/CMakeLists.txt
@@ -439,7 +460,7 @@ index bd21283f..39b99d44 100644
          self.copy_assets(ext)
  
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..114af288 100644
+index 7c190c40..10058cd9 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -450,13 +471,14 @@ index 7c190c40..114af288 100644
  
  // zhangxiao
  #ifdef SAPIEN_CUDA
-@@ -18,14 +19,24 @@
+@@ -18,14 +19,25 @@
  #include <cuda_runtime.h>
  #endif
  
 +#ifdef __ANDROID__
 +#include <jni.h>
 +#include <android/native_window_jni.h>
++#include "../logger.h"
 +#endif
 +
  namespace sapien {
@@ -475,7 +497,15 @@ index 7c190c40..114af288 100644
    static std::weak_ptr<SapienRenderEngine> gEngine;
    std::shared_ptr<SapienRenderEngine> engine;
    if ((engine = gEngine.lock())) {
-@@ -117,6 +128,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
+@@ -35,6 +47,7 @@ std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Devi
+     }
+     return engine;
+   }
++  LOGI("-------------------------SapienRenderEngine::Get---layer == null (%d)", layer == nullptr);
+   if (layer) {
+     svulkan2::core::Context::setLayer(layer);
+   }
+@@ -117,6 +130,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
                                            ,const std::shared_ptr<PlatformData> &data
  #endif
  ) {
@@ -485,7 +515,7 @@ index 7c190c40..114af288 100644
    mEngine = SapienRenderEngine::Get(device, layer
  #ifdef USE_OPENXR
                                      ,data
-@@ -220,6 +234,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
+@@ -220,6 +236,24 @@ CudaArrayHandle SapienRendererSystem::getTransformCudaArray() {
  #endif
  }
  
