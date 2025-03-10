@@ -10,7 +10,7 @@ build:
 requirements:
   build:
     - cmake 3.31.4
-    - scikit-build 0.10.0
+    # - scikit-build 0.10.0
   host:
     - chaquopy-libgfortran 4.9
     - chaquopy-libpng 1.6.34
