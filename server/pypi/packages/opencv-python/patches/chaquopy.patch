@@ -69,7 +69,7 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 1dfab2f..329c393 100644
+index 1dfab2f..43e1e32 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,8 +17,10 @@ def main():
@@ -171,29 +171,29 @@ index 1dfab2f..329c393 100644
 +    print("-------------------------------------opencv python---setup---1")
 +    # Chaquopy
 +    # py_major_ver = sys.version_info[0]
-+    # cmake_args += [
-+    #     # Enable CMake's cross-compilation mode.
-+    #     "-DCMAKE_TOOLCHAIN_FILE=" + os.path.abspath("../chaquopy.toolchain.cmake"),
++    cmake_args += [
++        # Enable CMake's cross-compilation mode.
++        "-DCMAKE_TOOLCHAIN_FILE=" + os.path.abspath("../chaquopy.toolchain.cmake"),
 +        
-+    #     # Unnecessary, and requires an old version of the SDK.
-+    #     "-DBUILD_ANDROID_PROJECTS=OFF", "-DBUILD_ANDROID_EXAMPLES=OFF",
++        # Unnecessary, and requires an old version of the SDK.
++        "-DBUILD_ANDROID_PROJECTS=OFF", "-DBUILD_ANDROID_EXAMPLES=OFF",
 +        
-+    #     # External dependencies which we've built as wheels (listed in meta.yaml).
-+    #     "-DBUILD_JPEG=OFF", "-DBUILD_PNG=OFF",
++        # External dependencies which we've built as wheels (listed in meta.yaml).
++        "-DBUILD_JPEG=OFF", "-DBUILD_PNG=OFF",
 +        
-+    #     # External dependencies which we can do without for now.
-+    #     "-DWITH_TIFF=OFF", "-DWITH_JASPER=OFF", "-DWITH_OPENEXR=OFF", "-DWITH_WEBP=OFF",
++        # External dependencies which we can do without for now.
++        "-DWITH_TIFF=OFF", "-DWITH_JASPER=OFF", "-DWITH_OPENEXR=OFF", "-DWITH_WEBP=OFF",
 +        
-+    #     # These are only available for x86, so disable for consistency between ABIs.
-+    #     "-DWITH_IPP=OFF", "-DWITH_ITT=OFF",
++        # These are only available for x86, so disable for consistency between ABIs.
++        "-DWITH_IPP=OFF", "-DWITH_ITT=OFF",
 +        
-+    #     # Python native modules aren't usually linked against libpython on Linux, but our
-+    #     # configuration requires it (see opencv/modules/python/common.cmake).
-+    #     "-DOPENCV_FORCE_PYTHON_LIBS=ON",
++        # Python native modules aren't usually linked against libpython on Linux, but our
++        # configuration requires it (see opencv/modules/python/common.cmake).
++        "-DOPENCV_FORCE_PYTHON_LIBS=ON",
 +        
-+    #     "-DPYTHON{}_NUMPY_INCLUDE_DIRS={}".format(
-+    #         py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
-+    # ]
++        # "-DPYTHON{}_NUMPY_INCLUDE_DIRS={}".format(
++        #     py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
++    ]
 +    
 +    print("-------------------------------------opencv python---setup---2")
      if build_headless:
