@@ -69,7 +69,7 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 1dfab2f..d27caf6 100644
+index 1dfab2f..8d24cc5 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,8 +17,10 @@ def main():
@@ -163,11 +163,12 @@ index 1dfab2f..d27caf6 100644
          ],
          "cv2.gapi": [
              "python/cv2" + r"/gapi/.*\.py"
-@@ -212,6 +238,33 @@ def main():
+@@ -212,7 +238,34 @@ def main():
              else []
          )
      )
-+    
+-
++    print("-------------------------------------opencv python---setup---1")
 +    # Chaquopy
 +    py_major_ver = sys.version_info[0]
 +    cmake_args += [
@@ -194,9 +195,34 @@ index 1dfab2f..d27caf6 100644
 +            py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
 +    ]
 +    
- 
++    print("-------------------------------------opencv python---setup---2")
      if build_headless:
          # it seems that cocoa cannot be disabled so on macOS the package is not truly headless
+         cmake_args.append("-DWITH_WIN32UI=OFF")
+@@ -225,7 +278,7 @@ def main():
+ 
+     if sys.platform.startswith("linux") and not is64 and "bdist_wheel" in sys.argv:
+         subprocess.check_call("patch -p0 < patches/patchOpenEXR", shell=True)
+-
++    print("-------------------------------------opencv python---setup---3")
+     # OS-specific components during CI builds
+     if is_CI_build:
+ 
+@@ -261,12 +314,12 @@ def main():
+             cmake_args.append("-DWITH_V4L=ON")
+             cmake_args.append("-DWITH_LAPACK=ON")
+             cmake_args.append("-DENABLE_PRECOMPILED_HEADERS=OFF")
+-
++    print("-------------------------------------opencv python---setup---4")
+     # works via side effect
+     RearrangeCMakeOutput(
+         rearrange_cmake_output_data, files_outside_package_dir, package_data.keys()
+     )
+-
++    print("-------------------------------------opencv python---setup---5")
+     setup(
+         name=package_name,
+         version=package_version,
 @@ -279,7 +332,8 @@ def main():
          package_data=package_data,
          maintainer="OpenCV Team",
