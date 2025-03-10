@@ -239,7 +239,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..853fa69fabc 100644
+index 84e4dad32d3..a4434cb9974 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -250,7 +250,7 @@ index 84e4dad32d3..853fa69fabc 100644
  import sysconfig
  from distutils.version import LooseVersion
  from subprocess import CalledProcessError, check_call, check_output
-@@ -305,13 +306,34 @@ class CMake:
+@@ -305,10 +306,27 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -280,13 +280,6 @@ index 84e4dad32d3..853fa69fabc 100644
              TORCH_BUILD_VERSION=version,
              **build_options,
          )
-+        
-+        import numpy as np
-+        numpy_include = np.get_include()
-+        print(f"---------------------------numpy include = ${numpy_include}")
- 
-         expected_wrapper = "/usr/local/opt/ccache/libexec"
-         if IS_DARWIN and os.path.exists(expected_wrapper):
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
 index b123023d2fd..4ebd88274ae 100644
 --- a/torch/CMakeLists.txt
