@@ -68,6 +68,18 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python2)
    ocv_module_disable_(python3)
    return()
+diff --git a/opencv/platforms/linux/riscv64-clang.toolchain.cmake b/opencv/platforms/linux/riscv64-clang.toolchain.cmake
+index 939350fcbd..be447de6c8 100644
+--- a/opencv/platforms/linux/riscv64-clang.toolchain.cmake
++++ b/opencv/platforms/linux/riscv64-clang.toolchain.cmake
+@@ -7,6 +7,7 @@ set(CMAKE_SYSROOT ${RISCV_GCC_INSTALL_ROOT}/sysroot CACHE PATH "RISC-V sysroot")
+ 
+ set(CLANG_TARGET_TRIPLE riscv64-unknown-linux-gnu)
+ 
++message(------------------------------opencv-platform-linux-riscv64-clang.toolchain.cmake)
+ set(CMAKE_C_COMPILER ${RISCV_CLANG_BUILD_ROOT}/bin/clang)
+ set(CMAKE_C_COMPILER_TARGET ${CLANG_TARGET_TRIPLE})
+ set(CMAKE_CXX_COMPILER ${RISCV_CLANG_BUILD_ROOT}/bin/clang++)
 diff --git a/setup.py b/setup.py
 index 1dfab2f..568b92f 100644
 --- a/setup.py
