@@ -1,43 +1,19 @@
 Submodule opencv contains modified content
 diff --git a/opencv/CMakeLists.txt b/opencv/CMakeLists.txt
-index 45fc6de72a..a49b1fe24b 100644
+index e60406fbe2..c0ea4ebd44 100644
 --- a/opencv/CMakeLists.txt
 +++ b/opencv/CMakeLists.txt
-@@ -14,6 +14,8 @@ FATAL: In-source builds are not allowed.
- ")
- endif()
- 
-+# -DCMAKE_VERBOSE_MAKEFILE=ON
-+set(CMAKE_VERBOSE_MAKEFILE ON)
- 
- include(cmake/OpenCVMinDepVersions.cmake)
- 
-@@ -411,7 +413,7 @@ OCV_OPTION(WITH_GPHOTO2 "Include gPhoto2 library support" OFF
-   VISIBLE_IF UNIX AND NOT ANDROID AND NOT IOS
+@@ -427,7 +427,7 @@ OCV_OPTION(WITH_GPHOTO2 "Include gPhoto2 library support" OFF
+   VISIBLE_IF UNIX AND NOT ANDROID AND NOT IOS AND NOT XROS
    VERIFY HAVE_GPHOTO2)
  OCV_OPTION(WITH_LAPACK "Include Lapack library support" (NOT CV_DISABLE_OPTIMIZATION)
--  VISIBLE_IF NOT ANDROID AND NOT IOS
-+  VISIBLE_IF NOT IOS  # Chaquopy: removed ANDROID exclusion
+-  VISIBLE_IF NOT ANDROID AND NOT IOS AND NOT XROS
++  VISIBLE_IF NOT IOS AND NOT XROS # Chaquopy: removed ANDROID exclusion
    VERIFY HAVE_LAPACK)
  OCV_OPTION(WITH_ITT "Include Intel ITT support" ON
    VISIBLE_IF NOT APPLE_FRAMEWORK
-diff --git a/opencv/cmake/OpenCVDetectApacheAnt.cmake b/opencv/cmake/OpenCVDetectApacheAnt.cmake
-index 330ea9f756..eddcfa0c2a 100644
---- a/opencv/cmake/OpenCVDetectApacheAnt.cmake
-+++ b/opencv/cmake/OpenCVDetectApacheAnt.cmake
-@@ -18,7 +18,9 @@ find_host_program(ANT_EXECUTABLE NAMES ${ANT_NAME}
- find_host_program(ANT_EXECUTABLE NAMES ${ANT_NAME})
- 
- if(ANT_EXECUTABLE)
--  execute_process(COMMAND ${ANT_EXECUTABLE} -version
-+  # todo xiao
-+  # execute_process(COMMAND ${ANT_EXECUTABLE} -version
-+  execute_process(COMMAND ${ANT_EXECUTABLE} --version
-     RESULT_VARIABLE ANT_ERROR_LEVEL
-     OUTPUT_VARIABLE ANT_VERSION_FULL
-     OUTPUT_STRIP_TRAILING_WHITESPACE)
 diff --git a/opencv/cmake/OpenCVDetectPython.cmake b/opencv/cmake/OpenCVDetectPython.cmake
-index 4ff02a77d3..2b9878651d 100644
+index a23fba6e5a..0141af26f9 100644
 --- a/opencv/cmake/OpenCVDetectPython.cmake
 +++ b/opencv/cmake/OpenCVDetectPython.cmake
 @@ -123,7 +123,7 @@ if(NOT ${found})
@@ -49,37 +25,38 @@ index 4ff02a77d3..2b9878651d 100644
        ocv_check_environment_variables(${library_env} ${include_dir_env})
        if(NOT ${${library_env}} STREQUAL "")
            set(PYTHON_LIBRARY "${${library_env}}")
-@@ -144,8 +144,8 @@ if(NOT ${found})
+@@ -144,9 +144,9 @@ if(NOT ${found})
          # Copy outputs
          set(_libs_found ${PYTHONLIBS_FOUND})
          set(_libraries ${PYTHON_LIBRARIES})
 -        set(_include_path ${PYTHON_INCLUDE_PATH})
--        set(_include_dirs ${PYTHON_INCLUDE_DIRS})
 +        set(_include_path ${PYTHON_INCLUDE_DIR})  # Chaquopy: replaced PYTHON_INCLUDE_PATH and
+         set(_include_dirs ${PYTHON_INCLUDE_DIRS})
+-        set(_debug_libraries ${PYTHON_DEBUG_LIBRARIES})
 +        set(_include_dirs ${PYTHON_INCLUDE_DIR})  # PYTHON_INCLUDE_DIRS, which were always empty.
-         set(_debug_libraries ${PYTHON_DEBUG_LIBRARIES})
          set(_libs_version_string ${PYTHONLIBS_VERSION_STRING})
          set(_debug_library ${PYTHON_DEBUG_LIBRARY})
+         set(_library ${PYTHON_LIBRARY})
 @@ -175,7 +175,7 @@ if(NOT ${found})
        endif()
      endif()
  
--    if(NOT ANDROID AND NOT IOS)
-+    if(NOT IOS)  # Chaquopy: removed ANDROID exclusion
+-    if(NOT ANDROID AND NOT IOS AND NOT XROS)
++    if(NOT IOS AND NOT XROS) # Chaquopy: removed ANDROID exclusion
        if(CMAKE_HOST_UNIX)
-         execute_process(COMMAND ${_executable} -c "from distutils.sysconfig import *; print(get_python_lib())"
+         execute_process(COMMAND ${_executable} -c "from sysconfig import *; print(get_path('purelib'))"
                          RESULT_VARIABLE _cvpy_process
 @@ -240,7 +240,7 @@ if(NOT ${found})
                            OUTPUT_STRIP_TRAILING_WHITESPACE)
          endif()
        endif()
--    endif(NOT ANDROID AND NOT IOS)
-+    endif()
+-    endif(NOT ANDROID AND NOT IOS AND NOT XROS)
++    endif(NOT IOS AND NOT XROS)
    endif()
  
    # Export return values
 diff --git a/opencv/modules/python/CMakeLists.txt b/opencv/modules/python/CMakeLists.txt
-index a51acf386e..6acd13ba52 100644
+index 93eab8c94d..ded0365e93 100644
 --- a/opencv/modules/python/CMakeLists.txt
 +++ b/opencv/modules/python/CMakeLists.txt
 @@ -3,7 +3,7 @@
@@ -87,39 +64,54 @@ index a51acf386e..6acd13ba52 100644
  if(DEFINED OPENCV_INITIAL_PASS)  # OpenCV build
  
 -if(ANDROID OR APPLE_FRAMEWORK OR WINRT)
-+if(APPLE_FRAMEWORK OR WINRT)  # Chaquopy: removed ANDROID exclusion
++if(APPLE_FRAMEWORK OR WINRT) # Chaquopy: removed ANDROID exclusion
    ocv_module_disable_(python2)
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 67f22c6..078cdda 100644
+index 1dfab2f..1b84d0f 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -18,8 +18,11 @@ def main():
+@@ -17,8 +17,10 @@ def main():
      is_CI_build = True if CI_BUILD == "1" else False
      cmake_source_dir = "opencv"
      minimum_supported_numpy = "1.13.3"
 -    build_contrib = get_build_env_var_by_name("contrib")
 -    build_headless = get_build_env_var_by_name("headless")
-+
 +    # Chaquopy
 +    build_contrib = "contrib" in os.environ["PKG_NAME"]
 +    build_headless = "headless" in os.environ["PKG_NAME"]
-+
++    
      build_java = "ON" if get_build_env_var_by_name("java") else "OFF"
+     build_rolling = get_build_env_var_by_name("rolling")
  
-     if sys.version_info[:2] >= (3, 6):
-@@ -38,12 +41,26 @@ def main():
-     numpy_version = "numpy>=%s" % minimum_supported_numpy
+@@ -36,17 +38,37 @@ def main():
+     ]
  
      python_version = cmaker.CMaker.get_python_version()
--    python_lib_path = cmaker.CMaker.get_python_library(python_version).replace(
--        "\\", "/"
--    )
+-    python_lib_path = cmaker.CMaker.get_python_library(python_version) or ""
+-    # HACK: For Scikit-build 0.17.3 and newer that returns None or empty sptring for PYTHON_LIBRARY in manylinux2014
+-    # A small release related to PYTHON_LIBRARY handling changes in 0.17.2; scikit-build 0.17.3 returns an empty string from get_python_library if no Python library is present (like on manylinux), where 0.17.2 returned None, and previous versions returned a non-existent path. Note that adding REQUIRED to find_package(PythonLibs will fail, but it is incorrect (you must not link to libPython.so) and was really just injecting a non-existent path before.
+-    # TODO: Remove the hack when the issue is handled correctly in main OpenCV CMake.
+-    if python_lib_path == "":
+-        python_lib_path = "libpython%sm.a" % python_version
+-    python_lib_path = python_lib_path.replace("\\", "/")
+-
 -    python_include_dir = cmaker.CMaker.get_python_include_dir(python_version).replace(
 -        "\\", "/"
 -    )
++    # python_lib_path = cmaker.CMaker.get_python_library(python_version) or ""
++    # # HACK: For Scikit-build 0.17.3 and newer that returns None or empty sptring for PYTHON_LIBRARY in manylinux2014
++    # # A small release related to PYTHON_LIBRARY handling changes in 0.17.2; scikit-build 0.17.3 returns an empty string from get_python_library if no Python library is present (like on manylinux), where 0.17.2 returned None, and previous versions returned a non-existent path. Note that adding REQUIRED to find_package(PythonLibs will fail, but it is incorrect (you must not link to libPython.so) and was really just injecting a non-existent path before.
++    # # TODO: Remove the hack when the issue is handled correctly in main OpenCV CMake.
++    # if python_lib_path == "":
++    #     python_lib_path = "libpython%sm.a" % python_version
++    # python_lib_path = python_lib_path.replace("\\", "/")
 +
++    # python_include_dir = cmaker.CMaker.get_python_include_dir(python_version).replace(
++    #     "\\", "/"
++    # )
++    
 +    # Chaquopy
 +    python_include_dir = None
 +    in_dirafter = False
@@ -131,7 +123,7 @@ index 67f22c6..078cdda 100644
 +            if "include/python" in word:
 +                python_include_dir = word
 +    assert python_include_dir, os.environ["CFLAGS"]
-+
++    
 +    # Chaquopy
 +    python_lib_dir = os.path.abspath(python_include_dir + "/../../lib")
 +    python_lib_path = None
@@ -142,74 +134,76 @@ index 67f22c6..078cdda 100644
  
      if os.path.exists(".git"):
          import pip._internal.vcs.git as git
-@@ -65,7 +82,7 @@ def main():
+@@ -79,7 +101,7 @@ def main():
      )
  
      # https://stackoverflow.com/questions/1405913/python-32bit-or-64bit-mode
--    x64 = sys.maxsize > 2 ** 32
-+    x64 = "64" in os.environ["CHAQUOPY_ABI"]  # Chaquopy: was sys.maxsize > 2 ** 32
+-    is64 = sys.maxsize > 2 ** 32
++    is64 = "64" in os.environ["CHAQUOPY_ABI"]  # Chaquopy: was sys.maxsize > 2 ** 32
  
      package_name = "opencv-python"
  
-@@ -78,6 +95,9 @@ def main():
+@@ -91,6 +113,9 @@ def main():
+ 
      if build_headless and not build_contrib:
          package_name = "opencv-python-headless"
- 
++    
 +    # Chaquopy
 +    package_name = os.environ["PKG_NAME"]
-+
-     long_description = io.open("README.md", encoding="utf-8").read()
  
-     packages = ["cv2", "cv2.data"]
-@@ -106,7 +126,8 @@ def main():
-             % {"ext": re.escape(sysconfig.get_config_var("EXT_SUFFIX"))}
-         ],
+     if build_rolling:
+         package_name += "-rolling"
+@@ -137,7 +162,8 @@ def main():
+         [ r"python/cv2/py.typed" ] if sys.version_info >= (3, 6) else []
+         ,
          "cv2.data": [  # OPENCV_OTHER_INSTALL_PATH
 -            ("etc" if os.name == "nt" else "share/opencv4") + r"/haarcascades/.*\.xml"
 +            # Chaquopy: see opencv/cmake/OpenCVInstallLayout.cmake
 +            "sdk/etc" + r"/haarcascades/.*\.xml"
          ],
-     }
- 
-@@ -153,6 +174,32 @@ def main():
+         "cv2.gapi": [
+             "python/cv2" + r"/gapi/.*\.py"
+@@ -212,6 +238,33 @@ def main():
+             else []
          )
      )
- 
++    
 +    # Chaquopy
 +    py_major_ver = sys.version_info[0]
 +    cmake_args += [
 +        # Enable CMake's cross-compilation mode.
 +        "-DCMAKE_TOOLCHAIN_FILE=" + os.path.abspath("../chaquopy.toolchain.cmake"),
-+
++        
 +        # Unnecessary, and requires an old version of the SDK.
 +        "-DBUILD_ANDROID_PROJECTS=OFF", "-DBUILD_ANDROID_EXAMPLES=OFF",
-+
++        
 +        # External dependencies which we've built as wheels (listed in meta.yaml).
 +        "-DBUILD_JPEG=OFF", "-DBUILD_PNG=OFF",
-+
++        
 +        # External dependencies which we can do without for now.
 +        "-DWITH_TIFF=OFF", "-DWITH_JASPER=OFF", "-DWITH_OPENEXR=OFF", "-DWITH_WEBP=OFF",
-+
++        
 +        # These are only available for x86, so disable for consistency between ABIs.
 +        "-DWITH_IPP=OFF", "-DWITH_ITT=OFF",
-+
++        
 +        # Python native modules aren't usually linked against libpython on Linux, but our
 +        # configuration requires it (see opencv/modules/python/common.cmake).
 +        "-DOPENCV_FORCE_PYTHON_LIBS=ON",
-+
++        
 +        "-DPYTHON{}_NUMPY_INCLUDE_DIRS={}".format(
 +            py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
 +    ]
-+
++    
+ 
      if build_headless:
          # it seems that cocoa cannot be disabled so on macOS the package is not truly headless
-         cmake_args.append("-DWITH_WIN32UI=OFF")
-@@ -226,7 +273,7 @@ def main():
+@@ -279,7 +332,8 @@ def main():
          package_data=package_data,
-         maintainer="Olli-Pekka Heinisuo",
+         maintainer="OpenCV Team",
          ext_modules=EmptyListWithLength(),
--        install_requires=numpy_version,
+-        install_requires=install_requires,
 +        # Chaquopy: install_requires numpy is handled by meta.yaml.
++        # install_requires=install_requires,
          python_requires=">=3.6",
          classifiers=[
              "Development Status :: 5 - Production/Stable",
