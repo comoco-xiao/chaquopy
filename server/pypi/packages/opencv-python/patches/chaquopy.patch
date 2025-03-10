@@ -69,7 +69,7 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 1dfab2f..43e1e32 100644
+index 1dfab2f..568b92f 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,8 +17,10 @@ def main():
@@ -170,7 +170,7 @@ index 1dfab2f..43e1e32 100644
 -
 +    print("-------------------------------------opencv python---setup---1")
 +    # Chaquopy
-+    # py_major_ver = sys.version_info[0]
++    py_major_ver = sys.version_info[0]
 +    cmake_args += [
 +        # Enable CMake's cross-compilation mode.
 +        "-DCMAKE_TOOLCHAIN_FILE=" + os.path.abspath("../chaquopy.toolchain.cmake"),
@@ -191,8 +191,8 @@ index 1dfab2f..43e1e32 100644
 +        # configuration requires it (see opencv/modules/python/common.cmake).
 +        "-DOPENCV_FORCE_PYTHON_LIBS=ON",
 +        
-+        # "-DPYTHON{}_NUMPY_INCLUDE_DIRS={}".format(
-+        #     py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
++        "-DPYTHON{}_NUMPY_INCLUDE_DIRS={}".format(
++            py_major_ver, os.path.abspath("../requirements/numpy/core/include")),
 +    ]
 +    
 +    print("-------------------------------------opencv python---setup---2")
