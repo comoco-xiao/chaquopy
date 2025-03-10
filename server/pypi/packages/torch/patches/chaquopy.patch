@@ -56,7 +56,7 @@ index 919eb6c8567..b878027c648 100644
      defined(__APPLE__) && \
      (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..68713203497 100644
+index 1813f4418a2..87fb15f99ed 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -848,7 +848,9 @@ if(BUILD_PYTHON)
@@ -70,7 +70,27 @@ index 1813f4418a2..68713203497 100644
  else()
    find_package(Python COMPONENTS Interpreter)
  endif()
-@@ -1290,7 +1292,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -864,8 +866,11 @@ endif()
+ 
+ # ---[ Python + Numpy
+ if(BUILD_PYTHON)
++  message(----------------------------Python_Development.Module_FOUND = ${Python_Development.Module_FOUND})
+   if(Python_Development.Module_FOUND)
++    message(----------------------------USE_NUMPY = ${USE_NUMPY})
+     if(USE_NUMPY)
++    message(----------------------------Python_NumPy_FOUND = ${Python_NumPy_FOUND})
+       if(NOT Python_NumPy_FOUND)
+         message(WARNING "NumPy could not be found. Not building with NumPy. Suppress this warning with -DUSE_NUMPY=OFF")
+         caffe2_update_option(USE_NUMPY OFF)
+@@ -880,6 +885,7 @@ if(BUILD_PYTHON)
+     caffe2_update_option(BUILD_PYTHON OFF)
+   endif()
+ endif()
++message(----------------------------1---USE_NUMPY = ${USE_NUMPY})
+ 
+ # ---[ pybind11
+ if(USE_SYSTEM_PYBIND11)
+@@ -1290,7 +1296,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
@@ -80,7 +100,7 @@ index 1813f4418a2..68713203497 100644
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1500,9 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1504,9 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
