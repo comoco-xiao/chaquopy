@@ -69,7 +69,7 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 1dfab2f..9f44d7b 100644
+index 1dfab2f..568b92f 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,8 +17,10 @@ def main():
@@ -219,7 +219,7 @@ index 1dfab2f..9f44d7b 100644
          rearrange_cmake_output_data, files_outside_package_dir, package_data.keys()
      )
 -
-+    print("-------------------------------------opencv python---setup---5")
++    print(f"-------------------------------------opencv python---setup---5---cmake_args = {cmake_args}")
      setup(
          name=package_name,
          version=package_version,
