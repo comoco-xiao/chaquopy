@@ -171,17 +171,18 @@ class BuildWheel:
         if self.no_build:
             log("Skipping build due to --no-build")
         else:
+            print("---------------------------------chaquopy---unpack_and_build---7")
             with self.env_vars():
                 self.create_dummy_libs()
                 wheel_filename = self.build_wheel()
                 wheel_dir = self.fix_wheel(wheel_filename)
-
+            print("---------------------------------chaquopy---unpack_and_build---8")
             # Package outside of env_vars to make sure we run `wheel pack` in the same
             # environment as this script.
             self.package_wheel(
                 wheel_dir,
                 ensure_dir(f"{PYPI_DIR}/dist/{normalize_name_pypi(self.package)}"))
-        print("---------------------------------chaquopy---unpack_and_build---7")
+        print("---------------------------------chaquopy---unpack_and_build---9")
 
     def parse_args(self):
         ap = argparse.ArgumentParser(add_help=False)
@@ -836,16 +837,20 @@ class BuildWheel:
         return tmp_dir
 
     def package_wheel(self, in_dir, out_dir):
+        print("---------------------------------chaquopy---package_wheel---1")
         info_dir = ensure_dir(f"{in_dir}/{self.name_version}.dist-info")
+        print("---------------------------------chaquopy---package_wheel---2")
         update_message_file(f"{info_dir}/WHEEL",
                             {"Wheel-Version": "1.0",
                              "Root-Is-Purelib": "false"},
                             if_exist="keep")
+        print("---------------------------------chaquopy---package_wheel---3")
         update_message_file(f"{info_dir}/WHEEL",
                             {"Generator": PROGRAM_NAME,
                              "Build": self.build_num,
                              "Tag": self.compat_tag},
                             if_exist="replace")
+        print("---------------------------------chaquopy---package_wheel---4")
         update_message_file(f"{info_dir}/METADATA",
                             {"Metadata-Version": "1.2",
                              "Name": self.package,
@@ -853,9 +858,10 @@ class BuildWheel:
                              "Summary": "",        # Compulsory according to PEP 345,
                              "Download-URL": ""},  #
                             if_exist="keep")
-
+        print("---------------------------------chaquopy---package_wheel---5")
         # `wheel pack` logs the wheel filename, so there's no need to log it ourselves.
         run(f"wheel pack {in_dir} --dest-dir {out_dir} --build-number {self.build_num}")
+        print("---------------------------------chaquopy---package_wheel---6")
         return f"{out_dir}/{self.name_version}-{self.build_num}-{self.compat_tag}.whl"
 
     def check_requirements(self, filename, available_libs):
