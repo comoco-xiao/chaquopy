@@ -11,7 +11,7 @@ index 36d5becb57c..ab10795624c 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..4d3b177b2fe 100644
+index c8af5f00b5c..953dc95965b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,16 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -25,7 +25,7 @@ index c8af5f00b5c..4d3b177b2fe 100644
 +set(USE_VULKAN OFF)
 +set(BUILD_PYTHON ON)
 +set(Python_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/torch/build/2.6.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9" CACHE STRING "Python interpreter" FORCE)
-+set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/torch/build/2.6.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include" CACHE STRING "NumPy include dir" FORCE)
++set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/torch/build/2.6.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include/numpy" CACHE STRING "NumPy include dir" FORCE)
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
