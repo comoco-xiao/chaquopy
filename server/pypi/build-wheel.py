@@ -113,6 +113,7 @@ class BuildWheel:
             sys.exit(1)
 
     def unpack_and_build(self):
+        print("---------------------------------chaquopy---unpack_and_build---1")
         self.non_python_tag = "py3-none"
         self.abi_tag = self.abi.replace('-', '_')
         if self.needs_target:
@@ -122,7 +123,7 @@ class BuildWheel:
         else:
             self.python_tag = self.non_python_tag
         self.compat_tag = f"{self.python_tag}-android_{self.api_level}_{self.abi_tag}"
-
+        print("---------------------------------chaquopy---unpack_and_build---2")
         # TODO: move this to {PYPI_DIR}/build/{package}/{version}, which is one level
         # shallower, more consistent with the layout of dist/ and packages/, and keeps
         # all the build directories together for easier cleanup. But first, check
@@ -135,7 +136,7 @@ class BuildWheel:
         self.src_dir = f"{self.build_dir}/src"
         self.build_env = f"{self.build_dir}/env"
         self.host_env = f"{self.build_dir}/requirements"
-
+        print("---------------------------------chaquopy---unpack_and_build---3")
         if self.no_unpack:
             log("Reusing existing build directory due to --no-unpack")
             assert_isdir(self.src_dir)
@@ -144,7 +145,7 @@ class BuildWheel:
             self.unpack_source()
             self.apply_patches()
             self.create_host_env()
-
+        print("---------------------------------chaquopy---unpack_and_build---4")
         # The ProjectBuilder constructor requires at least one of pyproject.toml or
         # setup.py to exist, which may not be the case for packages built using build.sh
         # (e.g. tflite-runtime).
@@ -163,10 +164,10 @@ class BuildWheel:
             finally:
                 if not src_is_pyproject:
                     pyproject_toml.unlink()
-
+        print("---------------------------------chaquopy---unpack_and_build---5")
         if not self.no_unpack:
             self.create_build_env()
-
+        print("---------------------------------chaquopy---unpack_and_build---6")
         if self.no_build:
             log("Skipping build due to --no-build")
         else:
@@ -180,6 +181,7 @@ class BuildWheel:
             self.package_wheel(
                 wheel_dir,
                 ensure_dir(f"{PYPI_DIR}/dist/{normalize_name_pypi(self.package)}"))
+        print("---------------------------------chaquopy---unpack_and_build---7")
 
     def parse_args(self):
         ap = argparse.ArgumentParser(add_help=False)
