@@ -11,10 +11,10 @@ index 36d5becb57c..ab10795624c 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..b3ffd1e4de8 100644
+index c8af5f00b5c..4d3b177b2fe 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,15 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+@@ -22,6 +22,16 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
    message(FATAL_ERROR "In-source build are not supported")
  endif()
  
@@ -24,13 +24,14 @@ index c8af5f00b5c..b3ffd1e4de8 100644
 +set(USE_OPENCV OFF)
 +set(USE_VULKAN OFF)
 +set(BUILD_PYTHON ON)
++set(Python_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/torch/build/2.6.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9" CACHE STRING "Python interpreter" FORCE)
 +set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/torch/build/2.6.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include" CACHE STRING "NumPy include dir" FORCE)
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
  project(Torch CXX C)
  
-@@ -663,9 +672,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+@@ -663,9 +673,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
  if(ANDROID
     OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
