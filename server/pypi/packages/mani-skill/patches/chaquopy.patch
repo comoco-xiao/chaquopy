@@ -12,6 +12,102 @@ index 0845901..4d1dfb7 100644
          parallel_in_single_scene: bool = False,
          enhanced_determinism: bool = False,
      ):
+diff --git a/mani_skill/envs/tasks/digital_twins/base_env.py b/mani_skill/envs/tasks/digital_twins/base_env.py
+index 83ca075..e43265d 100644
+--- a/mani_skill/envs/tasks/digital_twins/base_env.py
++++ b/mani_skill/envs/tasks/digital_twins/base_env.py
+@@ -1,7 +1,8 @@
+ import os
+ from typing import Dict, List
+ 
+-import cv2
++# todo xiao
++# import cv2
+ import gymnasium as gym
+ import numpy as np
+ import sapien.physx as physx
+@@ -47,9 +48,10 @@ class BaseDigitalTwinEnv(BaseEnv):
+                         "If you installed this repo through 'pip install .' , "
+                         "you can download this directory https://github.com/simpler-env/ManiSkill2_real2sim/tree/main/data to get the real-world image overlay assets. "
+                     )
+-                self._rgb_overlay_images[camera_name] = cv2.cvtColor(
+-                    cv2.imread(path), cv2.COLOR_BGR2RGB
+-                )  # (H, W, 3); float32
++                # todo xiao
++                # self._rgb_overlay_images[camera_name] = cv2.cvtColor(
++                #     cv2.imread(path), cv2.COLOR_BGR2RGB
++                # )  # (H, W, 3); float32
+         else:
+             self._rgb_overlay_images = None
+ 
+@@ -93,15 +95,16 @@ class BaseDigitalTwinEnv(BaseEnv):
+ 
+         for camera_name in self.rgb_overlay_paths.keys():
+             sensor = self._sensor_configs[camera_name]
+-            if isinstance(sensor, CameraConfig):
+-                if isinstance(self._rgb_overlay_images[camera_name], torch.Tensor):
+-                    continue
+-                rgb_overlay_img = cv2.resize(
+-                    self._rgb_overlay_images[camera_name], (sensor.width, sensor.height)
+-                )
+-                self._rgb_overlay_images[camera_name] = common.to_tensor(
+-                    rgb_overlay_img, device=self.device
+-                )
++            # todo xiao
++            # if isinstance(sensor, CameraConfig):
++            #     if isinstance(self._rgb_overlay_images[camera_name], torch.Tensor):
++            #         continue
++            #     rgb_overlay_img = cv2.resize(
++            #         self._rgb_overlay_images[camera_name], (sensor.width, sensor.height)
++            #     )
++            #     self._rgb_overlay_images[camera_name] = common.to_tensor(
++            #         rgb_overlay_img, device=self.device
++            #     )
+ 
+     def _green_sceen_rgb(self, rgb, segmentation, overlay_img):
+         """returns green screened RGB data given a batch of RGB and segmentation images and one overlay image"""
+@@ -139,22 +142,23 @@ class BaseDigitalTwinEnv(BaseEnv):
+     def get_obs(self, info: dict = None):
+         obs = super().get_obs(info)
+ 
+-        # "greenscreen" process
+-        if (
+-            self.obs_mode_struct.visual.rgb
+-            and self.obs_mode_struct.visual.segmentation
+-            and self.rgb_overlay_paths is not None
+-        ):
+-            # get the actor ids of objects to manipulate; note that objects here are not articulated
+-            for camera_name in self._rgb_overlay_images.keys():
+-                # obtain overlay mask based on segmentation info
+-                assert (
+-                    "segmentation" in obs["sensor_data"][camera_name].keys()
+-                ), "Image overlay requires segment info in the observation!"
+-                green_screened_rgb = self._green_sceen_rgb(
+-                    obs["sensor_data"][camera_name]["rgb"],
+-                    obs["sensor_data"][camera_name]["segmentation"],
+-                    self._rgb_overlay_images[camera_name],
+-                )
+-                obs["sensor_data"][camera_name]["rgb"] = green_screened_rgb
++        # todo xiao
++        # # "greenscreen" process
++        # if (
++        #     self.obs_mode_struct.visual.rgb
++        #     and self.obs_mode_struct.visual.segmentation
++        #     and self.rgb_overlay_paths is not None
++        # ):
++        #     # get the actor ids of objects to manipulate; note that objects here are not articulated
++        #     for camera_name in self._rgb_overlay_images.keys():
++        #         # obtain overlay mask based on segmentation info
++        #         assert (
++        #             "segmentation" in obs["sensor_data"][camera_name].keys()
++        #         ), "Image overlay requires segment info in the observation!"
++        #         green_screened_rgb = self._green_sceen_rgb(
++        #             obs["sensor_data"][camera_name]["rgb"],
++        #             obs["sensor_data"][camera_name]["segmentation"],
++        #             self._rgb_overlay_images[camera_name],
++        #         )
++        #         obs["sensor_data"][camera_name]["rgb"] = green_screened_rgb
+         return obs
 diff --git a/setup.py b/setup.py
 index 43701e2..0bb16be 100644
 --- a/setup.py
