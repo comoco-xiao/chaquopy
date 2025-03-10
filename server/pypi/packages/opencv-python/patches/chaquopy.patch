@@ -69,7 +69,7 @@ index 93eab8c94d..ded0365e93 100644
    ocv_module_disable_(python3)
    return()
 diff --git a/setup.py b/setup.py
-index 1dfab2f..8d24cc5 100644
+index 1dfab2f..9f44d7b 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -17,8 +17,10 @@ def main():
@@ -233,13 +233,144 @@ index 1dfab2f..8d24cc5 100644
          python_requires=">=3.6",
          classifiers=[
              "Development Status :: 5 - Production/Stable",
-@@ -509,7 +563,8 @@ def get_and_set_info(contrib, headless, rolling, ci_build):
+@@ -336,10 +390,11 @@ class RearrangeCMakeOutput:
+     files_outside_package = None
  
+     def __init__(self, package_paths_re, files_outside_package, packages):
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---1")
+         cls = self.__class__
+         assert not cls.wraps._classify_installed_files, "Singleton object"
+         import skbuild.setuptools_wrap
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---2")
+         cls._setuptools_wrap = skbuild.setuptools_wrap
+         cls.wraps._classify_installed_files = (
+             cls._setuptools_wrap._classify_installed_files
+@@ -347,18 +402,20 @@ class RearrangeCMakeOutput:
+         cls._setuptools_wrap._classify_installed_files = (
+             self._classify_installed_files_override
+         )
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---3")
+         cls.package_paths_re = package_paths_re
+         cls.files_outside_package = files_outside_package
+         cls.packages = packages
+ 
+     def __del__(self):
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---4")
+         cls = self.__class__
+         cls._setuptools_wrap._classify_installed_files = (
+             cls.wraps._classify_installed_files
+         )
+         cls.wraps._classify_installed_files = None
+         cls._setuptools_wrap = None
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---5")
+ 
+     def _classify_installed_files_override(
+         self,
+@@ -382,7 +439,7 @@ class RearrangeCMakeOutput:
+                     subpackage\
+                         etc.
+         """
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---6")
+         cls = self.__class__
+ 
+         # 'relpath'/'reldir' = relative to CMAKE_INSTALL_DIR/cmake_install_dir
+@@ -399,7 +456,7 @@ class RearrangeCMakeOutput:
+         relpaths_zip = list(zip(fslash_install_relpaths, install_relpaths))
+ 
+         final_install_relpaths = []
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---7")
+         print("Copying files from CMake output")
+ 
+         # add lines from the old __init__.py file to the config file
+@@ -411,7 +468,7 @@ class RearrangeCMakeOutput:
+                                  % (sys.version_info[0], sys.version_info[1]))
+         if not os.path.exists(config_py):
+             config_py = os.path.join(cmake_install_dir, 'python', 'cv2', 'config-%s.py' % sys.version_info[0])
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---8")
+         with open(config_py, 'w') as opencv_init_config:
+             opencv_init_config.write(custom_init_data)
+ 
+@@ -425,7 +482,7 @@ class RearrangeCMakeOutput:
+                         hide_listing=False,
+                     )
+                     final_install_relpaths.append(os.path.join("cv2", target_rel_path))
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---9")
+         del install_relpaths, fslash_install_relpaths
+ 
+         for package_name, relpaths_re in cls.package_paths_re.items():
+@@ -453,7 +510,7 @@ class RearrangeCMakeOutput:
+                     if not found and "gapi" not in relpath_re:
+                         raise Exception("Not found: '%s'" % relpath_re)
+                 del r, found
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---10")
+         del relpaths_zip
+ 
+         print("Copying files from non-default sourcetree locations")
+@@ -473,11 +530,11 @@ class RearrangeCMakeOutput:
+                     hide_listing=False,
+                 )
+                 final_install_relpaths.append(new_install_relpath)
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---11")
+         final_install_paths = [
+             os.path.join(cmake_install_dir, p) for p in final_install_relpaths
+         ]
+-
++        print("-------------------------------------opencv python---RearrangeCMakeOutput---12")
+         return (cls.wraps._classify_installed_files)(
+             final_install_paths,
+             package_data,
+@@ -495,10 +552,11 @@ class RearrangeCMakeOutput:
+ 
+ def get_and_set_info(contrib, headless, rolling, ci_build):
+     # cv2/version.py should be generated by running find_version.py
++    print("-------------------------------------opencv python---get_and_set_info---1")
+     version = {}
+     here = os.path.abspath(os.path.dirname(__file__))
+     version_file = os.path.join(here, "cv2", "version.py")
+-
++    print("-------------------------------------opencv python---get_and_set_info---2")
+     # generate a fresh version.py always when Git repository exists
+     # (in sdists the version.py file already exists)
+     if os.path.exists(".git"):
+@@ -506,27 +564,28 @@ def get_and_set_info(contrib, headless, rolling, ci_build):
+         sys.argv = ["", str(contrib), str(headless), str(rolling), str(ci_build)]
+         runpy.run_path("find_version.py", run_name="__main__")
+         sys.argv = old_args
+-
++    print("-------------------------------------opencv python---get_and_set_info---3")
      with open(version_file) as fp:
          exec(fp.read(), version)
 -
 +    ver = version["opencv_version"]
 +    print(f"--------------------get_and_set_info---version[opencv_version] = {ver}")
      return version["opencv_version"], version["contrib"], version["headless"], version["rolling"]
+ 
+ 
+ def get_build_env_var_by_name(flag_name):
+     flag_set = False
+-
++    print("-------------------------------------opencv python---get_build_env_var_by_name---1")
+     try:
+         flag_set = bool(int(os.getenv("ENABLE_" + flag_name.upper(), None)))
+     except Exception:
+         pass
+-
++    print("-------------------------------------opencv python---get_build_env_var_by_name---2")
+     if not flag_set:
+         try:
+             flag_set = bool(int(open(flag_name + ".enabled").read(1)))
+         except Exception:
+             pass
+-
++    print("-------------------------------------opencv python---get_build_env_var_by_name---3")
+     return flag_set
  
  
