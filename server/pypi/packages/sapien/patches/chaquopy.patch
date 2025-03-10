@@ -32,6 +32,19 @@ index dcd94d91..a267e655 100644
  if (${USE_CPP_WRAPPER})
      target_link_libraries(sapien PUBLIC tinyxml2)
  endif()
+diff --git a/cmake/pybind11.cmake b/cmake/pybind11.cmake
+index 1cf1a77c..5de98509 100644
+--- a/cmake/pybind11.cmake
++++ b/cmake/pybind11.cmake
+@@ -6,7 +6,7 @@ include(FetchContent)
+ FetchContent_Declare(
+   pybind11
+   GIT_REPOSITORY https://github.com/pybind/pybind11.git
+-  GIT_TAG smart_holder
++  GIT_TAG archive/smart_holder
+   GIT_SHALLOW TRUE
+   GIT_PROGRESS TRUE
+ )
 diff --git a/engine/include/engine/vr_viewer.h b/engine/include/engine/vr_viewer.h
 index 1343b057..c112deac 100644
 --- a/engine/include/engine/vr_viewer.h
