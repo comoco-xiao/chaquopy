@@ -158,19 +158,20 @@ index e1e14d43..30888d33 100644
  
  } // namespace sapien_renderer
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index db48f0a0..7b8aa78b 100644
+index db48f0a0..a8cfeb20 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -10,6 +10,8 @@ else()
+@@ -10,6 +10,9 @@ else()
      set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g0 -Wall  -std=c++20")
  endif()
  
 +# set(CMAKE_INSTALL_RPATH "@loader_path/libs")
 +# set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
++set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
  
  if (CMAKE_BUILD_TYPE STREQUAL "Debug")
      add_definitions(-D_DEBUG)
-@@ -33,7 +35,7 @@ find_package(sapien REQUIRED)
+@@ -33,7 +36,7 @@ find_package(sapien REQUIRED)
  
  file(GLOB_RECURSE PYBIND_SRC "pybind/*.cpp")
  pybind11_add_module(pysapien ${PYBIND_SRC})
