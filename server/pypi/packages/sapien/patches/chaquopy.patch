@@ -84,6 +84,40 @@ index ba38e7a3..4d6c8dd2 100644
  
    VRViewer::~VRViewer() {
  
+diff --git a/include/sapien/physx/physx_system.h b/include/sapien/physx/physx_system.h
+index f6850154..a6425631 100644
+--- a/include/sapien/physx/physx_system.h
++++ b/include/sapien/physx/physx_system.h
+@@ -314,7 +314,29 @@ private:
+   int mContactCount{0}; // current contact count, valid only when contactUpdaToDate is true
+   void copyContactData();
+ };
++#else
++class PhysxSystemGpu : public PhysxSystem {
++public:
++  PhysxSystemGpu(std::shared_ptr<Device> device);
++
++  void registerComponent(std::shared_ptr<PhysxRigidDynamicComponent> component) override {}
++  void registerComponent(std::shared_ptr<PhysxRigidStaticComponent> component) override {}
++  void registerComponent(std::shared_ptr<PhysxArticulationLinkComponent> component) override {}
++  void unregisterComponent(std::shared_ptr<PhysxRigidDynamicComponent> component) override {}
++  void unregisterComponent(std::shared_ptr<PhysxRigidStaticComponent> component) override {}
++  void unregisterComponent(std::shared_ptr<PhysxArticulationLinkComponent> component) override {}
++  std::vector<std::shared_ptr<PhysxRigidDynamicComponent>>
++  getRigidDynamicComponents() const override { return {}; }
++  std::vector<std::shared_ptr<PhysxRigidStaticComponent>>
++  getRigidStaticComponents() const override { return {}; }
++  std::vector<std::shared_ptr<PhysxArticulationLinkComponent>>
++  getArticulationLinkComponents() const override { return {}; }
+ 
++  void step() override {}
++  bool isGpu() const override { return true; }
++
++  ~PhysxSystemGpu() {}
++};
+ #endif
+ 
+ } // namespace physx
 diff --git a/include/sapien/sapien_renderer/sapien_renderer_system.h b/include/sapien/sapien_renderer/sapien_renderer_system.h
 index e1e14d43..30888d33 100644
 --- a/include/sapien/sapien_renderer/sapien_renderer_system.h
@@ -249,6 +283,19 @@ index b62afc39..d9fb27ee 100644
  
  _T = typing.TypeVar("_T", Component)
  class Component:
+diff --git a/python/py_package/pysapien/physx.pyi b/python/py_package/pysapien/physx.pyi
+index 4b1edc51..f42f4fdc 100644
+--- a/python/py_package/pysapien/physx.pyi
++++ b/python/py_package/pysapien/physx.pyi
+@@ -8,7 +8,7 @@ import typing
+ import sys
+ 
+ # __all__ = ['PhysxArticulation', 'PhysxArticulationJoint', 'PhysxArticulationLinkComponent', 'PhysxBaseComponent', 'PhysxBodyConfig', 'PhysxCollisionShape', 'PhysxCollisionShapeBox', 'PhysxCollisionShapeCapsule', 'PhysxCollisionShapeConvexMesh', 'PhysxCollisionShapeCylinder', 'PhysxCollisionShapePlane', 'PhysxCollisionShapeSphere', 'PhysxCollisionShapeTriangleMesh', 'PhysxContact', 'PhysxContactPoint', 'PhysxCpuSystem', 'PhysxDistanceJointComponent', 'PhysxDriveComponent', 'PhysxEngine', 'PhysxGearComponent', 'PhysxGpuContactBodyImpulseQuery', 'PhysxGpuContactPairImpulseQuery', 'PhysxGpuSystem', 'PhysxJointComponent', 'PhysxMaterial', 'PhysxRayHit', 'PhysxRigidBaseComponent', 'PhysxRigidBodyComponent', 'PhysxRigidDynamicComponent', 'PhysxRigidStaticComponent', 'PhysxSDFConfig', 'PhysxSceneConfig', 'PhysxShapeConfig', 'PhysxSystem', 'get_body_config', 'get_default_material', 'get_scene_config', 'get_sdf_config', 'get_shape_config', 'is_gpu_enabled', 'set_body_config', 'set_default_material', 'set_gpu_memory_config', 'set_scene_config', 'set_sdf_config', 'set_shape_config', 'version']
+-__all__ = ['PhysxArticulation', 'PhysxArticulationJoint', 'PhysxArticulationLinkComponent', 'PhysxBaseComponent', 'PhysxBodyConfig', 'PhysxCollisionShape', 'PhysxCollisionShapeBox', 'PhysxCollisionShapeCapsule', 'PhysxCollisionShapeConvexMesh', 'PhysxCollisionShapeCylinder', 'PhysxCollisionShapePlane', 'PhysxCollisionShapeSphere', 'PhysxCollisionShapeTriangleMesh', 'PhysxContact', 'PhysxContactPoint', 'PhysxCpuSystem', 'PhysxDistanceJointComponent', 'PhysxDriveComponent', 'PhysxEngine', 'PhysxGearComponent', 'PhysxJointComponent', 'PhysxMaterial', 'PhysxRayHit', 'PhysxRigidBaseComponent', 'PhysxRigidBodyComponent', 'PhysxRigidDynamicComponent', 'PhysxRigidStaticComponent', 'PhysxSDFConfig', 'PhysxSceneConfig', 'PhysxShapeConfig', 'PhysxSystem', 'get_body_config', 'get_default_material', 'get_scene_config', 'get_sdf_config', 'get_shape_config', 'is_gpu_enabled', 'set_body_config', 'set_default_material', 'set_gpu_memory_config', 'set_scene_config', 'set_sdf_config', 'set_shape_config', 'version']
++__all__ = ['PhysxArticulation', 'PhysxArticulationJoint', 'PhysxArticulationLinkComponent', 'PhysxBaseComponent', 'PhysxBodyConfig', 'PhysxCollisionShape', 'PhysxCollisionShapeBox', 'PhysxCollisionShapeCapsule', 'PhysxCollisionShapeConvexMesh', 'PhysxCollisionShapeCylinder', 'PhysxCollisionShapePlane', 'PhysxCollisionShapeSphere', 'PhysxCollisionShapeTriangleMesh', 'PhysxContact', 'PhysxContactPoint', 'PhysxCpuSystem', 'PhysxDistanceJointComponent', 'PhysxDriveComponent', 'PhysxEngine', 'PhysxGearComponent', 'PhysxGpuSystem','PhysxJointComponent', 'PhysxMaterial', 'PhysxRayHit', 'PhysxRigidBaseComponent', 'PhysxRigidBodyComponent', 'PhysxRigidDynamicComponent', 'PhysxRigidStaticComponent', 'PhysxSDFConfig', 'PhysxSceneConfig', 'PhysxShapeConfig', 'PhysxSystem', 'get_body_config', 'get_default_material', 'get_scene_config', 'get_sdf_config', 'get_shape_config', 'is_gpu_enabled', 'set_body_config', 'set_default_material', 'set_gpu_memory_config', 'set_scene_config', 'set_sdf_config', 'set_shape_config', 'version']
+ M = typing.TypeVar("M", bound=int)
+ class PhysxArticulation:
+     name: str
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
@@ -319,6 +366,34 @@ index 9d7bc32c..f4c87f25 100644
  
  
  def _create_pinocchio_model(
+diff --git a/python/pybind/physx.cpp b/python/pybind/physx.cpp
+index 68423651..91619c07 100644
+--- a/python/pybind/physx.cpp
++++ b/python/pybind/physx.cpp
+@@ -288,9 +288,8 @@ Generator<int> init_physx(py::module &sapien) {
+   auto PyPhysxSystem = py::class_<PhysxSystem, System>(m, "PhysxSystem");
+   auto PyPhysxSystemCpu = py::class_<PhysxSystemCpu, PhysxSystem>(m, "PhysxCpuSystem");
+ 
+-#ifdef SAPIEN_CUDA
+   auto PyPhysxSystemGpu = py::class_<PhysxSystemGpu, PhysxSystem>(m, "PhysxGpuSystem");
+-
++#ifdef SAPIEN_CUDA
+   auto PyPhysxGpuContactPairImpulseQuery =
+       py::class_<PhysxGpuContactPairImpulseQuery>(m, "PhysxGpuContactPairImpulseQuery");
+   auto PyPhysxGpuContactBodyImpulseQuery =
+@@ -574,6 +573,12 @@ Usage:
+ 
+   PyPhysxGpuContactBodyImpulseQuery.def_property_readonly(
+       "cuda_impulses", [](PhysxGpuContactBodyImpulseQuery const &q) { return q.buffer.handle(); });
++#else
++  PyPhysxSystemGpu
++      .def(py::init([](std::string const &device) {
++             return std::make_shared<PhysxSystemGpu>(findDevice(device));
++           }),
++           py::arg("device") = "cuda");
+ #endif
+   PyPhysxMaterial
+       .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
 index 3aa2a05a..c789dd52 100644
 --- a/python/pybind/sapien_renderer.cpp
