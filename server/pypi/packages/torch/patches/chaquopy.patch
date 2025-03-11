@@ -234,7 +234,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..1164b415498 100644
+index 84e4dad32d3..7842ccd24db 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -273,7 +273,7 @@ index 84e4dad32d3..1164b415498 100644
 +            ONNX_CUSTOM_PROTOC_EXECUTABLE=which("protoc"),
 +            NATIVE_BUILD_DIR=build_sleef_native,
 +            Python_NumPy_INCLUDE_DIRS=os.path.abspath("../requirements/numpy/core/include"),
-+            USE_CUDA="OFF",
++            USE_CUDA=0,
 +            
              TORCH_BUILD_VERSION=version,
              **build_options,
