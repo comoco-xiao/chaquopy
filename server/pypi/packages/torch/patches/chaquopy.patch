@@ -11,25 +11,10 @@ index 36d5becb57c..ab10795624c 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..c1d5bc64f24 100644
+index c8af5f00b5c..6589abd5db0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -22,6 +22,14 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-   message(FATAL_ERROR "In-source build are not supported")
- endif()
- 
-+# --------------------------------- chaquopy begin ------------------------------------
-+# set(BUILD_TEST OFF)
-+# set(USE_CUDA OFF)
-+# set(USE_OPENCV OFF)
-+# set(USE_VULKAN OFF)
-+# set(BUILD_PYTHON ON)
-+# --------------------------------- chaquopy end ------------------------------------
-+
- # ---[ Project and semantic versioning.
- project(Torch CXX C)
- 
-@@ -663,9 +671,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
+@@ -663,9 +663,9 @@ string(APPEND CMAKE_CUDA_FLAGS " -Xfatbin -compress-all")
  if(ANDROID
     OR IOS
     OR DEFINED ENV{BUILD_PYTORCH_MOBILE_WITH_HOST_TOOLCHAIN})
@@ -56,7 +41,7 @@ index 919eb6c8567..b878027c648 100644
      defined(__APPLE__) && \
      (TARGET_IPHONE_SIMULATOR || TARGET_OS_SIMULATOR || TARGET_OS_IPHONE))
 diff --git a/cmake/Dependencies.cmake b/cmake/Dependencies.cmake
-index 1813f4418a2..15a6f1677c9 100644
+index 1813f4418a2..60ea060efd3 100644
 --- a/cmake/Dependencies.cmake
 +++ b/cmake/Dependencies.cmake
 @@ -845,10 +845,17 @@ endif()
@@ -81,15 +66,7 @@ index 1813f4418a2..15a6f1677c9 100644
  else()
    find_package(Python COMPONENTS Interpreter)
  endif()
-@@ -861,6 +868,7 @@ if(${Python_VERSION} VERSION_LESS 3.8)
-   message(FATAL_ERROR
-     "Found Python libraries version ${Python_VERSION}. Python < 3.8 is no longer supported by PyTorch.")
- endif()
-+message(--------------------------USE_CUDA = ${USE_CUDA})
- 
- # ---[ Python + Numpy
- if(BUILD_PYTHON)
-@@ -1290,7 +1298,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
+@@ -1290,7 +1297,8 @@ if(CAFFE2_CMAKE_BUILDING_WITH_MAIN_REPO AND NOT INTERN_DISABLE_ONNX)
      # In mobile build we care about code size, and so we need drop
      # everything (e.g. checker) in onnx but the pb definition.
      if(ANDROID OR IOS)
@@ -99,7 +76,7 @@ index 1813f4418a2..15a6f1677c9 100644
      else()
        caffe2_interface_library(onnx onnx_library)
      endif()
-@@ -1497,7 +1506,9 @@ if(NOT INTERN_BUILD_MOBILE)
+@@ -1497,7 +1505,9 @@ if(NOT INTERN_BUILD_MOBILE)
        add_definitions(-DHAVE_MMAP=1)
      endif(HAVE_MMAP)
      # done for lseek: https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
@@ -234,18 +211,10 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..02c66c46a09 100644
+index 84e4dad32d3..c2961c917c1 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
-@@ -6,6 +6,7 @@ import multiprocessing
- import os
- import platform
- import sys
-+import subprocess
- import sysconfig
- from distutils.version import LooseVersion
- from subprocess import CalledProcessError, check_call, check_output
-@@ -283,7 +284,9 @@ class CMake:
+@@ -283,7 +283,9 @@ class CMake:
                  # only need to add one in `CMakeLists.txt`. All build options that start with "BUILD_", "USE_", or "CMAKE_"
                  # are automatically passed to CMake; For other options you can add to additional_options above.
                  "BUILD_PYTHON": build_python,
@@ -256,7 +225,7 @@ index 84e4dad32d3..02c66c46a09 100644
                  # Most library detection should go to CMake script, except this one, which Python can do a much better job
                  # due to NumPy's inherent Pythonic nature.
                  "USE_NUMPY": not check_negative_env_flag("USE_NUMPY"),
-@@ -305,10 +308,31 @@ class CMake:
+@@ -305,10 +307,31 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -291,7 +260,7 @@ index 84e4dad32d3..02c66c46a09 100644
              **build_options,
          )
 diff --git a/torch/CMakeLists.txt b/torch/CMakeLists.txt
-index b123023d2fd..4ebd88274ae 100644
+index b123023d2fd..7d975d731d7 100644
 --- a/torch/CMakeLists.txt
 +++ b/torch/CMakeLists.txt
 @@ -428,7 +428,7 @@ endif()
@@ -303,15 +272,14 @@ index b123023d2fd..4ebd88274ae 100644
  
  target_compile_definitions(torch_python PRIVATE ${TORCH_PYTHON_COMPILE_DEFINITIONS})
  
-@@ -492,7 +492,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   if(BUILD_LIBTORCHLESS)
-     target_link_libraries(nnapi_backend PRIVATE ${TORCH_LIB} torch_python pybind::pybind11)
+@@ -494,6 +494,7 @@ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    else()
--    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11)
-+    target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11 ${PYTHON_LIBRARIES})
+     target_link_libraries(nnapi_backend PRIVATE torch torch_python pybind::pybind11)
    endif()
++  target_link_libraries(nnapi_backend PRIVATE ${PYTHON_LIBRARIES})
  endif()
  
+ set(TORCH_PYTHON_COMPILE_OPTIONS ${TORCH_PYTHON_COMPILE_OPTIONS} PARENT_SCOPE)
 diff --git a/torch/_utils_internal.py b/torch/_utils_internal.py
 index f58eb93d86d..b72d68cf59b 100644
 --- a/torch/_utils_internal.py
