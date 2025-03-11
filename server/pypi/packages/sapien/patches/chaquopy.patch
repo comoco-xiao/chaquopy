@@ -547,6 +547,22 @@ index bd21283f..39b99d44 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
+diff --git a/src/physx/physx_system.cpp b/src/physx/physx_system.cpp
+index 1b182440..c59f85c4 100644
+--- a/src/physx/physx_system.cpp
++++ b/src/physx/physx_system.cpp
+@@ -132,6 +132,11 @@ PhysxSystemGpu::PhysxSystemGpu(std::shared_ptr<Device> device) {
+   sceneDesc.cpuDispatcher = mPxCPUDispatcher;
+   mPxScene = mEngine->getPxPhysics()->createScene(sceneDesc);
+ }
++#else
++PhysxSystemGpu::PhysxSystemGpu(std::shared_ptr<Device> device) {
++  throw std::runtime_error(
++        "Does not support PhysX GPU system.");
++}
+ #endif
+ 
+ void PhysxSystemCpu::registerComponent(std::shared_ptr<PhysxRigidDynamicComponent> component) {
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
 index 7c190c40..de11c11c 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
