@@ -11,7 +11,7 @@ index 36d5becb57c..ab10795624c 100644
      url = https://github.com/shibatch/sleef
  [submodule "third_party/ideep"]
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c8af5f00b5c..2755f8e2563 100644
+index c8af5f00b5c..c1d5bc64f24 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -22,6 +22,14 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -21,9 +21,9 @@ index c8af5f00b5c..2755f8e2563 100644
 +# --------------------------------- chaquopy begin ------------------------------------
 +# set(BUILD_TEST OFF)
 +# set(USE_CUDA OFF)
-+set(USE_OPENCV OFF)
-+set(USE_VULKAN OFF)
-+set(BUILD_PYTHON ON)
++# set(USE_OPENCV OFF)
++# set(USE_VULKAN OFF)
++# set(BUILD_PYTHON ON)
 +# --------------------------------- chaquopy end ------------------------------------
 +
  # ---[ Project and semantic versioning.
@@ -234,7 +234,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..7842ccd24db 100644
+index 84e4dad32d3..a2804e7c4a8 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -245,7 +245,7 @@ index 84e4dad32d3..7842ccd24db 100644
  import sysconfig
  from distutils.version import LooseVersion
  from subprocess import CalledProcessError, check_call, check_output
-@@ -305,10 +306,30 @@ class CMake:
+@@ -305,10 +306,32 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -274,6 +274,8 @@ index 84e4dad32d3..7842ccd24db 100644
 +            NATIVE_BUILD_DIR=build_sleef_native,
 +            Python_NumPy_INCLUDE_DIRS=os.path.abspath("../requirements/numpy/core/include"),
 +            USE_CUDA=0,
++            USE_VULKAN=0,
++            BUILD_TEST=0,
 +            
              TORCH_BUILD_VERSION=version,
              **build_options,
