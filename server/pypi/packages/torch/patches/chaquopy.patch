@@ -234,7 +234,7 @@ index 19a153f..bcb96f6 100644
  # Compiler feature detection
  
 diff --git a/tools/setup_helpers/cmake.py b/tools/setup_helpers/cmake.py
-index 84e4dad32d3..a2804e7c4a8 100644
+index 84e4dad32d3..02c66c46a09 100644
 --- a/tools/setup_helpers/cmake.py
 +++ b/tools/setup_helpers/cmake.py
 @@ -6,6 +6,7 @@ import multiprocessing
@@ -245,7 +245,18 @@ index 84e4dad32d3..a2804e7c4a8 100644
  import sysconfig
  from distutils.version import LooseVersion
  from subprocess import CalledProcessError, check_call, check_output
-@@ -305,10 +306,32 @@ class CMake:
+@@ -283,7 +284,9 @@ class CMake:
+                 # only need to add one in `CMakeLists.txt`. All build options that start with "BUILD_", "USE_", or "CMAKE_"
+                 # are automatically passed to CMake; For other options you can add to additional_options above.
+                 "BUILD_PYTHON": build_python,
+-                "BUILD_TEST": build_test,
++                # Chaquopy:
++                # "BUILD_TEST": build_test,
++                "BUILD_TEST": 0,
+                 # Most library detection should go to CMake script, except this one, which Python can do a much better job
+                 # due to NumPy's inherent Pythonic nature.
+                 "USE_NUMPY": not check_negative_env_flag("USE_NUMPY"),
+@@ -305,10 +308,31 @@ class CMake:
              )
              sys.exit(1)
          build_options.update(cmake__options)
@@ -275,7 +286,6 @@ index 84e4dad32d3..a2804e7c4a8 100644
 +            Python_NumPy_INCLUDE_DIRS=os.path.abspath("../requirements/numpy/core/include"),
 +            USE_CUDA=0,
 +            USE_VULKAN=0,
-+            BUILD_TEST=0,
 +            
              TORCH_BUILD_VERSION=version,
              **build_options,
