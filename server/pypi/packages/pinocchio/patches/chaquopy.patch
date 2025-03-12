@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..ca921a91 100644
+index df25fb61..61b2f1da 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -87,6 +87,19 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
+@@ -87,6 +87,20 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
  compute_project_args(PROJECT_ARGS LANGUAGES CXX)
  project(${PROJECT_NAME} ${PROJECT_ARGS})
  
@@ -18,6 +18,7 @@ index df25fb61..ca921a91 100644
 +set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/Boost-1.87.0")
 +set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_headers-1.87.0")
 +set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_filesystem-1.87.0")
++set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_atomic-1.87.0")
 +
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
