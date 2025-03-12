@@ -1,0 +1,18 @@
+{% set version = "3.4.0" %}
+
+package:
+  name: pinocchio
+  version: {{ version }}
+
+build:
+  number: 1
+
+source:
+  git_url: https://github.com/comoco-xiao/pinocchio.git
+  git_rev: df4fe20d2f15bae45c4927fc83dfa246f38a38d7
+
+requirements:
+  build:
+    - cmake 3.31.4
+  host:
+    - python
