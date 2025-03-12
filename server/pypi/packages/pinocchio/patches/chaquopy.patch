@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..4e9b7bcc 100644
+index df25fb61..ffccd380 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,26 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -24,7 +24,7 @@ index df25fb61..4e9b7bcc 100644
 +set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
 +set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
 +
-+set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python")
++set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
 +
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
