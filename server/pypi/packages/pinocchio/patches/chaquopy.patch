@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index f087be4d..31075fa6 100644
+--- a/setup.py
++++ b/setup.py
+@@ -91,7 +91,7 @@ setup(
+     description="Efficient Rigid Body Dynamics Library",
+     author="Pinocchio Contributors",
+     license="BSD-2-Clause",
+-    packages=["pinocchio"],
++    packages=["bindings/python/pinocchio"],
+     python_requires=">=3.6",
+     install_requires=["numpy"],
+     ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
