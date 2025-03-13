@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index ffea7f0..7e7a2d9 100644
+index ffea7f0..1141e59 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -6,7 +6,7 @@ from setuptools import setup, Extension
@@ -11,3 +11,33 @@ index ffea7f0..7e7a2d9 100644
  
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
+@@ -49,25 +49,26 @@ class CMakeBuildExt(build_ext):
+         # 创建构建目录
+         os.makedirs(build_dir, exist_ok=True)
+         os.makedirs(install_dir, exist_ok=True)
+-    
++        print("-------------------------------------_configure_and_build---1")
+         # CMake 配置参数
+         cmake_args = [
+             f"-DCMAKE_INSTALL_PREFIX={install_dir}",
+             f"-DCMAKE_BUILD_TYPE={self.build_type}",
+         ]
++        print("-------------------------------------_configure_and_build---2")
+         # 生成构建系统
+         subprocess.check_call(
+             ["cmake", str(PROJECT_DIR)] + cmake_args,
+             cwd=str(build_dir), env=os.environ.copy()
+         )
+-
++        print("-------------------------------------_configure_and_build---3")
+         # 编译并安装
+         build_args = ["--config", "Release", "-j2"]
+         subprocess.check_call(
+             ["cmake", "--build", ".", "--target", "install"] + build_args,
+             cwd=build_dir,
+         )
+-        print("-------------------------------------setup---3")
++        print("-------------------------------------_configure_and_build---4")
+ 
+ project_python_home_dir = os.path.join("python", "eigenpy")
+ setup(
