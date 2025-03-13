@@ -823,6 +823,22 @@ index 0053bcb..3741ebe 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
+diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
+index 221a5c2..8f86f56 100644
+--- a/python/CMakeLists.txt
++++ b/python/CMakeLists.txt
+@@ -34,8 +34,11 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
+ else()
+   set(ABSOLUTE_PYTHON_SITELIB ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB})
+ endif()
++
+ set(${PYWRAP}_INSTALL_DIR ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
+ 
++message(------------------------------1---PYWRAP = ${PYWRAP})
++message(------------------------------2---PYWRAP = ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
+ set_target_properties(
+   ${PYWRAP}
+   PROPERTIES PREFIX ""
 diff --git a/setup.py b/setup.py
 index ffea7f0..ba719ce 100644
 --- a/setup.py
