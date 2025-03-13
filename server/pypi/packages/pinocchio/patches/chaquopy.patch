@@ -31,7 +31,7 @@ index df25fb61..ffccd380 100644
  include("${JRL_CMAKE_MODULES}/ide.cmake")
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..2112a76 100644
+index 0053bcb..540165c 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -94,7 +94,7 @@ macro(FINDPYTHON)
@@ -52,29 +52,95 @@ index 0053bcb..2112a76 100644
      if(PYTHON_EXECUTABLE)
        if(NOT EXISTS ${PYTHON_EXECUTABLE})
          message(
-@@ -181,7 +181,7 @@ macro(FINDPYTHON)
+@@ -179,9 +179,10 @@ macro(FINDPYTHON)
+ 
+       if(SEARCH_FOR_NUMPY)
          FIND_NUMPY()
-         set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
+-        set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
++        # todo xiao
++        # set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
        endif()
 -
 +      message(--------------------------python version = Python${_PYTHON_VERSION_MAJOR})
        find_package(
          "Python${_PYTHON_VERSION_MAJOR}"
          REQUIRED
-@@ -568,10 +568,11 @@ macro(FIND_NUMPY)
-   execute_process(
-     COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
-     OUTPUT_VARIABLE IS_NUMPY
+@@ -563,38 +564,43 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
+ #
+ 
+ macro(FIND_NUMPY)
+-  # Detect numpy.
+-  message(STATUS "Checking for NumPy")
+-  execute_process(
+-    COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
+-    OUTPUT_VARIABLE IS_NUMPY
 -    ERROR_QUIET
-+    # ERROR_QUIET
-+    ERROR_VARIABLE APPLY_ERROR
-   )
-   if(NOT IS_NUMPY)
+-  )
+-  if(NOT IS_NUMPY)
 -    message(FATAL_ERROR "Failed to detect numpy")
-+    message(FATAL_ERROR "Failed to detect numpy---error: ${APPLY_ERROR}")
-   else()
-     if(NOT NUMPY_INCLUDE_DIRS)
-       execute_process(
+-  else()
+-    if(NOT NUMPY_INCLUDE_DIRS)
+-      execute_process(
+-        COMMAND
+-          "${PYTHON_EXECUTABLE}" "-c"
+-          "import numpy; print (numpy.get_include())"
+-        OUTPUT_VARIABLE NUMPY_INCLUDE_DIRS
+-        ERROR_QUIET
+-      )
+-      string(REGEX REPLACE "\n$" "" NUMPY_INCLUDE_DIRS "${NUMPY_INCLUDE_DIRS}")
+-      file(TO_CMAKE_PATH "${NUMPY_INCLUDE_DIRS}" NUMPY_INCLUDE_DIRS)
+-    endif()
+-    message(STATUS "  NUMPY_INCLUDE_DIRS=${NUMPY_INCLUDE_DIRS}")
+-    # Retrive NUMPY_VERSION
+-    execute_process(
+-      COMMAND
+-        "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (numpy.__version__)"
+-      OUTPUT_VARIABLE NUMPY_VERSION
+-      ERROR_QUIET
+-    )
+-    string(REGEX REPLACE "\n$" "" NUMPY_VERSION "${NUMPY_VERSION}")
+-    message(STATUS "  NUMPY_VERSION=${NUMPY_VERSION}")
+-  endif()
++  message(---------------------------NUMPY_INCLUDE_DIRS = ${NUMPY_INCLUDE_DIRS})
++  add_library(Python::NumPy INTERFACE IMPORTED)
++  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
++  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
++  # # Detect numpy.
++  # message(STATUS "Checking for NumPy")
++  # execute_process(
++  #   COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
++  #   OUTPUT_VARIABLE IS_NUMPY
++  #   # ERROR_QUIET
++  #   ERROR_VARIABLE APPLY_ERROR
++  # )
++  # if(NOT IS_NUMPY)
++  #   message(FATAL_ERROR "Failed to detect numpy---error: ${APPLY_ERROR}")
++  # else()
++  #   if(NOT NUMPY_INCLUDE_DIRS)
++  #     execute_process(
++  #       COMMAND
++  #         "${PYTHON_EXECUTABLE}" "-c"
++  #         "import numpy; print (numpy.get_include())"
++  #       OUTPUT_VARIABLE NUMPY_INCLUDE_DIRS
++  #       ERROR_QUIET
++  #     )
++  #     string(REGEX REPLACE "\n$" "" NUMPY_INCLUDE_DIRS "${NUMPY_INCLUDE_DIRS}")
++  #     file(TO_CMAKE_PATH "${NUMPY_INCLUDE_DIRS}" NUMPY_INCLUDE_DIRS)
++  #   endif()
++  #   message(STATUS "  NUMPY_INCLUDE_DIRS=${NUMPY_INCLUDE_DIRS}")
++  #   # Retrive NUMPY_VERSION
++  #   execute_process(
++  #     COMMAND
++  #       "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (numpy.__version__)"
++  #     OUTPUT_VARIABLE NUMPY_VERSION
++  #     ERROR_QUIET
++  #   )
++  #   string(REGEX REPLACE "\n$" "" NUMPY_VERSION "${NUMPY_VERSION}")
++  #   message(STATUS "  NUMPY_VERSION=${NUMPY_VERSION}")
++  # endif()
+ endmacro()
+ 
+ # .rst: .. command:: FIND_SCIPY()
 diff --git a/setup.py b/setup.py
 index f087be4d..4f25caca 100644
 --- a/setup.py
