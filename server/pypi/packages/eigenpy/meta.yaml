@@ -1,0 +1,19 @@
+{% set version = "3.10.3" %}
+
+package:
+  name: eigenpy
+  version: {{ version }}
+
+build:
+  number: 1
+
+source:
+  git_url: https://github.com/comoco-xiao/eigenpy.git
+  git_rev: 9726a389d183f9cd66db6a591abd5309cc1f15a7
+
+requirements:
+  build:
+    - cmake 3.31.4
+  host:
+    - python
+    - numpy 1.23.3
