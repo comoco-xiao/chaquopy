@@ -31,7 +31,7 @@ index df25fb61..ffccd380 100644
  include("${JRL_CMAKE_MODULES}/ide.cmake")
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..9759ac7 100644
+index 0053bcb..2112a76 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -94,7 +94,7 @@ macro(FINDPYTHON)
@@ -61,6 +61,20 @@ index 0053bcb..9759ac7 100644
        find_package(
          "Python${_PYTHON_VERSION_MAJOR}"
          REQUIRED
+@@ -568,10 +568,11 @@ macro(FIND_NUMPY)
+   execute_process(
+     COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
+     OUTPUT_VARIABLE IS_NUMPY
+-    ERROR_QUIET
++    # ERROR_QUIET
++    ERROR_VARIABLE APPLY_ERROR
+   )
+   if(NOT IS_NUMPY)
+-    message(FATAL_ERROR "Failed to detect numpy")
++    message(FATAL_ERROR "Failed to detect numpy---error: ${APPLY_ERROR}")
+   else()
+     if(NOT NUMPY_INCLUDE_DIRS)
+       execute_process(
 diff --git a/setup.py b/setup.py
 index f087be4d..4f25caca 100644
 --- a/setup.py
