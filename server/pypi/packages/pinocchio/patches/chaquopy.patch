@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..081e79a9 100644
+index df25fb61..ffccd380 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,26 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -24,11 +24,25 @@ index df25fb61..081e79a9 100644
 +set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
 +set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
 +
-+set(PYTHON_EXECUTABLE "/home/ubuntu/.pyenv/versions/3.9.20/bin/python3.9")
++set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
 +
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
+Submodule cmake contains modified content
+diff --git a/cmake/python.cmake b/cmake/python.cmake
+index 0053bcb..970ff98 100644
+--- a/cmake/python.cmake
++++ b/cmake/python.cmake
+@@ -181,7 +181,7 @@ macro(FINDPYTHON)
+         FIND_NUMPY()
+         set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
+       endif()
+-
++      message(--------------------------python version = Python${_PYTHON_VERSION_MAJOR})
+       find_package(
+         "Python${_PYTHON_VERSION_MAJOR}"
+         REQUIRED
 diff --git a/setup.py b/setup.py
 index f087be4d..4f25caca 100644
 --- a/setup.py
