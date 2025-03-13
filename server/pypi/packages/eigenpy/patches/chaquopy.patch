@@ -63,10 +63,10 @@ index 2d6360c..9fb8537 100644
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..c035e7a 100644
+index 0053bcb..e19002e 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,380 +56,397 @@
+@@ -56,380 +56,398 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
@@ -448,6 +448,7 @@ index 0053bcb..c035e7a 100644
 +  message(-----------------------------FINDPYTHON---1---PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE})
 +  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
++  include_directories(${PYTHON_INCLUDE_DIRS})
 +  message(-----------------------------FINDPYTHON---2)
 +  # numpy
 +  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
@@ -838,7 +839,7 @@ index 0053bcb..c035e7a 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
-@@ -602,26 +619,27 @@ endmacro()
+@@ -602,26 +620,27 @@ endmacro()
  # Detect scipy module.
  #
  macro(FIND_SCIPY)
