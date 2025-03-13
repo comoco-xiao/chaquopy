@@ -41,10 +41,10 @@ index df25fb61..eae4d805 100644
  
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..ff1f5d9 100644
+index 0053bcb..a3735f6 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,6 +56,19 @@
+@@ -56,6 +56,21 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
@@ -58,6 +58,8 @@ index 0053bcb..ff1f5d9 100644
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
 +  message(-----------------------------FINDPYTHON---3)
++  message(-----------------------------FINDPYTHON---Python_Development.Module_FOUND = ${Python_Development.Module_FOUND})
++  message(-----------------------------FINDPYTHON---Python_NumPy_FOUND = ${Python_NumPy_FOUND})
 +  return()
 +  message(-----------------------------FINDPYTHON---4)
 +
