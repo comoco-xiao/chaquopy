@@ -69,10 +69,23 @@ index 0053bcb..4091c59 100644
      message(
        AUTHOR_WARNING
 diff --git a/setup.py b/setup.py
-index f087be4d..6091f076 100644
+index f087be4d..b9752b8e 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -65,16 +65,20 @@ class CMakeBuildExt(build_ext):
+@@ -43,8 +43,10 @@ class CMakeBuildExt(build_ext):
+ 
+     def _configure_and_build(self):
+         """执行 CMake 构建"""
+-        build_dir = Path(self.build_temp) / "cmake_build"
+-        install_dir = Path(self.build_lib).absolute()
++        # build_dir = Path(self.build_temp) / "cmake_build"
++        build_dir = os.path.join(PROJECT_DIR, "cmake_build")
++        # install_dir = Path(self.build_lib).absolute()
++        install_dir = os.path.join(PROJECT_DIR, "pinocchio_install")
+ 
+         # 创建构建目录
+         build_dir.mkdir(parents=True, exist_ok=True)
+@@ -65,16 +67,20 @@ class CMakeBuildExt(build_ext):
              f"-DBOOST_ROOT={boost_root}",
              f"-DBoost_NO_SYSTEM_PATHS=ON",
              
@@ -88,13 +101,14 @@ index f087be4d..6091f076 100644
          # 生成构建系统
          subprocess.check_call(
              ["cmake", str(PROJECT_DIR)] + cmake_args,
-             cwd=str(build_dir)
+-            cwd=str(build_dir)
++            cwd=str(build_dir), env=os.environ.copy()
          )
 +        print("-------------------------------------setup---2")
  
          # 编译并安装
          build_args = ["--build", ".", "--target", "install"]
-@@ -91,7 +95,7 @@ setup(
+@@ -91,7 +97,7 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
