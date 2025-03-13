@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..ffccd380 100644
+index df25fb61..eae4d805 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,26 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -29,145 +29,41 @@ index df25fb61..ffccd380 100644
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
+@@ -298,7 +318,8 @@ if(BUILD_PYTHON_INTERFACE)
+       "The Python bindings of Pinocchio will be compiled along the main library. If you want to disable this feature, please set the option BUILD_PYTHON_INTERFACE to OFF."
+   )
+ 
+-  set(PYTHON_COMPONENTS Interpreter Development NumPy)
++  # todo xiao
++  # set(PYTHON_COMPONENTS Interpreter Development NumPy)
+   findpython(REQUIRED)
+   add_project_dependency(eigenpy 2.7.10 REQUIRED)
+ 
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..fa27668 100644
+index 0053bcb..ff1f5d9 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -94,7 +94,7 @@ macro(FINDPYTHON)
-       endif()
-     endif()
-   endif()
--
-+  message(--------------------------CMAKE_VERSION = ${CMAKE_VERSION})
-   if(NOT CMAKE_VERSION VERSION_LESS "3.12")
-     if(
-       DEFINED PYTHON_EXECUTABLE
-@@ -111,15 +111,16 @@ macro(FINDPYTHON)
-           set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-         endif()
-       endif()
--
-+      message(--------------------------1---Python_EXECUTABLE = ${Python_EXECUTABLE})
-       if(NOT DEFINED Python_EXECUTABLE)
-         set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
-       endif()
-+      message(--------------------------2---Python_EXECUTABLE = ${Python_EXECUTABLE})
-     else()
-       # Search for the default python of the system, if exists
-       find_program(PYTHON_EXECUTABLE python)
-     endif()
--
-+    message(--------------------------PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE})
-     if(PYTHON_EXECUTABLE)
-       if(NOT EXISTS ${PYTHON_EXECUTABLE})
-         message(
-@@ -179,11 +180,23 @@ macro(FINDPYTHON)
+@@ -56,6 +56,19 @@
+ # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
-       if(SEARCH_FOR_NUMPY)
-         FIND_NUMPY()
--        set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
-+        # todo xiao
-+        # set(Python_NumPy_INCLUDE_DIR ${NUMPY_INCLUDE_DIRS})
-       endif()
--
-+      message(--------------------------python version = Python${_PYTHON_VERSION_MAJOR})
-+      # todo xiao
-+      # find_package(
-+      #   "Python${_PYTHON_VERSION_MAJOR}"
-+      #   REQUIRED
-+      #   COMPONENTS ${PYTHON_COMPONENTS}
-+      # )
-+      message(--------------------------PYTHON_INCLUDE_DIRS = ${PYTHON_INCLUDE_DIRS})
-+      message(--------------------------PYTHON_LIBRARIES = ${PYTHON_LIBRARIES})
-+      message(--------------------------PYTHON_COMPONENTS = ${PYTHON_COMPONENTS})
-+      set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-+      set(Python_LIBRARIES ${PYTHON_LIBRARIES})
-       find_package(
--        "Python${_PYTHON_VERSION_MAJOR}"
-+        Python
-         REQUIRED
-         COMPONENTS ${PYTHON_COMPONENTS}
-       )
-@@ -563,38 +576,46 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
- #
- 
- macro(FIND_NUMPY)
--  # Detect numpy.
--  message(STATUS "Checking for NumPy")
--  execute_process(
--    COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
--    OUTPUT_VARIABLE IS_NUMPY
--    ERROR_QUIET
--  )
--  if(NOT IS_NUMPY)
--    message(FATAL_ERROR "Failed to detect numpy")
--  else()
--    if(NOT NUMPY_INCLUDE_DIRS)
--      execute_process(
--        COMMAND
--          "${PYTHON_EXECUTABLE}" "-c"
--          "import numpy; print (numpy.get_include())"
--        OUTPUT_VARIABLE NUMPY_INCLUDE_DIRS
--        ERROR_QUIET
--      )
--      string(REGEX REPLACE "\n$" "" NUMPY_INCLUDE_DIRS "${NUMPY_INCLUDE_DIRS}")
--      file(TO_CMAKE_PATH "${NUMPY_INCLUDE_DIRS}" NUMPY_INCLUDE_DIRS)
--    endif()
--    message(STATUS "  NUMPY_INCLUDE_DIRS=${NUMPY_INCLUDE_DIRS}")
--    # Retrive NUMPY_VERSION
--    execute_process(
--      COMMAND
--        "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (numpy.__version__)"
--      OUTPUT_VARIABLE NUMPY_VERSION
--      ERROR_QUIET
--    )
--    string(REGEX REPLACE "\n$" "" NUMPY_VERSION "${NUMPY_VERSION}")
--    message(STATUS "  NUMPY_VERSION=${NUMPY_VERSION}")
--  endif()
-+  set(NUMPY_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
+ macro(FINDPYTHON)
++  # todo xiao
++  message(-----------------------------FINDPYTHON---1)
++  find_package(Python COMPONENTS ${PYTHON_COMPONENTS})
++  message(-----------------------------FINDPYTHON---2)
++  # numpy
 +  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
-+  set(Python3_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
-+  message(---------------------------NUMPY_INCLUDE_DIRS = ${NUMPY_INCLUDE_DIRS})
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
-+  # # Detect numpy.
-+  # message(STATUS "Checking for NumPy")
-+  # execute_process(
-+  #   COMMAND "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (True)"
-+  #   OUTPUT_VARIABLE IS_NUMPY
-+  #   # ERROR_QUIET
-+  #   ERROR_VARIABLE APPLY_ERROR
-+  # )
-+  # if(NOT IS_NUMPY)
-+  #   message(FATAL_ERROR "Failed to detect numpy---error: ${APPLY_ERROR}")
-+  # else()
-+  #   if(NOT NUMPY_INCLUDE_DIRS)
-+  #     execute_process(
-+  #       COMMAND
-+  #         "${PYTHON_EXECUTABLE}" "-c"
-+  #         "import numpy; print (numpy.get_include())"
-+  #       OUTPUT_VARIABLE NUMPY_INCLUDE_DIRS
-+  #       ERROR_QUIET
-+  #     )
-+  #     string(REGEX REPLACE "\n$" "" NUMPY_INCLUDE_DIRS "${NUMPY_INCLUDE_DIRS}")
-+  #     file(TO_CMAKE_PATH "${NUMPY_INCLUDE_DIRS}" NUMPY_INCLUDE_DIRS)
-+  #   endif()
-+  #   message(STATUS "  NUMPY_INCLUDE_DIRS=${NUMPY_INCLUDE_DIRS}")
-+  #   # Retrive NUMPY_VERSION
-+  #   execute_process(
-+  #     COMMAND
-+  #       "${PYTHON_EXECUTABLE}" "-c" "import numpy; print (numpy.__version__)"
-+  #     OUTPUT_VARIABLE NUMPY_VERSION
-+  #     ERROR_QUIET
-+  #   )
-+  #   string(REGEX REPLACE "\n$" "" NUMPY_VERSION "${NUMPY_VERSION}")
-+  #   message(STATUS "  NUMPY_VERSION=${NUMPY_VERSION}")
-+  # endif()
- endmacro()
- 
- # .rst: .. command:: FIND_SCIPY()
++  message(-----------------------------FINDPYTHON---3)
++  return()
++  message(-----------------------------FINDPYTHON---4)
++
+   if(DEFINED FINDPYTHON_ALREADY_CALLED)
+     message(
+       AUTHOR_WARNING
 diff --git a/setup.py b/setup.py
 index f087be4d..4f25caca 100644
 --- a/setup.py
