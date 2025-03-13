@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index ffea7f0..1141e59 100644
+index ffea7f0..5bfd71d 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -6,7 +6,7 @@ from setuptools import setup, Extension
@@ -11,7 +11,19 @@ index ffea7f0..1141e59 100644
  
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
-@@ -49,25 +49,26 @@ class CMakeBuildExt(build_ext):
+@@ -22,8 +22,11 @@ class CMakeBuildExt(build_ext):
+         super().finalize_options()
+ 
+     def run(self):
++        print("-------------------------------------run---1")
+         self._check_dependencies()
++        print("-------------------------------------run---2")
+         self._configure_and_build()
++        print("-------------------------------------run---3")
+ 
+     def _check_dependencies(self):
+         """检查编译依赖"""
+@@ -49,25 +52,26 @@ class CMakeBuildExt(build_ext):
          # 创建构建目录
          os.makedirs(build_dir, exist_ok=True)
          os.makedirs(install_dir, exist_ok=True)
