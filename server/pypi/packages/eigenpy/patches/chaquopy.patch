@@ -50,7 +50,7 @@ index 2d6360c..92d3fc9 100644
    set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..e1f14d2 100644
+index 0053bcb..cb13659 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -56,380 +56,397 @@
@@ -825,6 +825,58 @@ index 0053bcb..e1f14d2 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
+@@ -602,26 +619,31 @@ endmacro()
+ # Detect scipy module.
+ #
+ macro(FIND_SCIPY)
+-  message(STATUS "Checking for SciPy")
+-  execute_process(
+-    COMMAND "${PYTHON_EXECUTABLE}" "-c" "import scipy; print (True)"
+-    OUTPUT_VARIABLE IS_SCIPY
+-    ERROR_QUIET
+-  )
+-
+-  if(NOT IS_SCIPY)
+-    message(FATAL_ERROR "Failed to detect scipy")
+-  else()
+-    # Retrive SCIPY_VERSION
+-    execute_process(
+-      COMMAND
+-        "${PYTHON_EXECUTABLE}" "-c" "import scipy; print (scipy.__version__)"
+-      OUTPUT_VARIABLE SCIPY_VERSION
+-      ERROR_QUIET
+-    )
+-    string(REGEX REPLACE "\n$" "" SCIPY_VERSION "${SCIPY_VERSION}")
+-    message(STATUS "  SCIPY_VERSION=${SCIPY_VERSION}")
+-  endif()
++  set(Python_SciPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/requirements/scipy/core/include")
++  add_library(Python::SciPy INTERFACE IMPORTED)
++  target_include_directories(Python::SciPy SYSTEM INTERFACE ${Python_SciPy_INCLUDE_DIRS})
++
++
++  # message(STATUS "Checking for SciPy")
++  # execute_process(
++  #   COMMAND "${PYTHON_EXECUTABLE}" "-c" "import scipy; print (True)"
++  #   OUTPUT_VARIABLE IS_SCIPY
++  #   ERROR_QUIET
++  # )
++
++  # if(NOT IS_SCIPY)
++  #   message(FATAL_ERROR "Failed to detect scipy")
++  # else()
++  #   # Retrive SCIPY_VERSION
++  #   execute_process(
++  #     COMMAND
++  #       "${PYTHON_EXECUTABLE}" "-c" "import scipy; print (scipy.__version__)"
++  #     OUTPUT_VARIABLE SCIPY_VERSION
++  #     ERROR_QUIET
++  #   )
++  #   string(REGEX REPLACE "\n$" "" SCIPY_VERSION "${SCIPY_VERSION}")
++  #   message(STATUS "  SCIPY_VERSION=${SCIPY_VERSION}")
++  # endif()
+ endmacro()
+ 
+ include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
 index 221a5c2..a58eea2 100644
 --- a/python/CMakeLists.txt

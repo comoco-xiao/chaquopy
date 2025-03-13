@@ -17,3 +17,4 @@ requirements:
   host:
     - python
     - numpy 1.23.3
+    - scipy 1.8.1
