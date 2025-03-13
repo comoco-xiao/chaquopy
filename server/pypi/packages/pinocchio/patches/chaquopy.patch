@@ -31,7 +31,7 @@ index df25fb61..ffccd380 100644
  include("${JRL_CMAKE_MODULES}/ide.cmake")
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..077befe 100644
+index 0053bcb..fa27668 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -94,7 +94,7 @@ macro(FINDPYTHON)
@@ -43,16 +43,17 @@ index 0053bcb..077befe 100644
    if(NOT CMAKE_VERSION VERSION_LESS "3.12")
      if(
        DEFINED PYTHON_EXECUTABLE
-@@ -111,7 +111,7 @@ macro(FINDPYTHON)
+@@ -111,15 +111,16 @@ macro(FINDPYTHON)
            set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
          endif()
        endif()
 -
-+      message(--------------------------Python_EXECUTABLE = ${Python_EXECUTABLE})
++      message(--------------------------1---Python_EXECUTABLE = ${Python_EXECUTABLE})
        if(NOT DEFINED Python_EXECUTABLE)
          set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
        endif()
-@@ -119,7 +119,7 @@ macro(FINDPYTHON)
++      message(--------------------------2---Python_EXECUTABLE = ${Python_EXECUTABLE})
+     else()
        # Search for the default python of the system, if exists
        find_program(PYTHON_EXECUTABLE python)
      endif()
@@ -61,7 +62,7 @@ index 0053bcb..077befe 100644
      if(PYTHON_EXECUTABLE)
        if(NOT EXISTS ${PYTHON_EXECUTABLE})
          message(
-@@ -179,11 +179,23 @@ macro(FINDPYTHON)
+@@ -179,11 +180,23 @@ macro(FINDPYTHON)
  
        if(SEARCH_FOR_NUMPY)
          FIND_NUMPY()
@@ -88,7 +89,7 @@ index 0053bcb..077befe 100644
          REQUIRED
          COMPONENTS ${PYTHON_COMPONENTS}
        )
-@@ -563,38 +575,46 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
+@@ -563,38 +576,46 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
  #
  
  macro(FIND_NUMPY)
