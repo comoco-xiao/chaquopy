@@ -1,3 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2d6360c..9ce530a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -128,7 +128,9 @@ else()
+   set(PYTHON_COMPONENTS Interpreter Development.Module NumPy)
+ endif()
+ set(PYTHON_EXPORT_DEPENDENCY ON)
++message(-----------------------------CMakeLists---1)
+ findpython(REQUIRED)
++message(-----------------------------CMakeLists---2)
+ 
+ if(${NUMPY_VERSION} VERSION_LESS "1.16.0")
+   set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
 diff --git a/setup.py b/setup.py
 index ffea7f0..ba719ce 100644
 --- a/setup.py
