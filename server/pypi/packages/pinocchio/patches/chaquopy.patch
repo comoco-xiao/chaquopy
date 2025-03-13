@@ -69,7 +69,7 @@ index 0053bcb..4091c59 100644
      message(
        AUTHOR_WARNING
 diff --git a/setup.py b/setup.py
-index f087be4d..993b9db5 100644
+index f087be4d..d6e12b1c 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -43,11 +43,14 @@ class CMakeBuildExt(build_ext):
@@ -90,16 +90,35 @@ index f087be4d..993b9db5 100644
  
          # Homebrew 安装的 Boost 路径
          boost_root = "/home/ubuntu/workspace/pkg/boost_1_87_0"
-@@ -65,24 +68,33 @@ class CMakeBuildExt(build_ext):
-             f"-DBOOST_ROOT={boost_root}",
-             f"-DBoost_NO_SYSTEM_PATHS=ON",
+@@ -56,33 +59,42 @@ class CMakeBuildExt(build_ext):
+         cmake_args = [
+             f"-DCMAKE_INSTALL_PREFIX={install_dir}",
+             f"-DCMAKE_BUILD_TYPE={self.build_type}",
+-            "-DBUILD_PYTHON_INTERFACE=ON",
+-            "-DBUILD_TESTING=OFF",
+-            "-DBUILD_WITH_COLLISION_SUPPORT=ON",
+-            f"-DPYTHON_EXECUTABLE={sys.executable}",
++            # "-DBUILD_PYTHON_INTERFACE=ON",
++            # "-DBUILD_TESTING=OFF",
++            # "-DBUILD_WITH_COLLISION_SUPPORT=ON",
++            # f"-DPYTHON_EXECUTABLE={sys.executable}",
              
-+            # eigen3
-+            f"-DEigen3_DIR=/usr/share/eigen3/cmake"
+-            # 显式指定 Boost 路径
+-            f"-DBOOST_ROOT={boost_root}",
+-            f"-DBoost_NO_SYSTEM_PATHS=ON",
++            # # 显式指定 Boost 路径
++            # f"-DBOOST_ROOT={boost_root}",
++            # f"-DBoost_NO_SYSTEM_PATHS=ON",
+             
+-            # 强制使用动态链接库
+-            "-DBoost_USE_STATIC_LIBS=OFF",
+-            "-DBoost_USE_STATIC_RUNTIME=OFF"
++            # # eigen3
++            # f"-DEigen3_DIR=/usr/share/eigen3/cmake"
 +            
-             # 强制使用动态链接库
-             "-DBoost_USE_STATIC_LIBS=OFF",
-             "-DBoost_USE_STATIC_RUNTIME=OFF"
++            # # 强制使用动态链接库
++            # "-DBoost_USE_STATIC_LIBS=OFF",
++            # "-DBoost_USE_STATIC_RUNTIME=OFF"
          ]
 -
 +        print("-------------------------------------setup---1")
