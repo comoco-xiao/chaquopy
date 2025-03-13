@@ -31,7 +31,7 @@ index df25fb61..ffccd380 100644
  include("${JRL_CMAKE_MODULES}/ide.cmake")
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..4e7b7f8 100644
+index 0053bcb..8a8bb4a 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -94,7 +94,7 @@ macro(FINDPYTHON)
@@ -52,7 +52,7 @@ index 0053bcb..4e7b7f8 100644
      if(PYTHON_EXECUTABLE)
        if(NOT EXISTS ${PYTHON_EXECUTABLE})
          message(
-@@ -179,11 +179,18 @@ macro(FINDPYTHON)
+@@ -179,11 +179,20 @@ macro(FINDPYTHON)
  
        if(SEARCH_FOR_NUMPY)
          FIND_NUMPY()
@@ -68,13 +68,15 @@ index 0053bcb..4e7b7f8 100644
 +      #   REQUIRED
 +      #   COMPONENTS ${PYTHON_COMPONENTS}
 +      # )
++      set(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
++      set(Python_LIBRARIES ${PYTHON_LIBRARIES})
        find_package(
 -        "Python${_PYTHON_VERSION_MAJOR}"
 +        Python
          REQUIRED
          COMPONENTS ${PYTHON_COMPONENTS}
        )
-@@ -563,38 +570,46 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
+@@ -563,38 +572,46 @@ endmacro(DYNAMIC_GRAPH_PYTHON_MODULE SUBMODULENAME)
  #
  
  macro(FIND_NUMPY)
