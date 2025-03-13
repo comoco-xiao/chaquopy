@@ -824,10 +824,10 @@ index 0053bcb..3741ebe 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 221a5c2..ccd0777 100644
+index 221a5c2..a567b63 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -34,19 +34,24 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
+@@ -34,20 +34,33 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
  else()
    set(ABSOLUTE_PYTHON_SITELIB ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB})
  endif()
@@ -840,20 +840,35 @@ index 221a5c2..ccd0777 100644
 +message(------------------------------2---PYWRAP = ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
  set_target_properties(
    ${PYWRAP}
++  # PROPERTIES PREFIX ""
++  #            SUFFIX ${PYTHON_EXT_SUFFIX}
++  #            LIBRARY_OUTPUT_DIRECTORY
++  #            "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
++  #            LIBRARY_OUTPUT_DIRECTORY_<CONFIG>
++  #            "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
++  #            RUNTIME_OUTPUT_DIRECTORY
++  #            "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
++  #            RUNTIME_OUTPUT_DIRECTORY_<CONFIG>
++  #            "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}")
    PROPERTIES PREFIX ""
               SUFFIX ${PYTHON_EXT_SUFFIX}
-              LIBRARY_OUTPUT_DIRECTORY
-              "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
+-             LIBRARY_OUTPUT_DIRECTORY
+-             "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
 -             LIBRARY_OUTPUT_DIRECTORY_<CONFIG>
-+             LIBRARY_OUTPUT_DIRECTORY_RELEASE
-              "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
-              RUNTIME_OUTPUT_DIRECTORY
-              "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
+-             "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
+-             RUNTIME_OUTPUT_DIRECTORY
+-             "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
 -             RUNTIME_OUTPUT_DIRECTORY_<CONFIG>
-+             RUNTIME_OUTPUT_DIRECTORY_RELEASE
-              "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}")
+-             "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}")
++             LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
++             LIBRARY_OUTPUT_DIRECTORY_DEBUG "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Debug"
++             LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Release"
++             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
++             RUNTIME_OUTPUT_DIRECTORY_DEBUG "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Debug"
++             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Release"
  
  if(UNIX)
+   get_relative_rpath(${${PYWRAP}_INSTALL_DIR} ${PYWRAP}_INSTALL_RPATH)
 diff --git a/setup.py b/setup.py
 index ffea7f0..ba719ce 100644
 --- a/setup.py
