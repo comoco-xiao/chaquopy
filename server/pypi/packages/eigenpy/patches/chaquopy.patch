@@ -824,10 +824,10 @@ index 0053bcb..3741ebe 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 221a5c2..15854a5 100644
+index 221a5c2..384175d 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
-@@ -34,20 +34,37 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
+@@ -34,20 +34,38 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
  else()
    set(ABSOLUTE_PYTHON_SITELIB ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB})
  endif()
@@ -850,6 +850,7 @@ index 221a5c2..15854a5 100644
 +message(------------------------------1---PYTHON_SITELIB = ${PYTHON_SITELIB})
 +message(------------------------------1---PYWRAP = ${PYWRAP})
 +message(------------------------------2---PYWRAP = ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
++message(------------------------------1---PYTHON_EXT_SUFFIX = ${PYTHON_EXT_SUFFIX})
 +# set_target_properties(
 +#   ${PYWRAP}
 +#   PROPERTIES PREFIX ""
