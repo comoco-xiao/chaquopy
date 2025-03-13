@@ -42,15 +42,16 @@ index df25fb61..c0fbb14e 100644
  
 Submodule cmake contains modified content
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..ce55dab 100644
+index 0053bcb..4091c59 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,6 +56,21 @@
+@@ -56,6 +56,22 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
 +  # todo xiao
 +  message(-----------------------------FINDPYTHON---1---PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE})
++  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
 +  message(-----------------------------FINDPYTHON---2)
 +  # numpy
