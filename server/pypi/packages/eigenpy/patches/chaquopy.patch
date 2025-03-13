@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index ffea7f0..888fc7f 100644
+index ffea7f0..31142b9 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -6,7 +6,7 @@ from setuptools import setup, Extension
@@ -63,3 +63,12 @@ index ffea7f0..888fc7f 100644
  
  project_python_home_dir = os.path.join("python", "eigenpy")
  setup(
+@@ -76,7 +83,7 @@ setup(
+     description="Efficient Rigid Body Dynamics Library",
+     author="Xiao",
+     license="BSD-2-Clause",
+-    packages=[],
++    packages=[""],
+     python_requires=">=3.9",
+     # install_requires=["numpy"],
+     cmdclass={"build_ext": CMakeBuildExt},
