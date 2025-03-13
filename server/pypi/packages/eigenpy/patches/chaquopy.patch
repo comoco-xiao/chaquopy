@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..1d8c077 100644
+index 2d6360c..6d38763 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -93,6 +93,11 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
+@@ -93,6 +93,20 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
  compute_project_args(PROJECT_ARGS LANGUAGES CXX)
  project(${PROJECT_NAME} ${PROJECT_ARGS})
  
@@ -10,11 +10,20 @@ index 2d6360c..1d8c077 100644
 +set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
 +# eigen3
 +set(Eigen3_DIR "/usr/share/eigen3/cmake")
++# boost
++# set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_87_0")
++# set(Boost_NO_SYSTEM_PATHS ON)
++set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/Boost-1.87.0")
++set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_headers-1.87.0")
++set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_filesystem-1.87.0")
++set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_atomic-1.87.0")
++set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
++set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
 +
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -122,13 +127,18 @@ else(WIN32)
+@@ -122,13 +136,18 @@ else(WIN32)
    set(LINK create_symlink)
  endif(WIN32)
  
