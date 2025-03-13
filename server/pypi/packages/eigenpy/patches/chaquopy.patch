@@ -824,7 +824,7 @@ index 0053bcb..3741ebe 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 221a5c2..a567b63 100644
+index 221a5c2..126f331 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
 @@ -34,20 +34,33 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
@@ -865,7 +865,7 @@ index 221a5c2..a567b63 100644
 +             LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Release"
 +             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}"
 +             RUNTIME_OUTPUT_DIRECTORY_DEBUG "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Debug"
-+             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Release"
++             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/python/${PROJECT_NAME}/Release")
  
  if(UNIX)
    get_relative_rpath(${${PYWRAP}_INSTALL_DIR} ${PYWRAP}_INSTALL_RPATH)
