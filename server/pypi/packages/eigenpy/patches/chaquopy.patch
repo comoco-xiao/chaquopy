@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..9dad070 100644
+index 2d6360c..0c4733b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,9 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -20,14 +20,15 @@ index 2d6360c..9dad070 100644
 -  set(PYTHON_COMPONENTS Interpreter NumPy)
 -else()
 -  set(PYTHON_COMPONENTS Interpreter Development.Module NumPy)
+-endif()
 +# todo xiao
 +# if(CMAKE_CROSSCOMPILING)
 +#   set(PYTHON_COMPONENTS Interpreter NumPy)
 +# else()
 +#   set(PYTHON_COMPONENTS Interpreter Development.Module NumPy)
++# endif()
 +set(PYTHON_COMPONENTS Development.Module)
 +
- endif()
  set(PYTHON_EXPORT_DEPENDENCY ON)
 +message(-----------------------------CMakeLists---1)
  findpython(REQUIRED)
