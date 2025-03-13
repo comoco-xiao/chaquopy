@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index ffea7f0..31142b9 100644
+index ffea7f0..0dabcf1 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -6,7 +6,7 @@ from setuptools import setup, Extension
@@ -68,7 +68,7 @@ index ffea7f0..31142b9 100644
      author="Xiao",
      license="BSD-2-Clause",
 -    packages=[],
-+    packages=[""],
++    packages=["__init__.py"],
      python_requires=">=3.9",
      # install_requires=["numpy"],
      cmdclass={"build_ext": CMakeBuildExt},
