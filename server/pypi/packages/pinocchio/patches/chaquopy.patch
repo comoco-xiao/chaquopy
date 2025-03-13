@@ -69,7 +69,7 @@ index 0053bcb..4091c59 100644
      message(
        AUTHOR_WARNING
 diff --git a/setup.py b/setup.py
-index f087be4d..9fd13537 100644
+index f087be4d..993b9db5 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -43,11 +43,14 @@ class CMakeBuildExt(build_ext):
@@ -90,7 +90,7 @@ index f087be4d..9fd13537 100644
  
          # Homebrew 安装的 Boost 路径
          boost_root = "/home/ubuntu/workspace/pkg/boost_1_87_0"
-@@ -65,16 +68,20 @@ class CMakeBuildExt(build_ext):
+@@ -65,24 +68,33 @@ class CMakeBuildExt(build_ext):
              f"-DBOOST_ROOT={boost_root}",
              f"-DBoost_NO_SYSTEM_PATHS=ON",
              
@@ -112,8 +112,26 @@ index f087be4d..9fd13537 100644
 +        print("-------------------------------------setup---2")
  
          # 编译并安装
-         build_args = ["--build", ".", "--target", "install"]
-@@ -91,7 +98,7 @@ setup(
+-        build_args = ["--build", ".", "--target", "install"]
+-        if self.build_type == "Release":
+-            build_args += ["--config", "Release", "-j2"]
++        # build_args = ["--build", ".", "--target", "install"]
++        # if self.build_type == "Release":
++        #     build_args += ["--config", "Release", "-j2"]
++        build_args = ["--config", "Release", "-j2"]
++        # subprocess.check_call(
++        #     ["cmake"] + build_args,
++        #     cwd=str(build_dir)
++        # )
+         subprocess.check_call(
+-            ["cmake"] + build_args,
+-            cwd=str(build_dir)
++            ["cmake", "--build", ".", "--target", "install"] + build_args,
++            cwd=build_dir,
+         )
+ 
+ setup(
+@@ -91,7 +103,7 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
