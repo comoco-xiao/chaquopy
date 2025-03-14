@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..46953dd 100644
+index 2d6360c..7d43d96 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,29 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -57,13 +57,15 @@ index 2d6360c..46953dd 100644
  
  if(${NUMPY_VERSION} VERSION_LESS "1.16.0")
    set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
-@@ -150,7 +179,9 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
+@@ -150,7 +179,11 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
  
  set_boost_default_options()
  export_boost_default_options()
 -find_package(Boost REQUIRED)
++
++message(-------------------------------Boost_USE_STATIC_LIBS = ${Boost_USE_STATIC_LIBS})
 +# todo xiao
-+find_package(Boost 1.85 REQUIRED COMPONENTS python)
++find_package(Boost REQUIRED COMPONENTS python)
 +# find_package(Boost REQUIRED COMPONENTS python container)
  search_for_boost_python(REQUIRED)
  
