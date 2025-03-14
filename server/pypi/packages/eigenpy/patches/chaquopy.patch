@@ -134,6 +134,40 @@ index 49304e1..1eead19 100644
    find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
    string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
  
+diff --git a/cmake/boost/FindBoost.cmake b/cmake/boost/FindBoost.cmake
+index d655d2a..7312b20 100644
+--- a/cmake/boost/FindBoost.cmake
++++ b/cmake/boost/FindBoost.cmake
+@@ -2542,17 +2542,18 @@ endif()
+ #  Finalize
+ # ------------------------------------------------------------------------
+ 
+-# Report Boost_LIBRARIES
+-set(Boost_LIBRARIES "")
+-foreach(_comp IN LISTS Boost_FIND_COMPONENTS)
+-  string(TOUPPER ${_comp} _uppercomp)
+-  if(Boost_${_uppercomp}_FOUND)
+-    list(APPEND Boost_LIBRARIES ${Boost_${_uppercomp}_LIBRARY})
+-    if(_comp STREQUAL "thread")
+-      list(APPEND Boost_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+-    endif()
+-  endif()
+-endforeach()
++# todo xiao
++# # Report Boost_LIBRARIES
++# set(Boost_LIBRARIES "")
++# foreach(_comp IN LISTS Boost_FIND_COMPONENTS)
++#   string(TOUPPER ${_comp} _uppercomp)
++#   if(Boost_${_uppercomp}_FOUND)
++#     list(APPEND Boost_LIBRARIES ${Boost_${_uppercomp}_LIBRARY})
++#     if(_comp STREQUAL "thread")
++#       list(APPEND Boost_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
++#     endif()
++#   endif()
++# endforeach()
+ 
+ # Configure display of cache entries in GUI.
+ foreach(v BOOSTROOT BOOST_ROOT ${_Boost_VARS_INC} ${_Boost_VARS_LIB})
 diff --git a/cmake/pthread.cmake b/cmake/pthread.cmake
 index 8c2c377..cee197d 100644
 --- a/cmake/pthread.cmake
