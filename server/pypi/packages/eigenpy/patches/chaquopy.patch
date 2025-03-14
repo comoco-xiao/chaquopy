@@ -68,6 +68,18 @@ index 2d6360c..9c0fd71 100644
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
+diff --git a/cmake/boost.cmake b/cmake/boost.cmake
+index 49304e1..cd610a0 100644
+--- a/cmake/boost.cmake
++++ b/cmake/boost.cmake
+@@ -118,6 +118,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+       "python${PYTHON_VERSION_MAJOR}"
+       "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}"
+     )
++    message(------------------------------------BOOST_PYTHON_COMPONENT_LIST = ${BOOST_PYTHON_COMPONENT_LIST})
+     set(BOOST_PYTHON_FOUND FALSE)
+     foreach(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
+       SEARCH_FOR_BOOST_COMPONENT(${BOOST_PYTHON_COMPONENT} BOOST_PYTHON_FOUND)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
 index 0053bcb..e19002e 100644
 --- a/cmake/python.cmake
