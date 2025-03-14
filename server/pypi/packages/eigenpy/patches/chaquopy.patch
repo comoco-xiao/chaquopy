@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..5a95c58 100644
+index 2d6360c..c73a617 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,32 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -73,6 +73,16 @@ index 2d6360c..5a95c58 100644
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
+@@ -415,6 +451,9 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
+   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework accelerate")
+ endif(BUILD_WITH_ACCELERATE_SUPPORT)
+ 
++# todo xiao
++target_link_libraries(${PROJECT_NAME} PRIVATE PRIVATE Threads::Threads)
++
+ if(SUFFIX_SO_VERSION)
+   set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
+ endif(SUFFIX_SO_VERSION)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..1eead19 100644
