@@ -68,7 +68,7 @@ index 2d6360c..8a3aa97 100644
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..a46a17c 100644
+index 49304e1..4621f24 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
 @@ -118,6 +118,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
@@ -85,15 +85,15 @@ index 49304e1..a46a17c 100644
    endif()
 +  message(------------------------------------BOOST_PYTHON_REQUIRED = ${BOOST_PYTHON_REQUIRED})
 +  message(------------------------------------BOOST_PYTHON_NAME = ${BOOST_PYTHON_NAME})
-+  # set(BOOST_PYTHON_NAME "python3.9")
++  set(BOOST_PYTHON_NAME "python3.9")
    find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
    string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
  
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..f2429c1 100644
+index 0053bcb..e19002e 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,380 +56,399 @@
+@@ -56,380 +56,398 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
@@ -473,7 +473,6 @@ index 0053bcb..f2429c1 100644
 -  )
 +  # todo xiao
 +  message(-----------------------------FINDPYTHON---1---PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE})
-+  set(PYTHON_VERSION_MAJOR "3.9")
 +  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
 +  include_directories(${PYTHON_INCLUDE_DIRS})
@@ -867,7 +866,7 @@ index 0053bcb..f2429c1 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
-@@ -602,26 +621,27 @@ endmacro()
+@@ -602,26 +620,27 @@ endmacro()
  # Detect scipy module.
  #
  macro(FIND_SCIPY)
