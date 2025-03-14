@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..320a829 100644
+index 2d6360c..25f4374 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,29 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -70,17 +70,6 @@ index 2d6360c..320a829 100644
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
-@@ -415,6 +448,10 @@ if(BUILD_WITH_ACCELERATE_SUPPORT)
-   target_link_libraries(${PROJECT_NAME} PRIVATE "-framework accelerate")
- endif(BUILD_WITH_ACCELERATE_SUPPORT)
- 
-+# todo xiao
-+add_compile_options(-pthread)
-+add_link_options(-pthread)
-+
- if(SUFFIX_SO_VERSION)
-   set_target_properties(${PROJECT_NAME} PROPERTIES SOVERSION ${PROJECT_VERSION})
- endif(SUFFIX_SO_VERSION)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..1eead19 100644
@@ -145,6 +134,67 @@ index 49304e1..1eead19 100644
    find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
    string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
  
+diff --git a/cmake/pthread.cmake b/cmake/pthread.cmake
+index 8c2c377..ce1fd72 100644
+--- a/cmake/pthread.cmake
++++ b/cmake/pthread.cmake
+@@ -21,30 +21,31 @@ include(FindThreads)
+ # Check for pthread support on Linux. This does nothing on Windows.
+ #
+ macro(SEARCH_FOR_PTHREAD)
+-  if(UNIX)
+-    if(CMAKE_USE_PTHREADS_INIT)
+-      add_definitions(-pthread)
+-    else(CMAKE_USE_PTHREADS_INIT)
+-      message(
+-        FATAL_ERROR
+-        "Pthread is required on Unix, but "
+-        ${CMAKE_THREAD_LIBS_INIT}
+-        " has been detected."
+-      )
+-    endif(CMAKE_USE_PTHREADS_INIT)
+-  elseif(WIN32)
+-    # Nothing to do.
+-  else(UNIX)
+-    message(FATAL_ERROR "Thread support for this platform is not implemented.")
+-  endif(UNIX)
++  message(---------------------------------SEARCH_FOR_PTHREAD)
++  # if(UNIX)
++  #   if(CMAKE_USE_PTHREADS_INIT)
++  #     add_definitions(-pthread)
++  #   else(CMAKE_USE_PTHREADS_INIT)
++  #     message(
++  #       FATAL_ERROR
++  #       "Pthread is required on Unix, but "
++  #       ${CMAKE_THREAD_LIBS_INIT}
++  #       " has been detected."
++  #     )
++  #   endif(CMAKE_USE_PTHREADS_INIT)
++  # elseif(WIN32)
++  #   # Nothing to do.
++  # else(UNIX)
++  #   message(FATAL_ERROR "Thread support for this platform is not implemented.")
++  # endif(UNIX)
+ 
+-  list(
+-    APPEND
+-    LOGGING_WATCHED_VARIABLES
+-    CMAKE_THREAD_LIBS_INIT
+-    CMAKE_USE_SPROC_INIT
+-    CMAKE_USE_WIN32_THREADS_INIT
+-    CMAKE_USE_PTHREADS_INIT
+-    CMAKE_HP_PTHREADS_INIT
+-  )
++  # list(
++  #   APPEND
++  #   LOGGING_WATCHED_VARIABLES
++  #   CMAKE_THREAD_LIBS_INIT
++  #   CMAKE_USE_SPROC_INIT
++  #   CMAKE_USE_WIN32_THREADS_INIT
++  #   CMAKE_USE_PTHREADS_INIT
++  #   CMAKE_HP_PTHREADS_INIT
++  # )
+ endmacro(SEARCH_FOR_PTHREAD)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
 index 0053bcb..e19002e 100644
 --- a/cmake/python.cmake
