@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..762f597 100644
+index 2d6360c..fc05336 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,28 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -62,14 +62,14 @@ index 2d6360c..762f597 100644
  export_boost_default_options()
 -find_package(Boost REQUIRED)
 +# todo xiao
-+find_package(Boost REQUIRED COMPONENTS python)
++find_package(Boost 1.85 REQUIRED COMPONENTS python)
 +# find_package(Boost REQUIRED COMPONENTS python container)
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..5ae7ef0 100644
+index 49304e1..bd838b8 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
 @@ -21,6 +21,7 @@
@@ -80,7 +80,19 @@ index 49304e1..5ae7ef0 100644
    set(${found} FALSE PARENT_SCOPE)
    find_package(
      Boost
-@@ -118,6 +119,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+@@ -48,7 +49,10 @@ endif(CMAKE_VERSION VERSION_LESS "3.12")
+ # components.
+ #
+ macro(SET_BOOST_DEFAULT_OPTIONS)
+-  set(Boost_USE_STATIC_LIBS OFF)
++  # todo xiao
++  # set(Boost_USE_STATIC_LIBS OFF)
++  set(Boost_USE_STATIC_LIBS ON)
++
+   set(Boost_USE_MULTITHREADED ON)
+   set(Boost_NO_BOOST_CMAKE ON)
+ endmacro(SET_BOOST_DEFAULT_OPTIONS)
+@@ -118,6 +122,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
        "python${PYTHON_VERSION_MAJOR}"
        "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}"
      )
@@ -88,7 +100,7 @@ index 49304e1..5ae7ef0 100644
      set(BOOST_PYTHON_FOUND FALSE)
      foreach(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
        SEARCH_FOR_BOOST_COMPONENT(${BOOST_PYTHON_COMPONENT} BOOST_PYTHON_FOUND)
-@@ -145,6 +147,8 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+@@ -145,6 +150,8 @@ macro(SEARCH_FOR_BOOST_PYTHON)
        "${PYTHON_EXPORT_DEPENDENCY_MACROS}\nSEARCH_FOR_BOOST_PYTHON(${BOOST_PYTHON_REQUIRED} NAME ${BOOST_PYTHON_NAME})"
      )
    endif()
