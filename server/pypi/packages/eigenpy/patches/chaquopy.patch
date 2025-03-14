@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..ace680f 100644
+index 2d6360c..9883af7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,28 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -59,10 +59,9 @@ index 2d6360c..ace680f 100644
  
  set_boost_default_options()
  export_boost_default_options()
--find_package(Boost REQUIRED)
 +# todo xiao
-+# find_package(Boost REQUIRED)
-+find_package(Boost REQUIRED COMPONENTS python container)
+ find_package(Boost REQUIRED)
++# find_package(Boost REQUIRED COMPONENTS python container)
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
