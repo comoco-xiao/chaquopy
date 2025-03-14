@@ -68,10 +68,18 @@ index 2d6360c..8a3aa97 100644
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..e967f87 100644
+index 49304e1..5ae7ef0 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
-@@ -118,6 +118,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+@@ -21,6 +21,7 @@
+ # FALSE otherwise. This function is for internal use only.
+ #
+ function(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
++  message(--------------------------boost_python_name = ${boost_python_name})
+   set(${found} FALSE PARENT_SCOPE)
+   find_package(
+     Boost
+@@ -118,6 +119,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
        "python${PYTHON_VERSION_MAJOR}"
        "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}"
      )
@@ -79,7 +87,7 @@ index 49304e1..e967f87 100644
      set(BOOST_PYTHON_FOUND FALSE)
      foreach(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
        SEARCH_FOR_BOOST_COMPONENT(${BOOST_PYTHON_COMPONENT} BOOST_PYTHON_FOUND)
-@@ -145,6 +146,8 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+@@ -145,6 +147,8 @@ macro(SEARCH_FOR_BOOST_PYTHON)
        "${PYTHON_EXPORT_DEPENDENCY_MACROS}\nSEARCH_FOR_BOOST_PYTHON(${BOOST_PYTHON_REQUIRED} NAME ${BOOST_PYTHON_NAME})"
      )
    endif()
