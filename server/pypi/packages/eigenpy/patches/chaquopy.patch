@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..9883af7 100644
+index 2d6360c..6b6c0cb 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -93,6 +93,28 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -31,7 +31,7 @@ index 2d6360c..9883af7 100644
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -122,13 +144,18 @@ else(WIN32)
+@@ -122,13 +144,19 @@ else(WIN32)
    set(LINK create_symlink)
  endif(WIN32)
  
@@ -51,11 +51,12 @@ index 2d6360c..9883af7 100644
  set(PYTHON_EXPORT_DEPENDENCY ON)
 +message(-----------------------------CMakeLists---1)
  findpython(REQUIRED)
++set(Boost_PYTHON_VERSION "3.9")
 +message(-----------------------------CMakeLists---2)
  
  if(${NUMPY_VERSION} VERSION_LESS "1.16.0")
    set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
-@@ -150,7 +177,9 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
+@@ -150,7 +178,9 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
  
  set_boost_default_options()
  export_boost_default_options()
