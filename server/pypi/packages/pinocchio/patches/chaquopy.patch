@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..65d49305 100644
+index df25fb61..0eacdc0d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,43 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -37,7 +37,7 @@ index df25fb61..65d49305 100644
 +set(boost_python_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_python-1.85.0")
 +set(boost_container_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_container-1.85.0")
 +set(boost_graph_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_graph-1.85.0")
-+# set(Boost_COMPILER "-clang")
++set(Boost_COMPILER "-clang")
 +# console_bridge
 +set(console_bridge_DIR "/usr/lib/x86_64-linux-gnu/console_bridge/cmake")
 +
