@@ -17,4 +17,4 @@ requirements:
   host:
     - python
     - numpy 1.23.3
-    - eigenpy
+    - eigenpy 3.10.3
