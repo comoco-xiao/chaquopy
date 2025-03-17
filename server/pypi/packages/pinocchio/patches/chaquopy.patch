@@ -1018,7 +1018,7 @@ index f087be4d..2ba64885 100644
      install_requires=["numpy"],
      ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 500d657f..30499f5f 100644
+index 500d657f..ba9bdd6f 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -347,7 +347,10 @@ if(BUILD_WITH_PYTHON_PARSER_SUPPORT)
@@ -1028,7 +1028,7 @@ index 500d657f..30499f5f 100644
 -  target_link_libraries(${PYTHON_PARSER_LIB_NAME} PUBLIC ${PROJECT_NAME}_default Python3::Python)
 +  # todo xiao
 +  # target_link_libraries(${PYTHON_PARSER_LIB_NAME} PUBLIC ${PROJECT_NAME}_default Python3::Python)
-+  target_link_libraries(${PYTHON_PARSER_LIB_NAME} PUBLIC ${PROJECT_NAME}_default Python::Python)
++  target_link_libraries(${PYTHON_PARSER_LIB_NAME} PUBLIC ${PROJECT_NAME}_default Python)
 +
    target_link_boost_python(${PYTHON_PARSER_LIB_NAME} PUBLIC)
  endif()
