@@ -72,7 +72,7 @@ index 2d6360c..25f4374 100644
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..25a2b2b 100644
+index 49304e1..80f94ab 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
 @@ -21,6 +21,7 @@
@@ -134,7 +134,7 @@ index 49304e1..25a2b2b 100644
    find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
    string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
  
-@@ -183,10 +195,18 @@ macro(TARGET_LINK_BOOST_PYTHON target)
+@@ -183,10 +195,17 @@ macro(TARGET_LINK_BOOST_PYTHON target)
    endif()
  
    if(TARGET Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
@@ -144,7 +144,6 @@ index 49304e1..25a2b2b 100644
 +    #   ${PUBLIC_KEYWORD}
 +    #   Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}
 +    # )
-+    message(-----------------------------------boost.cmake---PYTHON_LIBRARIES = ${PYTHON_LIBRARIES})
      target_link_libraries(
        ${target}
        ${PUBLIC_KEYWORD}
@@ -154,10 +153,10 @@ index 49304e1..25a2b2b 100644
    else()
      if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..e19002e 100644
+index 0053bcb..42482e2 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,380 +56,398 @@
+@@ -56,380 +56,395 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
@@ -536,11 +535,11 @@ index 0053bcb..e19002e 100644
 -    PYTHON_EXT_SUFFIX
 -  )
 +  # todo xiao
-+  message(-----------------------------FINDPYTHON---1---PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE})
++  # python components
 +  set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
 +  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development ${PYTHON_COMPONENTS})
 +  include_directories(${PYTHON_INCLUDE_DIRS})
-+  message(-----------------------------FINDPYTHON---2)
++
 +  # numpy
 +  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
 +  add_library(Python::NumPy INTERFACE IMPORTED)
@@ -549,9 +548,6 @@ index 0053bcb..e19002e 100644
 +  set(NUMPY_VERSION "1.23.3")
 +
 +  set(PYTHON_EXT_SUFFIX ".so")
-+  message(-----------------------------FINDPYTHON---3)
-+  message(-----------------------------FINDPYTHON---Python_Development.Module_FOUND = ${Python_Development.Module_FOUND})
-+  message(-----------------------------FINDPYTHON---Python_NumPy_FOUND = ${Python_NumPy_FOUND})
 +
 +  # if(DEFINED FINDPYTHON_ALREADY_CALLED)
 +  #   message(
@@ -930,7 +926,7 @@ index 0053bcb..e19002e 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
-@@ -602,26 +620,27 @@ endmacro()
+@@ -602,26 +617,27 @@ endmacro()
  # Detect scipy module.
  #
  macro(FIND_SCIPY)
@@ -978,27 +974,8 @@ index 0053bcb..e19002e 100644
  endmacro()
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
-diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index 221a5c2..a58eea2 100644
---- a/python/CMakeLists.txt
-+++ b/python/CMakeLists.txt
-@@ -34,8 +34,14 @@ if(IS_ABSOLUTE ${PYTHON_SITELIB})
- else()
-   set(ABSOLUTE_PYTHON_SITELIB ${CMAKE_INSTALL_PREFIX}/${PYTHON_SITELIB})
- endif()
-+
- set(${PYWRAP}_INSTALL_DIR ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
- 
-+message(------------------------------1---CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX})
-+message(------------------------------1---PYTHON_SITELIB = ${PYTHON_SITELIB})
-+message(------------------------------1---PYWRAP = ${PYWRAP})
-+message(------------------------------2---PYWRAP = ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
-+message(------------------------------1---PYTHON_EXT_SUFFIX = ${PYTHON_EXT_SUFFIX})
- set_target_properties(
-   ${PYWRAP}
-   PROPERTIES PREFIX ""
 diff --git a/setup.py b/setup.py
-index ffea7f0..ba719ce 100644
+index ffea7f0..416ea32 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -6,7 +6,7 @@ from setuptools import setup, Extension
@@ -1010,59 +987,30 @@ index ffea7f0..ba719ce 100644
  
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
-@@ -15,15 +15,21 @@ class CMakeBuildExt(build_ext):
-     ]
- 
-     def initialize_options(self):
-+        print("-------------------------------------initialize_options---1")
-         super().initialize_options()
-+        print("-------------------------------------initialize_options---2")
-         self.build_type = "Release"
-+        print("-------------------------------------initialize_options---3")
- 
-     def finalize_options(self):
-         super().finalize_options()
- 
-     def run(self):
-+        print("-------------------------------------run---1")
-         self._check_dependencies()
-+        print("-------------------------------------run---2")
-         self._configure_and_build()
-+        print("-------------------------------------run---3")
- 
-     def _check_dependencies(self):
-         """检查编译依赖"""
-@@ -49,25 +55,26 @@ class CMakeBuildExt(build_ext):
+@@ -49,12 +49,13 @@ class CMakeBuildExt(build_ext):
          # 创建构建目录
          os.makedirs(build_dir, exist_ok=True)
          os.makedirs(install_dir, exist_ok=True)
 -    
-+        print("-------------------------------------_configure_and_build---1")
++
          # CMake 配置参数
          cmake_args = [
              f"-DCMAKE_INSTALL_PREFIX={install_dir}",
              f"-DCMAKE_BUILD_TYPE={self.build_type}",
          ]
-+        print("-------------------------------------_configure_and_build---2")
++
          # 生成构建系统
          subprocess.check_call(
              ["cmake", str(PROJECT_DIR)] + cmake_args,
-             cwd=str(build_dir), env=os.environ.copy()
-         )
--
-+        print("-------------------------------------_configure_and_build---3")
-         # 编译并安装
-         build_args = ["--config", "Release", "-j2"]
-         subprocess.check_call(
+@@ -67,7 +68,6 @@ class CMakeBuildExt(build_ext):
              ["cmake", "--build", ".", "--target", "install"] + build_args,
              cwd=build_dir,
          )
 -        print("-------------------------------------setup---3")
-+        print("-------------------------------------_configure_and_build---4")
  
  project_python_home_dir = os.path.join("python", "eigenpy")
  setup(
-@@ -76,9 +83,12 @@ setup(
+@@ -76,9 +76,12 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Xiao",
      license="BSD-2-Clause",
