@@ -1,14 +1,15 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..190135d6 100644
+index df25fb61..f13bcbb5 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -87,6 +87,27 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
+@@ -87,6 +87,41 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
  compute_project_args(PROJECT_ARGS LANGUAGES CXX)
  project(${PROJECT_NAME} ${PROJECT_ARGS})
  
 +# eigen3
 +set(Eigen3_DIR "/usr/share/eigen3/cmake")
-+set(eigenpy_DIR "/home/ubuntu/.pyenv/versions/3.9.20/lib/python3.9/site-packages/cmeel.prefix/lib/cmake/eigenpy")
++# set(eigenpy_DIR "/home/ubuntu/.pyenv/versions/3.9.20/lib/python3.9/site-packages/cmeel.prefix/lib/cmake/eigenpy")
++set(eigenpy_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/eigenpy/lib/cmake/eigenpy")
 +
 +# urdfdom_headers
 +set(urdfdom_headers_DIR "/usr/share/urdfdom_headers/cmake")
@@ -18,19 +19,32 @@ index df25fb61..190135d6 100644
 +# boost
 +# set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_87_0")
 +# set(Boost_NO_SYSTEM_PATHS ON)
-+set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/Boost-1.87.0")
-+set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_headers-1.87.0")
-+set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_filesystem-1.87.0")
-+set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_atomic-1.87.0")
-+set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
-+set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
++# set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/Boost-1.87.0")
++# set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_headers-1.87.0")
++# set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_filesystem-1.87.0")
++# set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_atomic-1.87.0")
++# set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
++# set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
++set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
++set(BOOST_LIBRARYDIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib")
++set(Boost_USE_STATIC_LIBS ON)
++set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/Boost-1.85.0")
++set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_headers-1.85.0")
++set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_filesystem-1.85.0")
++set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_atomic-1.85.0")
++set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_system-1.85.0")
++set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_serialization-1.85.0")
++set(boost_python_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_python-1.85.0")
++set(boost_container_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_container-1.85.0")
++set(boost_graph_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_graph-1.85.0")
++set(Boost_COMPILER "-clang")
 +
 +set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
 +
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -298,22 +319,29 @@ if(BUILD_PYTHON_INTERFACE)
+@@ -298,22 +333,29 @@ if(BUILD_PYTHON_INTERFACE)
        "The Python bindings of Pinocchio will be compiled along the main library. If you want to disable this feature, please set the option BUILD_PYTHON_INTERFACE to OFF."
    )
  
