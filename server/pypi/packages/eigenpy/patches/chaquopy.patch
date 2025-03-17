@@ -72,7 +72,7 @@ index 2d6360c..25f4374 100644
  if(BUILD_WITH_CHOLMOD_SUPPORT)
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..1eead19 100644
+index 49304e1..25a2b2b 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
 @@ -21,6 +21,7 @@
@@ -134,6 +134,25 @@ index 49304e1..1eead19 100644
    find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
    string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
  
+@@ -183,10 +195,18 @@ macro(TARGET_LINK_BOOST_PYTHON target)
+   endif()
+ 
+   if(TARGET Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
++    # todo xiao
++    # target_link_libraries(
++    #   ${target}
++    #   ${PUBLIC_KEYWORD}
++    #   Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}
++    # )
++    message(-----------------------------------boost.cmake---PYTHON_LIBRARIES = ${PYTHON_LIBRARIES})
+     target_link_libraries(
+       ${target}
+       ${PUBLIC_KEYWORD}
+       Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}
++      ${PYTHON_LIBRARIES}
+     )
+   else()
+     if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
 index 0053bcb..e19002e 100644
 --- a/cmake/python.cmake
