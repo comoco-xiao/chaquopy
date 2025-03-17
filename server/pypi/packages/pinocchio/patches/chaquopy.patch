@@ -1018,10 +1018,18 @@ index f087be4d..2ba64885 100644
      install_requires=["numpy"],
      ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 500d657f..ba9bdd6f 100644
+index 500d657f..6802c372 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -347,7 +347,10 @@ if(BUILD_WITH_PYTHON_PARSER_SUPPORT)
+@@ -130,6 +130,7 @@ endfunction()
+ # Define a template instantiation target
+ function(PINOCCHIO_SPECIFIC_TYPE scalar_name scope)
+   set(LIB_NAME "${PROJECT_NAME}_${scalar_name}")
++  message(-----------------------------LIB_NAME = ${LIB_NAME})
+   if(ENABLE_TEMPLATE_INSTANTIATION)
+     pinocchio_target(
+       ${LIB_NAME}
+@@ -347,7 +348,10 @@ if(BUILD_WITH_PYTHON_PARSER_SUPPORT)
              ${${PROJECT_NAME}_PYTHON_PARSER_PUBLIC_HEADERS})
    pinocchio_config(python_parser ${PYTHON_PARSER_LIB_NAME})
  
