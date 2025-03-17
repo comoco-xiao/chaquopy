@@ -77,6 +77,21 @@ index df25fb61..0eacdc0d 100644
  
    message(STATUS "Python compiler: ${_python_implementation_value}")
    if(_python_implementation_value MATCHES "PyPy")
+diff --git a/bindings/python/CMakeLists.txt b/bindings/python/CMakeLists.txt
+index 41fe8e28..ccc644f0 100644
+--- a/bindings/python/CMakeLists.txt
++++ b/bindings/python/CMakeLists.txt
+@@ -106,6 +106,10 @@ function(PINOCCHIO_PYTHON_BINDINGS_SPECIFIC_TYPE scalar_name)
+ 
+   set(${PYWRAP}_INSTALL_DIR ${ABSOLUTE_PYTHON_SITELIB}/${PROJECT_NAME})
+ 
++  message(-----------------------------PYTHON_LIB_NAME = ${PYTHON_LIB_NAME})
++  message(-----------------------------PROJECT_BINARY_DIR = ${PROJECT_BINARY_DIR})
++  message(-----------------------------PROJECT_NAME = ${PROJECT_NAME})
++  message(-----------------------------PYTHON_EXT_SUFFIX = ${PYTHON_EXT_SUFFIX})
+   set_target_properties(
+     ${PYTHON_LIB_NAME}
+     PROPERTIES PREFIX ""
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..80f94ab 100644
