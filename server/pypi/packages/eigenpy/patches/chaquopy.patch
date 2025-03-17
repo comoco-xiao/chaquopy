@@ -975,7 +975,7 @@ index 0053bcb..42482e2 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/setup.py b/setup.py
-index ffea7f0..dae3b2d 100644
+index ffea7f0..c8f75c8 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,12 +1,13 @@
@@ -993,7 +993,7 @@ index ffea7f0..dae3b2d 100644
  
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
-@@ -40,7 +41,28 @@ class CMakeBuildExt(build_ext):
+@@ -40,7 +41,35 @@ class CMakeBuildExt(build_ext):
          if missing:
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
@@ -1020,10 +1020,17 @@ index ffea7f0..dae3b2d 100644
 +            shutil.rmtree(share_path)
 +        shutil.copytree(source_share_path, share_path)
 +        
++        # python
++        python_path = os.path.join(self.build_lib, "eigenpy", "lib", "python3.9", "site-packages", "eigenpy")
++        source_python_path = os.path.join(install_dir, "eigenpy")
++        if os.path.exists(python_path):
++            shutil.rmtree(python_path)
++        shutil.copytree(source_python_path, python_path)
++        
      def _configure_and_build(self):
          """执行 CMake 构建"""
          build_dir = os.path.join(PROJECT_DIR, "cmake_build")
-@@ -49,12 +71,13 @@ class CMakeBuildExt(build_ext):
+@@ -49,12 +78,13 @@ class CMakeBuildExt(build_ext):
          # 创建构建目录
          os.makedirs(build_dir, exist_ok=True)
          os.makedirs(install_dir, exist_ok=True)
@@ -1038,7 +1045,7 @@ index ffea7f0..dae3b2d 100644
          # 生成构建系统
          subprocess.check_call(
              ["cmake", str(PROJECT_DIR)] + cmake_args,
-@@ -67,7 +90,9 @@ class CMakeBuildExt(build_ext):
+@@ -67,7 +97,9 @@ class CMakeBuildExt(build_ext):
              ["cmake", "--build", ".", "--target", "install"] + build_args,
              cwd=build_dir,
          )
@@ -1049,14 +1056,9 @@ index ffea7f0..dae3b2d 100644
  
  project_python_home_dir = os.path.join("python", "eigenpy")
  setup(
-@@ -76,9 +101,12 @@ setup(
-     description="Efficient Rigid Body Dynamics Library",
-     author="Xiao",
+@@ -78,7 +110,8 @@ setup(
      license="BSD-2-Clause",
--    packages=[],
-+    packages=[
-+        "eigenpy"
-+        ],
+     packages=[],
      python_requires=">=3.9",
 -    # install_requires=["numpy"],
 +    install_requires=["numpy"],
