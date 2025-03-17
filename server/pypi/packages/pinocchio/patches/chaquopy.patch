@@ -950,18 +950,16 @@ index 0053bcb..e08f4cb 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..578823ad 100644
+index f087be4d..2ba64885 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -43,11 +43,14 @@ class CMakeBuildExt(build_ext):
+@@ -43,46 +43,30 @@ class CMakeBuildExt(build_ext):
  
      def _configure_and_build(self):
          """执行 CMake 构建"""
 -        build_dir = Path(self.build_temp) / "cmake_build"
 -        install_dir = Path(self.build_lib).absolute()
-+        # build_dir = Path(self.build_temp) / "cmake_build"
 +        build_dir = os.path.join(PROJECT_DIR, "cmake_build")
-+        # install_dir = Path(self.build_lib).absolute()
 +        install_dir = os.path.join(PROJECT_DIR, "pinocchio_install")
  
          # 创建构建目录
@@ -969,9 +967,10 @@ index f087be4d..578823ad 100644
 +        os.makedirs(build_dir, exist_ok=True)
 +        os.makedirs(install_dir, exist_ok=True)
  
-         # Homebrew 安装的 Boost 路径
-         boost_root = "/home/ubuntu/workspace/pkg/boost_1_87_0"
-@@ -56,34 +59,44 @@ class CMakeBuildExt(build_ext):
+-        # Homebrew 安装的 Boost 路径
+-        boost_root = "/home/ubuntu/workspace/pkg/boost_1_87_0"
+-    
+         # CMake 配置参数
          cmake_args = [
              f"-DCMAKE_INSTALL_PREFIX={install_dir}",
              f"-DCMAKE_BUILD_TYPE={self.build_type}",
@@ -979,61 +978,37 @@ index f087be4d..578823ad 100644
 -            "-DBUILD_TESTING=OFF",
 -            "-DBUILD_WITH_COLLISION_SUPPORT=ON",
 -            f"-DPYTHON_EXECUTABLE={sys.executable}",
-+            # "-DBUILD_PYTHON_INTERFACE=ON",
-+            # "-DBUILD_TESTING=OFF",
-+            # "-DBUILD_WITH_COLLISION_SUPPORT=ON",
-+            # f"-DPYTHON_EXECUTABLE={sys.executable}",
-             
+-            
 -            # 显式指定 Boost 路径
 -            f"-DBOOST_ROOT={boost_root}",
 -            f"-DBoost_NO_SYSTEM_PATHS=ON",
-+            # # 显式指定 Boost 路径
-+            # f"-DBOOST_ROOT={boost_root}",
-+            # f"-DBoost_NO_SYSTEM_PATHS=ON",
-             
+-            
 -            # 强制使用动态链接库
 -            "-DBoost_USE_STATIC_LIBS=OFF",
 -            "-DBoost_USE_STATIC_RUNTIME=OFF"
-+            # # eigen3
-+            # f"-DEigen3_DIR=/usr/share/eigen3/cmake"
-+            
-+            # # 强制使用动态链接库
-+            # "-DBoost_USE_STATIC_LIBS=OFF",
-+            # "-DBoost_USE_STATIC_RUNTIME=OFF"
          ]
--
-+        print("-------------------------------------setup---1")
+ 
          # 生成构建系统
          subprocess.check_call(
              ["cmake", str(PROJECT_DIR)] + cmake_args,
 -            cwd=str(build_dir)
 +            cwd=str(build_dir), env=os.environ.copy()
          )
-+        print("-------------------------------------setup---2")
  
          # 编译并安装
 -        build_args = ["--build", ".", "--target", "install"]
 -        if self.build_type == "Release":
 -            build_args += ["--config", "Release", "-j2"]
-+        # build_args = ["--build", ".", "--target", "install"]
-+        # if self.build_type == "Release":
-+        #     build_args += ["--config", "Release", "-j2"]
 +        build_args = ["--config", "Release", "-j2"]
-+        # subprocess.check_call(
-+        #     ["cmake"] + build_args,
-+        #     cwd=str(build_dir)
-+        # )
          subprocess.check_call(
 -            ["cmake"] + build_args,
 -            cwd=str(build_dir)
 +            ["cmake", "--build", ".", "--target", "install"] + build_args,
 +            cwd=build_dir,
          )
-+        print("-------------------------------------setup---3")
  
  setup(
-     name="pinocchio",
-@@ -91,7 +104,7 @@ setup(
+@@ -91,7 +75,7 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
