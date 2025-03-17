@@ -171,8 +171,7 @@ class BuildWheel:
             log("Skipping build due to --no-build")
         else:
             with self.env_vars():
-                # todo xiao
-                # self.create_dummy_libs()
+                self.create_dummy_libs()
                 wheel_filename = self.build_wheel()
                 wheel_dir = self.fix_wheel(wheel_filename)
 
