@@ -1018,7 +1018,7 @@ index f087be4d..2ba64885 100644
      install_requires=["numpy"],
      ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 500d657f..a99bd329 100644
+index 500d657f..19368044 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
 @@ -83,6 +83,10 @@ function(PINOCCHIO_TARGET target_name)
@@ -1032,7 +1032,21 @@ index 500d657f..a99bd329 100644
    add_library(${LIB_NAME} ${LIBRARY_TYPE})
    target_link_libraries(${LIB_NAME} ${LIBRARY_PUBLIC_SCOPE} ${PROJECT_NAME}_headers)
  
-@@ -130,6 +134,7 @@ endfunction()
+@@ -115,9 +119,10 @@ function(PINOCCHIO_TARGET target_name)
+     $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
+ 
+-  if(BUILD_WITH_COMMIT_VERSION)
+-    tag_library_version(${LIB_NAME})
+-  endif()
++  # todo xiao
++  # if(BUILD_WITH_COMMIT_VERSION)
++  #   tag_library_version(${LIB_NAME})
++  # endif()
+ 
+   install(
+     TARGETS ${LIB_NAME}
+@@ -130,6 +135,7 @@ endfunction()
  # Define a template instantiation target
  function(PINOCCHIO_SPECIFIC_TYPE scalar_name scope)
    set(LIB_NAME "${PROJECT_NAME}_${scalar_name}")
@@ -1040,7 +1054,7 @@ index 500d657f..a99bd329 100644
    if(ENABLE_TEMPLATE_INSTANTIATION)
      pinocchio_target(
        ${LIB_NAME}
-@@ -347,7 +352,10 @@ if(BUILD_WITH_PYTHON_PARSER_SUPPORT)
+@@ -347,7 +353,10 @@ if(BUILD_WITH_PYTHON_PARSER_SUPPORT)
              ${${PROJECT_NAME}_PYTHON_PARSER_PUBLIC_HEADERS})
    pinocchio_config(python_parser ${PYTHON_PARSER_LIB_NAME})
  
