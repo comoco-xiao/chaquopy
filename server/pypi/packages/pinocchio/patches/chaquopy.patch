@@ -175,7 +175,7 @@ index 49304e1..80f94ab 100644
    else()
      if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..e03f98a 100644
+index 0053bcb..e08f4cb 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -56,380 +56,396 @@
@@ -566,9 +566,9 @@ index 0053bcb..e03f98a 100644
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
-+  message(-----------------------------FINDPYTHON---3)
-+  message(-----------------------------FINDPYTHON---Python_Development.Module_FOUND = ${Python_Development.Module_FOUND})
-+  message(-----------------------------FINDPYTHON---Python_NumPy_FOUND = ${Python_NumPy_FOUND})
++  
++  set(PYTHON_EXT_SUFFIX ".so")
++  
 +  # return()
 +  # message(-----------------------------FINDPYTHON---4)
 +
