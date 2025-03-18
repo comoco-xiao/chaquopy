@@ -1071,7 +1071,7 @@ index 500d657f..19368044 100644
  endif()
  
 diff --git a/unittest/CMakeLists.txt b/unittest/CMakeLists.txt
-index 5518dc1b..29b3f925 100644
+index 5518dc1b..b3775f9b 100644
 --- a/unittest/CMakeLists.txt
 +++ b/unittest/CMakeLists.txt
 @@ -110,12 +110,16 @@ function(ADD_PINOCCHIO_UNIT_TEST name)
@@ -1091,3 +1091,13 @@ index 5518dc1b..29b3f925 100644
    if(PKGS)
      target_link_libraries(${TEST_NAME} PRIVATE ${PKGS})
    endif()
+@@ -130,6 +134,9 @@ endmacro()
+ # Find Boost.UnitTestFramework
+ find_package(Boost COMPONENTS unit_test_framework)
+ 
++# todo xiao
++set(unit_test_PACKAGES Boost::unit_test_framework)
++
+ # Header only
+ add_pinocchio_unit_test(macros HEADER_ONLY)
+ 
