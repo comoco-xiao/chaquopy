@@ -1071,10 +1071,10 @@ index 500d657f..19368044 100644
  endif()
  
 diff --git a/unittest/CMakeLists.txt b/unittest/CMakeLists.txt
-index 5518dc1b..8bd15d11 100644
+index 5518dc1b..29b3f925 100644
 --- a/unittest/CMakeLists.txt
 +++ b/unittest/CMakeLists.txt
-@@ -110,6 +110,8 @@ function(ADD_PINOCCHIO_UNIT_TEST name)
+@@ -110,12 +110,16 @@ function(ADD_PINOCCHIO_UNIT_TEST name)
      set_tests_properties(${TEST_NAME} PROPERTIES ENVIRONMENT "${ENV_VARIABLES}")
    endif()
  
@@ -1083,3 +1083,11 @@ index 5518dc1b..8bd15d11 100644
    modernize_target_link_libraries(
      ${TEST_NAME}
      SCOPE PRIVATE
+     TARGETS Boost::unit_test_framework
+     LIBRARIES ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+ 
++  message(-------------------------------TEST_NAME = ${TEST_NAME})
++  message(-------------------------------PKGS = ${PKGS})
+   if(PKGS)
+     target_link_libraries(${TEST_NAME} PRIVATE ${PKGS})
+   endif()
