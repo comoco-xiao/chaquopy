@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..c9167c0e 100644
+index df25fb61..b83d482c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -87,6 +87,43 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
+@@ -87,6 +87,36 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
  compute_project_args(PROJECT_ARGS LANGUAGES CXX)
  project(${PROJECT_NAME} ${PROJECT_ARGS})
  
@@ -17,14 +17,6 @@ index df25fb61..c9167c0e 100644
 +set(urdfdom_DIR "/usr/lib/x86_64-linux-gnu/urdfdom/cmake")
 +
 +# boost
-+# set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_87_0")
-+# set(Boost_NO_SYSTEM_PATHS ON)
-+# set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/Boost-1.87.0")
-+# set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_headers-1.87.0")
-+# set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_filesystem-1.87.0")
-+# set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_atomic-1.87.0")
-+# set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_system-1.87.0")
-+# set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_87_0/lib/cmake/boost_serialization-1.87.0")
 +set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
 +set(BOOST_LIBRARYDIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib")
 +set(Boost_USE_STATIC_LIBS ON)
@@ -37,6 +29,7 @@ index df25fb61..c9167c0e 100644
 +set(boost_python_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_python-1.85.0")
 +set(boost_container_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_container-1.85.0")
 +set(boost_graph_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_graph-1.85.0")
++set(boost_unit_test_framework_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_unit_test_framework-1.85.0")
 +set(Boost_COMPILER "-clang")
 +# console_bridge
 +set(console_bridge_DIR "/usr/lib/x86_64-linux-gnu/console_bridge/cmake")
@@ -46,16 +39,18 @@ index df25fb61..c9167c0e 100644
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -273,7 +310,7 @@ if(BUILD_WITH_EXTRA_SUPPORT)
+@@ -273,7 +303,9 @@ if(BUILD_WITH_EXTRA_SUPPORT)
    message(STATUS "Found Qhull.")
  endif()
  
 -set(BOOST_REQUIRED_COMPONENTS filesystem serialization system)
++# todo xiao
++# set(BOOST_REQUIRED_COMPONENTS filesystem serialization system)
 +set(BOOST_REQUIRED_COMPONENTS filesystem serialization system unit_test_framework)
  
  set_boost_default_options()
  export_boost_default_options()
-@@ -298,22 +335,29 @@ if(BUILD_PYTHON_INTERFACE)
+@@ -298,22 +330,29 @@ if(BUILD_PYTHON_INTERFACE)
        "The Python bindings of Pinocchio will be compiled along the main library. If you want to disable this feature, please set the option BUILD_PYTHON_INTERFACE to OFF."
    )
  
