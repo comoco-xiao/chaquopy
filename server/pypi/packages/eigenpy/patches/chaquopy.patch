@@ -975,7 +975,7 @@ index 0053bcb..42482e2 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/setup.py b/setup.py
-index ffea7f0..c8f75c8 100644
+index ffea7f0..aec3d1b 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,12 +1,13 @@
@@ -1000,28 +1000,28 @@ index ffea7f0..c8f75c8 100644
 -
 +    def copy_data(self, install_dir):
 +        # include
-+        include_path = os.path.join(self.build_lib, "eigenpy", "include")
++        include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
 +        source_include_path = os.path.join(install_dir, "include")
 +        if os.path.exists(include_path):
 +            shutil.rmtree(include_path)
 +        shutil.copytree(source_include_path, include_path)
 +        
 +        # lib
-+        lib_path = os.path.join(self.build_lib, "eigenpy", "lib")
++        lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
 +        source_lib_path = os.path.join(install_dir, "lib")
 +        if os.path.exists(lib_path):
 +            shutil.rmtree(lib_path)
 +        shutil.copytree(source_lib_path, lib_path)
 +        
 +        # share
-+        share_path = os.path.join(self.build_lib, "eigenpy", "share")
++        share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
 +        source_share_path = os.path.join(install_dir, "share")
 +        if os.path.exists(share_path):
 +            shutil.rmtree(share_path)
 +        shutil.copytree(source_share_path, share_path)
 +        
 +        # python
-+        python_path = os.path.join(self.build_lib, "eigenpy", "lib", "python3.9", "site-packages", "eigenpy")
++        python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "eigenpy")
 +        source_python_path = os.path.join(install_dir, "eigenpy")
 +        if os.path.exists(python_path):
 +            shutil.rmtree(python_path)
