@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..3ef4e22a 100644
+index df25fb61..795b02ea 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -23,6 +23,10 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
@@ -20,7 +20,7 @@ index df25fb61..3ef4e22a 100644
 +# eigen3
 +set(Eigen3_DIR "/usr/share/eigen3/cmake")
 +# set(eigenpy_DIR "/home/ubuntu/.pyenv/versions/3.9.20/lib/python3.9/site-packages/cmeel.prefix/lib/cmake/eigenpy")
-+set(eigenpy_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/eigenpy/lib/cmake/eigenpy")
++set(eigenpy_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/cmeel.prefix/lib/cmake/eigenpy")
 +
 +# urdfdom_headers
 +set(urdfdom_headers_DIR "/home/ubuntu/workspace/pkg/urdfdom_headers/lib/urdfdom_headers/cmake")
