@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..c9f2cf50 100644
+index df25fb61..c9167c0e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,43 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -51,7 +51,7 @@ index df25fb61..c9f2cf50 100644
  endif()
  
 -set(BOOST_REQUIRED_COMPONENTS filesystem serialization system)
-+set(BOOST_REQUIRED_COMPONENTS filesystem serialization system unit_test)
++set(BOOST_REQUIRED_COMPONENTS filesystem serialization system unit_test_framework)
  
  set_boost_default_options()
  export_boost_default_options()
