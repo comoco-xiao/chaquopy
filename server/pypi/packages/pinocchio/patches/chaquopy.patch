@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..5e0f110b 100644
+index df25fb61..8bac743c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,36 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -14,7 +14,7 @@ index df25fb61..5e0f110b 100644
 +# urdfdom_headers
 +set(urdfdom_headers_DIR "/home/ubuntu/workspace/pkg/urdfdom_headers/lib/urdfdom_headers/cmake")
 +# urdfdom
-+set(urdfdom_DIR "/home/ubuntu/workspace/pkg/urdfdom/cmake")
++set(urdfdom_DIR "/home/ubuntu/workspace/pkg/urdfdom/lib/urdfdom/cmake")
 +
 +# boost
 +set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
