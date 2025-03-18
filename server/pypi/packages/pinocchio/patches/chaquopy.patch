@@ -976,7 +976,7 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..c6bb74a1 100644
+index f087be4d..d2c41456 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,6 +1,7 @@
@@ -987,7 +987,7 @@ index f087be4d..c6bb74a1 100644
  from pathlib import Path
  from setuptools import setup, Extension
  from setuptools.command.build_ext import build_ext
-@@ -41,49 +42,69 @@ class CMakeBuildExt(build_ext):
+@@ -41,49 +42,73 @@ class CMakeBuildExt(build_ext):
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
  
@@ -1007,8 +1007,12 @@ index f087be4d..c6bb74a1 100644
 +        shutil.copytree(source_lib_path, lib_path)
 +        
 +        # test
-+        source_test_path = os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_sensor.so")
-+        shutil.copy(source_test_path, lib_path)
++        source_test_paths = [
++                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_sensor.so"),
++                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_model.so")
++        ]
++        for lib in source_test_paths:
++            shutil.copy(lib, lib_path)
 +        
 +        # share
 +        share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
@@ -1081,7 +1085,7 @@ index f087be4d..c6bb74a1 100644
  
  setup(
      name="pinocchio",
-@@ -91,7 +112,7 @@ setup(
+@@ -91,7 +116,7 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
