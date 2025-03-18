@@ -1,14 +1,14 @@
-{% set version = "1.0.5" %}
+{% set version = "1.0.2" %}
 
 package:
-  name: urdfdom_headers
+  name: console_bridge
   version: {{ version }}
 
 build:
   number: 1
 
 source:
-  git_url: https://github.com/comoco-xiao/urdfdom_headers.git
+  git_url: https://github.com/comoco-xiao/console_bridge.git
   git_rev: master
 
 requirements:
