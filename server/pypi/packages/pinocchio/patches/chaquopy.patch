@@ -965,11 +965,50 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..2ba64885 100644
+index f087be4d..9d89994f 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -43,46 +43,30 @@ class CMakeBuildExt(build_ext):
+@@ -1,6 +1,7 @@
+ import os
+ import subprocess
+ import sys
++import shutil
+ from pathlib import Path
+ from setuptools import setup, Extension
+ from setuptools.command.build_ext import build_ext
+@@ -41,49 +42,65 @@ class CMakeBuildExt(build_ext):
+             sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
+             sys.exit(1)
  
++    def copy_data(self, install_dir):
++        # include
++        include_path = os.path.join(self.build_lib, "pinocchio", "include")
++        source_include_path = os.path.join(install_dir, "include")
++        if os.path.exists(include_path):
++            shutil.rmtree(include_path)
++        shutil.copytree(source_include_path, include_path)
++        
++        # lib
++        lib_path = os.path.join(self.build_lib, "pinocchio", "lib")
++        source_lib_path = os.path.join(install_dir, "lib")
++        if os.path.exists(lib_path):
++            shutil.rmtree(lib_path)
++        shutil.copytree(source_lib_path, lib_path)
++        
++        # share
++        share_path = os.path.join(self.build_lib, "pinocchio", "share")
++        source_share_path = os.path.join(install_dir, "share")
++        if os.path.exists(share_path):
++            shutil.rmtree(share_path)
++        shutil.copytree(source_share_path, share_path)
++        
++        # python
++        python_path = os.path.join(self.build_lib, "pinocchio", "lib", "python3.9", "site-packages", "pinocchio")
++        source_python_path = os.path.join(install_dir, "pinocchio")
++        if os.path.exists(python_path):
++            shutil.rmtree(python_path)
++        shutil.copytree(source_python_path, python_path)
++        
      def _configure_and_build(self):
          """执行 CMake 构建"""
 -        build_dir = Path(self.build_temp) / "cmake_build"
@@ -1021,9 +1060,13 @@ index f087be4d..2ba64885 100644
 +            ["cmake", "--build", ".", "--target", "install"] + build_args,
 +            cwd=build_dir,
          )
++        
++        # copy data
++        self.copy_data(install_dir)
  
  setup(
-@@ -91,7 +75,7 @@ setup(
+     name="pinocchio",
+@@ -91,7 +108,7 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
