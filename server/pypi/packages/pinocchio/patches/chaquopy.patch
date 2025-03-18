@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df25fb61..8bac743c 100644
+index df25fb61..68136361 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -87,6 +87,36 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
@@ -32,7 +32,7 @@ index df25fb61..8bac743c 100644
 +set(boost_unit_test_framework_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_unit_test_framework-1.85.0")
 +set(Boost_COMPILER "-clang")
 +# console_bridge
-+set(console_bridge_DIR "/usr/lib/x86_64-linux-gnu/console_bridge/cmake")
++set(console_bridge_DIR "/home/ubuntu/workspace/pkg/console_bridge/lib/console_bridge/cmake")
 +
 +set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
 +
