@@ -976,7 +976,7 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..95919d9b 100644
+index f087be4d..9d8b5410 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,8 +1,9 @@
@@ -990,20 +990,59 @@ index f087be4d..95919d9b 100644
  from setuptools.command.build_ext import build_ext
  
  PROJECT_DIR = Path(__file__).parent
-@@ -41,49 +42,76 @@ class CMakeBuildExt(build_ext):
+@@ -41,49 +42,115 @@ class CMakeBuildExt(build_ext):
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
  
 +    def copy_data(self, install_dir):
++        # # include
++        # include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
++        # source_include_path = os.path.join(install_dir, "include")
++        # if os.path.exists(include_path):
++        #     shutil.rmtree(include_path)
++        # shutil.copytree(source_include_path, include_path)
++        
++        # # lib
++        # lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
++        # source_lib_path = os.path.join(install_dir, "lib")
++        # if os.path.exists(lib_path):
++        #     shutil.rmtree(lib_path)
++        # shutil.copytree(source_lib_path, lib_path)
++        
++        # # test
++        # source_test_paths = [
++        #         os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_sensor.so"),
++        #         os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_model.so"),
++        #         os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_world.so"),
++        #         os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/libconsole_bridge.so"),
++        #         os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/libeigenpy.so"),
++        # ]
++        # for lib in source_test_paths:
++        #     shutil.copy(lib, lib_path)
++        
++        # # share
++        # share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
++        # source_share_path = os.path.join(install_dir, "share")
++        # if os.path.exists(share_path):
++        #     shutil.rmtree(share_path)
++        # shutil.copytree(source_share_path, share_path)
++        
++        # # python
++        # python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "pinocchio")
++        # source_python_path = os.path.join(install_dir, "pinocchio")
++        # if os.path.exists(python_path):
++        #     shutil.rmtree(python_path)
++        # shutil.copytree(source_python_path, python_path)
++        
 +        # include
-+        include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
++        include_path = os.path.join(self.build_lib, "pinocchio", "include")
 +        source_include_path = os.path.join(install_dir, "include")
 +        if os.path.exists(include_path):
 +            shutil.rmtree(include_path)
 +        shutil.copytree(source_include_path, include_path)
 +        
 +        # lib
-+        lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
++        lib_path = os.path.join(self.build_lib, "pinocchio", "lib")
 +        source_lib_path = os.path.join(install_dir, "lib")
 +        if os.path.exists(lib_path):
 +            shutil.rmtree(lib_path)
@@ -1021,14 +1060,14 @@ index f087be4d..95919d9b 100644
 +            shutil.copy(lib, lib_path)
 +        
 +        # share
-+        share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
++        share_path = os.path.join(self.build_lib, "pinocchio", "share")
 +        source_share_path = os.path.join(install_dir, "share")
 +        if os.path.exists(share_path):
 +            shutil.rmtree(share_path)
 +        shutil.copytree(source_share_path, share_path)
 +        
 +        # python
-+        python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "pinocchio")
++        python_path = os.path.join(self.build_lib, "pinocchio")
 +        source_python_path = os.path.join(install_dir, "pinocchio")
 +        if os.path.exists(python_path):
 +            shutil.rmtree(python_path)
@@ -1091,7 +1130,7 @@ index f087be4d..95919d9b 100644
  
  setup(
      name="pinocchio",
-@@ -91,10 +119,10 @@ setup(
+@@ -91,10 +158,10 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
@@ -1100,7 +1139,7 @@ index f087be4d..95919d9b 100644
      python_requires=">=3.6",
      install_requires=["numpy"],
 -    ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
-+    ext_modules=[Extension("", [])],  # 触发扩展构建
++    ext_modules=[Extension("pinocchio", [])],  # 触发扩展构建
      cmdclass={"build_ext": CMakeBuildExt},
      zip_safe=False,
  )
