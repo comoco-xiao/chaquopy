@@ -976,17 +976,20 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..cc39f0f4 100644
+index f087be4d..2d884d83 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1,6 +1,7 @@
+@@ -1,8 +1,9 @@
  import os
  import subprocess
  import sys
 +import shutil
  from pathlib import Path
- from setuptools import setup, Extension
+-from setuptools import setup, Extension
++from setuptools import setup, Extension, find_packages
  from setuptools.command.build_ext import build_ext
+ 
+ PROJECT_DIR = Path(__file__).parent
 @@ -41,49 +42,76 @@ class CMakeBuildExt(build_ext):
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
@@ -1093,7 +1096,7 @@ index f087be4d..cc39f0f4 100644
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
 -    packages=["pinocchio"],
-+    packages=[],
++    packages=find_packages(),
      python_requires=">=3.6",
      install_requires=["numpy"],
      ext_modules=[Extension("pinocchio_dummy", [])],  # 触发扩展构建
