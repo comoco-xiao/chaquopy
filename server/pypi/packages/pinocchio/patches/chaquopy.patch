@@ -976,7 +976,7 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..2d6558b5 100644
+index f087be4d..bd1980ee 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,8 +1,9 @@
@@ -1043,12 +1043,12 @@ index f087be4d..2d6558b5 100644
 +            shutil.rmtree(include_path)
 +        shutil.copytree(source_include_path, include_path)
 +        
-+        # # lib
-+        # lib_path = os.path.join(self.build_lib, "pinocchio", "lib")
-+        # source_lib_path = os.path.join(install_dir, "lib")
-+        # if os.path.exists(lib_path):
-+        #     shutil.rmtree(lib_path)
-+        # shutil.copytree(source_lib_path, lib_path)
++        # lib
++        lib_path = os.path.join(self.build_lib, "pinocchio", "lib")
++        source_lib_path = os.path.join(install_dir, "lib")
++        if os.path.exists(lib_path):
++            shutil.rmtree(lib_path)
++        shutil.copytree(source_lib_path, lib_path)
 +        
 +        # # test
 +        # source_test_paths = [
