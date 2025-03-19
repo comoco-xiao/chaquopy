@@ -976,7 +976,7 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..8c48a468 100644
+index f087be4d..4cbf6789 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,13 +1,17 @@
@@ -1077,12 +1077,12 @@ index f087be4d..8c48a468 100644
 +            shutil.rmtree(share_path)
 +        shutil.copytree(source_share_path, share_path)
 +        
-+        # python
-+        python_path = self.build_lib # os.path.join(self.build_lib, "pinocchio")
-+        source_python_path = os.path.join(install_dir, "pinocchio")
-+        # if os.path.exists(python_path):
-+        #     shutil.rmtree(python_path)
-+        shutil.copytree(source_python_path, python_path)
++        # # python
++        # python_path = self.build_lib # os.path.join(self.build_lib, "pinocchio")
++        # source_python_path = os.path.join(install_dir, "pinocchio")
++        # # if os.path.exists(python_path):
++        # #     shutil.rmtree(python_path)
++        # shutil.copytree(source_python_path, python_path)
 +        
      def _configure_and_build(self):
          """执行 CMake 构建"""
