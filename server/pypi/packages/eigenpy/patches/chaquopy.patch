@@ -986,7 +986,7 @@ index 0053bcb..42482e2 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/setup.py b/setup.py
-index ffea7f0..aec3d1b 100644
+index ffea7f0..af08d74 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,12 +1,13 @@
@@ -1073,7 +1073,7 @@ index ffea7f0..aec3d1b 100644
      python_requires=">=3.9",
 -    # install_requires=["numpy"],
 +    install_requires=["numpy"],
-+    ext_modules=[Extension("eigenpy_dummy", [])],  # 触发扩展构建
++    ext_modules=[Extension("", [])],  # 触发扩展构建
      cmdclass={"build_ext": CMakeBuildExt},
      zip_safe=False,
      package_dir={"eigenpy": project_python_home_dir},
