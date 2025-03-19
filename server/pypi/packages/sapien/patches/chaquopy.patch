@@ -313,53 +313,24 @@ index 78c6a404..d458673f 100644
  from .. import pysapien as sapien
  from ..pysapien.render import RenderSystem
 diff --git a/python/py_package/wrapper/pinocchio_model.py b/python/py_package/wrapper/pinocchio_model.py
-index 9d7bc32c..f4c87f25 100644
+index 9d7bc32c..773bf403 100644
 --- a/python/py_package/wrapper/pinocchio_model.py
 +++ b/python/py_package/wrapper/pinocchio_model.py
-@@ -277,25 +277,33 @@ try:
-             return self.q_p2s(best_q), success, best_error
- 
- except ModuleNotFoundError:
--    if platform.system() == "Linux":
--        from ..pysapien_pinocchio import PinocchioModel
--    else:
--        warnings.warn(
--            "pinnochio package is not installed, robotics functionalities will not be available"
--        )
--        PinocchioModel = None
-+    # if platform.system() == "Linux":
-+    #     from ..pysapien_pinocchio import PinocchioModel
-+    # else:
-+    #     warnings.warn(
-+    #         "pinnochio package is not installed, robotics functionalities will not be available"
-+    #     )
-+    #     PinocchioModel = None
+@@ -284,6 +284,10 @@ except ModuleNotFoundError:
+             "pinnochio package is not installed, robotics functionalities will not be available"
+         )
+         PinocchioModel = None
 +    warnings.warn(
 +        "pinnochio package is not installed, robotics functionalities will not be available"
 +    )
 +    PinocchioModel = None
  
  except ImportError:
--    if platform.system() == "Linux":
--        warnings.warn(
--            "pinnochio package is broken, fallback to built-in pinocchio. This may be fixed by installing pinocchio via conda instead of pip"
--        )
--        from ..pysapien_pinocchio import PinocchioModel
--    else:
--        warnings.warn(
--            "pinnochio package is broken, robotics functionalities will not be available"
--        )
--        PinocchioModel = None
-+    # if platform.system() == "Linux":
-+    #     warnings.warn(
-+    #         "pinnochio package is broken, fallback to built-in pinocchio. This may be fixed by installing pinocchio via conda instead of pip"
-+    #     )
-+    #     from ..pysapien_pinocchio import PinocchioModel
-+    # else:
-+    #     warnings.warn(
-+    #         "pinnochio package is broken, robotics functionalities will not be available"
-+    #     )
-+    #     PinocchioModel = None
+     if platform.system() == "Linux":
+@@ -296,6 +300,10 @@ except ImportError:
+             "pinnochio package is broken, robotics functionalities will not be available"
+         )
+         PinocchioModel = None
 +    warnings.warn(
 +        "pinnochio package is broken, robotics functionalities will not be available"
 +    )
