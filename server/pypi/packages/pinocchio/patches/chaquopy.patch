@@ -118,10 +118,10 @@ index 41fe8e28..ccc644f0 100644
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
 diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
-index 8ad837cb..fdb58a93 100644
+index 8ad837cb..936b6382 100644
 --- a/bindings/python/module.cpp
 +++ b/bindings/python/module.cpp
-@@ -21,12 +21,19 @@ using namespace pinocchio::python;
+@@ -21,12 +21,21 @@ using namespace pinocchio::python;
  
  BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
  {
@@ -130,6 +130,8 @@ index 8ad837cb..fdb58a93 100644
 +    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---1\n");
 +    bp::docstring_options module_docstring_options(true, true, false);
 +    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---2\n");
++
++    bp::arg("test");
  
    bp::scope().attr("__version__") = pinocchio::printVersion();
 +  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---2---1\n");
@@ -142,7 +144,7 @@ index 8ad837cb..fdb58a93 100644
    // Enable warnings
    bp::import("warnings");
  
-@@ -34,20 +41,24 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -34,20 +43,24 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
    && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)
    bp::import("hppfcl");
  #endif
@@ -168,7 +170,7 @@ index 8ad837cb..fdb58a93 100644
  
    bp::scope().attr("XAxis") = bp::object(bp::handle<>(
      eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::XAxis::vector<context::Scalar>())));
-@@ -55,6 +66,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -55,6 +68,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
      eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::YAxis::vector<context::Scalar>())));
    bp::scope().attr("ZAxis") = bp::object(bp::handle<>(
      eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::ZAxis::vector<context::Scalar>())));
@@ -176,7 +178,7 @@ index 8ad837cb..fdb58a93 100644
  
    if (!register_symbolic_link_to_registered_type<::pinocchio::ReferenceFrame>())
    {
-@@ -64,6 +76,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -64,6 +78,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
        .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
        .export_values();
    }
@@ -184,7 +186,7 @@ index 8ad837cb..fdb58a93 100644
  
    if (!register_symbolic_link_to_registered_type<::pinocchio::KinematicLevel>())
    {
-@@ -73,6 +86,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -73,6 +88,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
        .value("ACCELERATION", ::pinocchio::ACCELERATION)
        .export_values();
    }
@@ -192,7 +194,7 @@ index 8ad837cb..fdb58a93 100644
  
    if (!register_symbolic_link_to_registered_type<::pinocchio::Convention>())
    {
-@@ -80,6 +94,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -80,6 +96,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
        .value("WORLD", ::pinocchio::Convention::WORLD)
        .value("LOCAL", ::pinocchio::Convention::LOCAL);
    }
@@ -200,7 +202,7 @@ index 8ad837cb..fdb58a93 100644
  
    if (!register_symbolic_link_to_registered_type<::pinocchio::ArgumentPosition>())
    {
-@@ -91,6 +106,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -91,6 +108,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
        .value("ARG4", ::pinocchio::ARG4)
        .export_values();
    }
@@ -208,7 +210,7 @@ index 8ad837cb..fdb58a93 100644
  
    exposeSE3();
    exposeForce();
-@@ -105,6 +121,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -105,6 +123,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
    exposeLanczosDecomposition();
    exposeSkew();
    exposeLieGroups();
@@ -216,7 +218,7 @@ index 8ad837cb..fdb58a93 100644
  
    exposeFrame();
    exposeModel();
-@@ -114,10 +131,12 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -114,10 +133,12 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
    exposeGeometry();
    exposeParsers();
  #endif // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
@@ -229,7 +231,7 @@ index 8ad837cb..fdb58a93 100644
  
  #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
    && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-@@ -125,12 +144,14 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -125,12 +146,14 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
    exposeCollision();
  #endif // defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS) &&
         // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
@@ -244,7 +246,7 @@ index 8ad837cb..fdb58a93 100644
  
  #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
    && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                               \
-@@ -138,16 +159,27 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+@@ -138,16 +161,27 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
    exposePoolCollision();
    exposeParallelCollision();
  #endif
