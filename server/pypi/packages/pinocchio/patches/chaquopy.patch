@@ -1141,7 +1141,7 @@ index 0053bcb..bb88c0c 100644
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
 diff --git a/setup.py b/setup.py
-index f087be4d..8c2f2a7f 100644
+index f087be4d..1045796c 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,13 +1,17 @@
@@ -1163,7 +1163,7 @@ index f087be4d..8c2f2a7f 100644
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
      user_options = build_ext.user_options + [
-@@ -41,49 +45,128 @@ class CMakeBuildExt(build_ext):
+@@ -41,49 +45,129 @@ class CMakeBuildExt(build_ext):
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
  
@@ -1237,7 +1237,8 @@ index f087be4d..8c2f2a7f 100644
 +                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_model.so"),
 +                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/liburdfdom_world.so"),
 +                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/libconsole_bridge.so"),
-+                os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/libeigenpy.so"),
++                # os.path.join(PROJECT_DIR, "../requirements/cmeel.prefix/lib/libeigenpy.so"),
++                os.path.join(PROJECT_DIR, "../requirements/eigenpy/lib/libeigenpy.so"),
 +        ]
 +        for lib in source_test_paths:
 +            shutil.copy(lib, lib_path)
@@ -1316,7 +1317,7 @@ index f087be4d..8c2f2a7f 100644
  
  setup(
      name="pinocchio",
-@@ -91,10 +174,11 @@ setup(
+@@ -91,10 +175,11 @@ setup(
      description="Efficient Rigid Body Dynamics Library",
      author="Pinocchio Contributors",
      license="BSD-2-Clause",
