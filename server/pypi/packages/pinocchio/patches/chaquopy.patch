@@ -117,6 +117,32 @@ index 41fe8e28..ccc644f0 100644
    set_target_properties(
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
+diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
+index 8ad837cb..9d698675 100644
+--- a/bindings/python/module.cpp
++++ b/bindings/python/module.cpp
+@@ -21,7 +21,8 @@ using namespace pinocchio::python;
+ 
+ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+ {
+-  bp::docstring_options module_docstring_options(true, true, false);
++  try {
++    bp::docstring_options module_docstring_options(true, true, false);
+ 
+   bp::scope().attr("__version__") = pinocchio::printVersion();
+   bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
+@@ -150,4 +151,11 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+     "StdVec_VectorXb", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_VectorXb>());
+   StdVectorPythonVisitor<StdVec_MatrixXs, false>::expose(
+     "StdVec_MatrixXs", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_MatrixXs>());
++  } catch (const boost::python::error_already_set &) {
++    PyErr_Print();
++    throw std::runtime_error("Boost.Python error");
++  } catch (const std::exception &e) {
++    PyErr_SetString(PyExc_RuntimeError, e.what());
++  }
++  
+ }
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..80f94ab 100644
