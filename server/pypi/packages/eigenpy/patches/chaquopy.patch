@@ -1082,7 +1082,7 @@ index ffea7f0..f7f217f 100644
      zip_safe=False,
      package_dir={"eigenpy": project_python_home_dir},
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..8446f00 100644
+index 93a4b9e..e644de1 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
 @@ -41,24 +41,33 @@ void exposeTypeInfo();
@@ -1096,20 +1096,30 @@ index 93a4b9e..8446f00 100644
 +  PySys_WriteStdout("--------------------------------enableEigenPy---3\n");
  
    Exception::registerException();
+-
+-  bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
+-          bp::arg("value"),
+-          "Share the memory when converting from Eigen to Numpy.");
+-
+-  bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
+-          "Status of the shared memory when converting from Eigen to Numpy.\n"
+-          "If True, the memory is shared when converting an Eigen::Matrix to a "
+-          "numpy.array.\n"
+-          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
 +  PySys_WriteStdout("--------------------------------enableEigenPy---4\n");
 +  NumpyType::sharedMemory();
 +  PySys_WriteStdout("--------------------------------enableEigenPy---4---1\n");
- 
-   bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-           bp::arg("value"),
-           "Share the memory when converting from Eigen to Numpy.");
++
++  // bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
++  //         bp::arg("value"),
++  //         "Share the memory when converting from Eigen to Numpy.");
 +  PySys_WriteStdout("--------------------------------enableEigenPy---5\n");
- 
-   bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
-           "Status of the shared memory when converting from Eigen to Numpy.\n"
-           "If True, the memory is shared when converting an Eigen::Matrix to a "
-           "numpy.array.\n"
-           "Otherwise, a deep copy of the Eigen::Matrix is performed.");
++
++  // bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
++  //         "Status of the shared memory when converting from Eigen to Numpy.\n"
++  //         "If True, the memory is shared when converting an Eigen::Matrix to a "
++  //         "numpy.array.\n"
++  //         "Otherwise, a deep copy of the Eigen::Matrix is performed.");
 +  PySys_WriteStdout("--------------------------------enableEigenPy---6\n");
  
    bp::def("seed", &seed, bp::arg("seed_value"),
