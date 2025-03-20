@@ -118,10 +118,10 @@ index 41fe8e28..ccc644f0 100644
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
 diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
-index 8ad837cb..03df0311 100644
+index 8ad837cb..d1282020 100644
 --- a/bindings/python/module.cpp
 +++ b/bindings/python/module.cpp
-@@ -21,133 +21,141 @@ using namespace pinocchio::python;
+@@ -21,133 +21,143 @@ using namespace pinocchio::python;
  
  BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
  {
@@ -168,7 +168,9 @@ index 8ad837cb..03df0311 100644
 -      .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
 -      .export_values();
 +  try {
++    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---1\n");
 +    bp::docstring_options module_docstring_options(true, true, false);
++    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---2\n");
 +
 +//   bp::scope().attr("__version__") = pinocchio::printVersion();
 +//   bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
