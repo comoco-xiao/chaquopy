@@ -103,7 +103,7 @@ index df25fb61..795b02ea 100644
  # --- CHECK EXAMPLES -----------------------------------------------------------
  add_subdirectory(examples)
 diff --git a/bindings/python/CMakeLists.txt b/bindings/python/CMakeLists.txt
-index 41fe8e28..ccc644f0 100644
+index 41fe8e28..b50d883e 100644
 --- a/bindings/python/CMakeLists.txt
 +++ b/bindings/python/CMakeLists.txt
 @@ -106,6 +106,10 @@ function(PINOCCHIO_PYTHON_BINDINGS_SPECIFIC_TYPE scalar_name)
@@ -117,6 +117,14 @@ index 41fe8e28..ccc644f0 100644
    set_target_properties(
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
+@@ -214,6 +218,7 @@ if(BUILD_PYTHON_INTERFACE)
+     install_python_files(MODULE casadi FILES __init__.py)
+   endif(BUILD_WITH_CASADI_SUPPORT)
+ 
++  message(-------------------------------BUILD_PYTHON_BINDINGS_WITH_BOOST_MPFR_SUPPORT = ${BUILD_PYTHON_BINDINGS_WITH_BOOST_MPFR_SUPPORT})
+   if(BUILD_PYTHON_BINDINGS_WITH_BOOST_MPFR_SUPPORT)
+     find_package(GMP REQUIRED 6.0.0)
+     find_package(MPFR REQUIRED 4.0.0)
 diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
 index 8ad837cb..936b6382 100644
 --- a/bindings/python/module.cpp
