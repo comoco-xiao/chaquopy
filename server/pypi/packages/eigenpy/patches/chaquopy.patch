@@ -986,7 +986,7 @@ index 0053bcb..42482e2 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/setup.py b/setup.py
-index ffea7f0..f7f217f 100644
+index ffea7f0..7014922 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -1,12 +1,13 @@
@@ -1005,44 +1005,74 @@ index ffea7f0..f7f217f 100644
  
  class CMakeBuildExt(build_ext):
      """集成 CMake 编译流程"""
-@@ -40,7 +41,35 @@ class CMakeBuildExt(build_ext):
+@@ -40,7 +41,65 @@ class CMakeBuildExt(build_ext):
          if missing:
              sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
              sys.exit(1)
 -
 +    def copy_data(self, install_dir):
++        # # include
++        # include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
++        # source_include_path = os.path.join(install_dir, "include")
++        # if os.path.exists(include_path):
++        #     shutil.rmtree(include_path)
++        # shutil.copytree(source_include_path, include_path)
++        
++        # # lib
++        # lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
++        # source_lib_path = os.path.join(install_dir, "lib")
++        # if os.path.exists(lib_path):
++        #     shutil.rmtree(lib_path)
++        # shutil.copytree(source_lib_path, lib_path)
++        
++        # # share
++        # share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
++        # source_share_path = os.path.join(install_dir, "share")
++        # if os.path.exists(share_path):
++        #     shutil.rmtree(share_path)
++        # shutil.copytree(source_share_path, share_path)
++        
++        # # python
++        # python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "eigenpy")
++        # source_python_path = os.path.join(install_dir, "eigenpy")
++        # if os.path.exists(python_path):
++        #     shutil.rmtree(python_path)
++        # shutil.copytree(source_python_path, python_path)
++        
++        # python
++        python_path = os.path.join(self.build_lib, "eigenpy")
++        source_python_path = os.path.join(install_dir, "eigenpy")
++        # if os.path.exists(python_path):
++        #     shutil.rmtree(python_path)
++        shutil.copytree(source_python_path, python_path)
++        
 +        # include
-+        include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
++        include_path = os.path.join(self.build_lib, "eigenpy", "include")
 +        source_include_path = os.path.join(install_dir, "include")
 +        if os.path.exists(include_path):
 +            shutil.rmtree(include_path)
 +        shutil.copytree(source_include_path, include_path)
 +        
 +        # lib
-+        lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
++        lib_path = os.path.join(self.build_lib, "eigenpy", "lib")
 +        source_lib_path = os.path.join(install_dir, "lib")
 +        if os.path.exists(lib_path):
 +            shutil.rmtree(lib_path)
 +        shutil.copytree(source_lib_path, lib_path)
 +        
 +        # share
-+        share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
++        share_path = os.path.join(self.build_lib, "eigenpy", "share")
 +        source_share_path = os.path.join(install_dir, "share")
 +        if os.path.exists(share_path):
 +            shutil.rmtree(share_path)
 +        shutil.copytree(source_share_path, share_path)
 +        
-+        # python
-+        python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "eigenpy")
-+        source_python_path = os.path.join(install_dir, "eigenpy")
-+        if os.path.exists(python_path):
-+            shutil.rmtree(python_path)
-+        shutil.copytree(source_python_path, python_path)
++        
 +        
      def _configure_and_build(self):
          """执行 CMake 构建"""
          build_dir = os.path.join(PROJECT_DIR, "cmake_build")
-@@ -49,12 +78,13 @@ class CMakeBuildExt(build_ext):
+@@ -49,12 +108,13 @@ class CMakeBuildExt(build_ext):
          # 创建构建目录
          os.makedirs(build_dir, exist_ok=True)
          os.makedirs(install_dir, exist_ok=True)
@@ -1057,7 +1087,7 @@ index ffea7f0..f7f217f 100644
          # 生成构建系统
          subprocess.check_call(
              ["cmake", str(PROJECT_DIR)] + cmake_args,
-@@ -67,7 +97,9 @@ class CMakeBuildExt(build_ext):
+@@ -67,19 +127,22 @@ class CMakeBuildExt(build_ext):
              ["cmake", "--build", ".", "--target", "install"] + build_args,
              cwd=build_dir,
          )
@@ -1066,9 +1096,11 @@ index ffea7f0..f7f217f 100644
 +        # copy data
 +        self.copy_data(install_dir)
  
- project_python_home_dir = os.path.join("python", "eigenpy")
+-project_python_home_dir = os.path.join("python", "eigenpy")
++# project_python_home_dir = os.path.join("python", "eigenpy")
  setup(
-@@ -76,9 +108,10 @@ setup(
+     name="eigenpy",
+     version=VERSION,
      description="Efficient Rigid Body Dynamics Library",
      author="Xiao",
      license="BSD-2-Clause",
@@ -1077,10 +1109,13 @@ index ffea7f0..f7f217f 100644
      python_requires=">=3.9",
 -    # install_requires=["numpy"],
 +    install_requires=["numpy"],
-+    ext_modules=[Extension("", [])],  # 触发扩展构建
++    ext_modules=[Extension("eigenpy", [])],  # 触发扩展构建
      cmdclass={"build_ext": CMakeBuildExt},
      zip_safe=False,
-     package_dir={"eigenpy": project_python_home_dir},
+-    package_dir={"eigenpy": project_python_home_dir},
++    # package_dir={"eigenpy": project_python_home_dir},
+ )
+\ No newline at end of file
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
 index 93a4b9e..73e7380 100644
 --- a/src/eigenpy.cpp
