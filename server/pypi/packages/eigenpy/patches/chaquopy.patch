@@ -1082,10 +1082,10 @@ index ffea7f0..f7f217f 100644
      zip_safe=False,
      package_dir={"eigenpy": project_python_home_dir},
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..1f04862 100644
+index 93a4b9e..8446f00 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
-@@ -41,24 +41,31 @@ void exposeTypeInfo();
+@@ -41,24 +41,33 @@ void exposeTypeInfo();
  /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instances.
   */
  void enableEigenPy() {
@@ -1097,6 +1097,8 @@ index 93a4b9e..1f04862 100644
  
    Exception::registerException();
 +  PySys_WriteStdout("--------------------------------enableEigenPy---4\n");
++  NumpyType::sharedMemory();
++  PySys_WriteStdout("--------------------------------enableEigenPy---4---1\n");
  
    bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
            bp::arg("value"),
@@ -1117,7 +1119,7 @@ index 93a4b9e..1f04862 100644
  
    exposeMatrixBool();
    exposeMatrixInt8();
-@@ -79,13 +86,16 @@ void enableEigenPy() {
+@@ -79,13 +88,16 @@ void enableEigenPy() {
    exposeMatrixFloat();
    exposeMatrixDouble();
    exposeMatrixLongDouble();
