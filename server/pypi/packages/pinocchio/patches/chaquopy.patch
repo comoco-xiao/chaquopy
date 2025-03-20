@@ -118,279 +118,156 @@ index 41fe8e28..ccc644f0 100644
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
 diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
-index 8ad837cb..d1282020 100644
+index 8ad837cb..6778dae3 100644
 --- a/bindings/python/module.cpp
 +++ b/bindings/python/module.cpp
-@@ -21,133 +21,143 @@ using namespace pinocchio::python;
+@@ -21,12 +21,17 @@ using namespace pinocchio::python;
  
  BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
  {
 -  bp::docstring_options module_docstring_options(true, true, false);
--
--  bp::scope().attr("__version__") = pinocchio::printVersion();
--  bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
--  eigenpy::enableEigenPy();
--
--  // Enable warnings
--  bp::import("warnings");
--
--#if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)                                                \
--  && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)
--  bp::import("hppfcl");
--#endif
--
--  exposeEigenTypes();
--  exposeSpecificTypeFeatures();
--
--  eigenpy::OptionalConverter<context::VectorXs, boost::optional>::registration();
--  eigenpy::OptionalConverter<Eigen::Ref<context::VectorXs>, boost::optional>::registration();
--  eigenpy::OptionalConverter<
--    const Eigen::Ref<const context::VectorXs>, boost::optional>::registration();
--
--#if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--  eigenpy::StdContainerFromPythonList<std::vector<std::string>>::register_converter();
--#endif
--
--  bp::scope().attr("ScalarType") = getScalarType();
--
--  bp::scope().attr("XAxis") = bp::object(bp::handle<>(
--    eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::XAxis::vector<context::Scalar>())));
--  bp::scope().attr("YAxis") = bp::object(bp::handle<>(
--    eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::YAxis::vector<context::Scalar>())));
--  bp::scope().attr("ZAxis") = bp::object(bp::handle<>(
--    eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::ZAxis::vector<context::Scalar>())));
--
--  if (!register_symbolic_link_to_registered_type<::pinocchio::ReferenceFrame>())
--  {
--    bp::enum_<::pinocchio::ReferenceFrame>("ReferenceFrame")
--      .value("WORLD", ::pinocchio::WORLD)
--      .value("LOCAL", ::pinocchio::LOCAL)
--      .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
--      .export_values();
 +  try {
 +    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---1\n");
 +    bp::docstring_options module_docstring_options(true, true, false);
 +    PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---2\n");
+ 
+   bp::scope().attr("__version__") = pinocchio::printVersion();
+   bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
+   eigenpy::enableEigenPy();
+ 
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---3\n");
 +
-+//   bp::scope().attr("__version__") = pinocchio::printVersion();
-+//   bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
-+//   eigenpy::enableEigenPy();
-+
-+//   // Enable warnings
-+//   bp::import("warnings");
-+
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)                                                \
-+//   && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)
-+//   bp::import("hppfcl");
-+// #endif
-+
-+//   exposeEigenTypes();
-+//   exposeSpecificTypeFeatures();
-+
-+//   eigenpy::OptionalConverter<context::VectorXs, boost::optional>::registration();
-+//   eigenpy::OptionalConverter<Eigen::Ref<context::VectorXs>, boost::optional>::registration();
-+//   eigenpy::OptionalConverter<
-+//     const Eigen::Ref<const context::VectorXs>, boost::optional>::registration();
-+
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+//   eigenpy::StdContainerFromPythonList<std::vector<std::string>>::register_converter();
-+// #endif
-+
-+//   bp::scope().attr("ScalarType") = getScalarType();
-+
-+//   bp::scope().attr("XAxis") = bp::object(bp::handle<>(
-+//     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::XAxis::vector<context::Scalar>())));
-+//   bp::scope().attr("YAxis") = bp::object(bp::handle<>(
-+//     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::YAxis::vector<context::Scalar>())));
-+//   bp::scope().attr("ZAxis") = bp::object(bp::handle<>(
-+//     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::ZAxis::vector<context::Scalar>())));
-+
-+//   if (!register_symbolic_link_to_registered_type<::pinocchio::ReferenceFrame>())
-+//   {
-+//     bp::enum_<::pinocchio::ReferenceFrame>("ReferenceFrame")
-+//       .value("WORLD", ::pinocchio::WORLD)
-+//       .value("LOCAL", ::pinocchio::LOCAL)
-+//       .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
-+//       .export_values();
-+//   }
-+
-+//   if (!register_symbolic_link_to_registered_type<::pinocchio::KinematicLevel>())
-+//   {
-+//     bp::enum_<::pinocchio::KinematicLevel>("KinematicLevel")
-+//       .value("POSITION", ::pinocchio::POSITION)
-+//       .value("VELOCITY", ::pinocchio::VELOCITY)
-+//       .value("ACCELERATION", ::pinocchio::ACCELERATION)
-+//       .export_values();
-+//   }
-+
-+//   if (!register_symbolic_link_to_registered_type<::pinocchio::Convention>())
-+//   {
-+//     bp::enum_<::pinocchio::Convention>("Convention")
-+//       .value("WORLD", ::pinocchio::Convention::WORLD)
-+//       .value("LOCAL", ::pinocchio::Convention::LOCAL);
-+//   }
-+
-+//   if (!register_symbolic_link_to_registered_type<::pinocchio::ArgumentPosition>())
-+//   {
-+//     bp::enum_<::pinocchio::ArgumentPosition>("ArgumentPosition")
-+//       .value("ARG0", ::pinocchio::ARG0)
-+//       .value("ARG1", ::pinocchio::ARG1)
-+//       .value("ARG2", ::pinocchio::ARG2)
-+//       .value("ARG3", ::pinocchio::ARG3)
-+//       .value("ARG4", ::pinocchio::ARG4)
-+//       .export_values();
-+//   }
-+
-+//   exposeSE3();
-+//   exposeForce();
-+//   exposeMotion();
-+//   exposeInertia();
-+//   exposeSymmetric3();
-+//   exposeJoints();
-+//   exposeExplog();
-+//   exposeRpy();
-+//   exposeLinalg();
-+//   exposeTridiagonalMatrix();
-+//   exposeLanczosDecomposition();
-+//   exposeSkew();
-+//   exposeLieGroups();
-+
-+//   exposeFrame();
-+//   exposeModel();
-+//   exposeData();
-+//   exposeSampleModels();
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+//   exposeGeometry();
-+//   exposeParsers();
-+// #endif // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+
-+//   exposeAlgorithms();
-+//   exposeExtras();
-+//   exposeSerialization();
-+
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
-+//   && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+//   exposeFCL();
-+//   exposeCollision();
-+// #endif // defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS) &&
-+//        // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                                \
-+//   && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+//   exposePool();
-+//   exposeParallelAlgorithms();
-+// #endif
-+
-+// #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
-+//   && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                               \
-+//   && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
-+//   exposePoolCollision();
-+//   exposeParallelCollision();
-+// #endif
-+
-+//   exposeVersion();
-+//   exposeDependencies();
-+//   exposeConversions();
-+
-+//   typedef std::vector<::pinocchio::VectorXb> StdVec_VectorXb;
-+//   typedef std::vector<context::MatrixXs> StdVec_MatrixXs;
-+
-+//   StdVectorPythonVisitor<StdVec_VectorXb, false>::expose(
-+//     "StdVec_VectorXb", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_VectorXb>());
-+//   StdVectorPythonVisitor<StdVec_MatrixXs, false>::expose(
-+//     "StdVec_MatrixXs", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_MatrixXs>());
+   // Enable warnings
+   bp::import("warnings");
+ 
+@@ -34,20 +39,24 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+   && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)
+   bp::import("hppfcl");
+ #endif
+-
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---4\n");
+   exposeEigenTypes();
+   exposeSpecificTypeFeatures();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---5\n");
+ 
+   eigenpy::OptionalConverter<context::VectorXs, boost::optional>::registration();
+   eigenpy::OptionalConverter<Eigen::Ref<context::VectorXs>, boost::optional>::registration();
+   eigenpy::OptionalConverter<
+     const Eigen::Ref<const context::VectorXs>, boost::optional>::registration();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---6\n");
+ 
+ #if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
+   eigenpy::StdContainerFromPythonList<std::vector<std::string>>::register_converter();
+ #endif
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---7\n");
+ 
+   bp::scope().attr("ScalarType") = getScalarType();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---8\n");
+ 
+   bp::scope().attr("XAxis") = bp::object(bp::handle<>(
+     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::XAxis::vector<context::Scalar>())));
+@@ -55,6 +64,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::YAxis::vector<context::Scalar>())));
+   bp::scope().attr("ZAxis") = bp::object(bp::handle<>(
+     eigenpy::EigenToPy<context::Vector3s>::convert(pinocchio::ZAxis::vector<context::Scalar>())));
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---9\n");
+ 
+   if (!register_symbolic_link_to_registered_type<::pinocchio::ReferenceFrame>())
+   {
+@@ -64,6 +74,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+       .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
+       .export_values();
+   }
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---10\n");
+ 
+   if (!register_symbolic_link_to_registered_type<::pinocchio::KinematicLevel>())
+   {
+@@ -73,6 +84,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+       .value("ACCELERATION", ::pinocchio::ACCELERATION)
+       .export_values();
+   }
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---11\n");
+ 
+   if (!register_symbolic_link_to_registered_type<::pinocchio::Convention>())
+   {
+@@ -80,6 +92,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+       .value("WORLD", ::pinocchio::Convention::WORLD)
+       .value("LOCAL", ::pinocchio::Convention::LOCAL);
+   }
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---12\n");
+ 
+   if (!register_symbolic_link_to_registered_type<::pinocchio::ArgumentPosition>())
+   {
+@@ -91,6 +104,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+       .value("ARG4", ::pinocchio::ARG4)
+       .export_values();
+   }
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---13\n");
+ 
+   exposeSE3();
+   exposeForce();
+@@ -105,6 +119,7 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+   exposeLanczosDecomposition();
+   exposeSkew();
+   exposeLieGroups();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---14\n");
+ 
+   exposeFrame();
+   exposeModel();
+@@ -114,10 +129,12 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+   exposeGeometry();
+   exposeParsers();
+ #endif // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---15\n");
+ 
+   exposeAlgorithms();
+   exposeExtras();
+   exposeSerialization();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---16\n");
+ 
+ #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
+   && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
+@@ -125,12 +142,14 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+   exposeCollision();
+ #endif // defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS) &&
+        // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---17\n");
+ 
+ #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                                \
+   && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
+   exposePool();
+   exposeParallelAlgorithms();
+ #endif
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---18\n");
+ 
+ #if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
+   && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                               \
+@@ -138,16 +157,27 @@ BOOST_PYTHON_MODULE(PINOCCHIO_PYTHON_MODULE_NAME)
+   exposePoolCollision();
+   exposeParallelCollision();
+ #endif
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---19\n");
+ 
+   exposeVersion();
+   exposeDependencies();
+   exposeConversions();
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---20\n");
+ 
+   typedef std::vector<::pinocchio::VectorXb> StdVec_VectorXb;
+   typedef std::vector<context::MatrixXs> StdVec_MatrixXs;
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---21\n");
+ 
+   StdVectorPythonVisitor<StdVec_VectorXb, false>::expose(
+     "StdVec_VectorXb", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_VectorXb>());
+   StdVectorPythonVisitor<StdVec_MatrixXs, false>::expose(
+     "StdVec_MatrixXs", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_MatrixXs>());
++  PySys_WriteStdout("--------------------------------BOOST_PYTHON_MODULE---22\n");
 +  } catch (const boost::python::error_already_set &) {
 +    PyErr_Print();
 +    throw std::runtime_error("Boost.Python error");
 +  } catch (const std::exception &e) {
 +    PyErr_SetString(PyExc_RuntimeError, e.what());
-   }
--
--  if (!register_symbolic_link_to_registered_type<::pinocchio::KinematicLevel>())
--  {
--    bp::enum_<::pinocchio::KinematicLevel>("KinematicLevel")
--      .value("POSITION", ::pinocchio::POSITION)
--      .value("VELOCITY", ::pinocchio::VELOCITY)
--      .value("ACCELERATION", ::pinocchio::ACCELERATION)
--      .export_values();
--  }
--
--  if (!register_symbolic_link_to_registered_type<::pinocchio::Convention>())
--  {
--    bp::enum_<::pinocchio::Convention>("Convention")
--      .value("WORLD", ::pinocchio::Convention::WORLD)
--      .value("LOCAL", ::pinocchio::Convention::LOCAL);
--  }
--
--  if (!register_symbolic_link_to_registered_type<::pinocchio::ArgumentPosition>())
--  {
--    bp::enum_<::pinocchio::ArgumentPosition>("ArgumentPosition")
--      .value("ARG0", ::pinocchio::ARG0)
--      .value("ARG1", ::pinocchio::ARG1)
--      .value("ARG2", ::pinocchio::ARG2)
--      .value("ARG3", ::pinocchio::ARG3)
--      .value("ARG4", ::pinocchio::ARG4)
--      .export_values();
--  }
--
--  exposeSE3();
--  exposeForce();
--  exposeMotion();
--  exposeInertia();
--  exposeSymmetric3();
--  exposeJoints();
--  exposeExplog();
--  exposeRpy();
--  exposeLinalg();
--  exposeTridiagonalMatrix();
--  exposeLanczosDecomposition();
--  exposeSkew();
--  exposeLieGroups();
--
--  exposeFrame();
--  exposeModel();
--  exposeData();
--  exposeSampleModels();
--#if defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--  exposeGeometry();
--  exposeParsers();
--#endif // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--
--  exposeAlgorithms();
--  exposeExtras();
--  exposeSerialization();
--
--#if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
--  && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--  exposeFCL();
--  exposeCollision();
--#endif // defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS) &&
--       // defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--
--#if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                                \
--  && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--  exposePool();
--  exposeParallelAlgorithms();
--#endif
--
--#if defined(PINOCCHIO_PYTHON_INTERFACE_WITH_HPP_FCL_PYTHON_BINDINGS)                               \
--  && defined(PINOCCHIO_PYTHON_INTERFACE_WITH_OPENMP)                                               \
--  && defined(PINOCCHIO_PYTHON_INTERFACE_MAIN_MODULE)
--  exposePoolCollision();
--  exposeParallelCollision();
--#endif
--
--  exposeVersion();
--  exposeDependencies();
--  exposeConversions();
--
--  typedef std::vector<::pinocchio::VectorXb> StdVec_VectorXb;
--  typedef std::vector<context::MatrixXs> StdVec_MatrixXs;
--
--  StdVectorPythonVisitor<StdVec_VectorXb, false>::expose(
--    "StdVec_VectorXb", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_VectorXb>());
--  StdVectorPythonVisitor<StdVec_MatrixXs, false>::expose(
--    "StdVec_MatrixXs", eigenpy::details::overload_base_get_item_for_std_vector<StdVec_MatrixXs>());
++  }
 +  
  }
 Submodule cmake contains modified content
