@@ -118,7 +118,7 @@ index 41fe8e28..ccc644f0 100644
      ${PYTHON_LIB_NAME}
      PROPERTIES PREFIX ""
 diff --git a/bindings/python/module.cpp b/bindings/python/module.cpp
-index 8ad837cb..45e153e9 100644
+index 8ad837cb..03df0311 100644
 --- a/bindings/python/module.cpp
 +++ b/bindings/python/module.cpp
 @@ -21,133 +21,141 @@ using namespace pinocchio::python;
@@ -168,7 +168,7 @@ index 8ad837cb..45e153e9 100644
 -      .value("LOCAL_WORLD_ALIGNED", ::pinocchio::LOCAL_WORLD_ALIGNED)
 -      .export_values();
 +  try {
-+//     bp::docstring_options module_docstring_options(true, true, false);
++    bp::docstring_options module_docstring_options(true, true, false);
 +
 +//   bp::scope().attr("__version__") = pinocchio::printVersion();
 +//   bp::scope().attr("__raw_version__") = bp::str(PINOCCHIO_VERSION);
