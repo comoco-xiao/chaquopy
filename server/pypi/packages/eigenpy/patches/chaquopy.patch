@@ -1021,6 +1021,22 @@ index c57a914..24ecb96 100644
    static NumpyType& getInstance();
  
    static bp::object make(PyArrayObject* pyArray, bool copy = false);
+diff --git a/python/main.cpp b/python/main.cpp
+index 966bb79..8d51abc 100644
+--- a/python/main.cpp
++++ b/python/main.cpp
+@@ -49,6 +49,11 @@ void exposeIsApprox() {
+ }
+ 
+ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
++  bp::def("seed", &eigenpy::seed, bp::arg("seed_value"),
++          "Initialize the pseudo-random number generator with the argument "
++          "seed_value.");
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
+   enableEigenPy();
+ 
+   bp::scope().attr("__version__") = eigenpy::printVersion();
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
