@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..51597c0 100644
+index 2d6360c..9ad2a4c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -59,6 +59,10 @@ endfunction()
@@ -81,6 +81,15 @@ index 2d6360c..51597c0 100644
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
+@@ -392,6 +429,8 @@ modernize_target_link_libraries(
+   INCLUDE_DIRS
+   ${EIGEN3_INCLUDE_DIR})
+ 
++message(--------------------------------NUMPY_INCLUDE_DIRS = ${NUMPY_INCLUDE_DIRS})
++message(--------------------------------PYTHON_INCLUDE_DIR = ${PYTHON_INCLUDE_DIR})
+ modernize_target_link_libraries(
+   ${PROJECT_NAME}
+   SCOPE
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..80f94ab 100644
@@ -1116,66 +1125,3 @@ index ffea7f0..7014922 100644
 +    # package_dir={"eigenpy": project_python_home_dir},
  )
 \ No newline at end of file
-diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..73e7380 100644
---- a/src/eigenpy.cpp
-+++ b/src/eigenpy.cpp
-@@ -41,24 +41,40 @@ void exposeTypeInfo();
- /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instances.
-  */
- void enableEigenPy() {
-+  PySys_WriteStdout("--------------------------------enableEigenPy---1\n");
-   using namespace Eigen;
-+  PySys_WriteStdout("--------------------------------enableEigenPy---2\n");
-   import_numpy();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---3\n");
- 
-   Exception::registerException();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---4\n");
-+  NumpyType::sharedMemory();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---4---1\n");
- 
--  bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-+  try {
-+    bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-           bp::arg("value"),
-           "Share the memory when converting from Eigen to Numpy.");
-+  } catch (const std::exception &e) {
-+    PySys_WriteStdout("--------------------------------enableEigenPy---4---2---error = %s\n", e.what());
-+  }
-+  // bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-+  //         bp::arg("value"),
-+  //         "Share the memory when converting from Eigen to Numpy.");
-+  PySys_WriteStdout("--------------------------------enableEigenPy---5\n");
- 
-   bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
-           "Status of the shared memory when converting from Eigen to Numpy.\n"
-           "If True, the memory is shared when converting an Eigen::Matrix to a "
-           "numpy.array.\n"
-           "Otherwise, a deep copy of the Eigen::Matrix is performed.");
-+  PySys_WriteStdout("--------------------------------enableEigenPy---6\n");
- 
-   bp::def("seed", &seed, bp::arg("seed_value"),
-           "Initialize the pseudo-random number generator with the argument "
-           "seed_value.");
-+  PySys_WriteStdout("--------------------------------enableEigenPy---7\n");
- 
-   exposeMatrixBool();
-   exposeMatrixInt8();
-@@ -79,13 +95,16 @@ void enableEigenPy() {
-   exposeMatrixFloat();
-   exposeMatrixDouble();
-   exposeMatrixLongDouble();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---8\n");
- 
-   exposeMatrixComplexFloat();
-   exposeMatrixComplexDouble();
-   exposeMatrixComplexLongDouble();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---9\n");
- 
-   exposeNoneType();
-   exposeTypeInfo();
-+  PySys_WriteStdout("--------------------------------enableEigenPy---10\n");
- }
- 
- bool withTensorSupport() {
