@@ -995,30 +995,8 @@ index 0053bcb..ff454fc 100644
  endmacro()
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
-diff --git a/include/eigenpy/eigenpy.hpp b/include/eigenpy/eigenpy.hpp
-index 5bbdc1b..67c27e6 100644
---- a/include/eigenpy/eigenpy.hpp
-+++ b/include/eigenpy/eigenpy.hpp
-@@ -16,7 +16,7 @@
- #define ENABLE_SPECIFIC_MATRIX_TYPE(TYPE) \
-   ::eigenpy::enableEigenPySpecific<TYPE>();
- 
--namespace eigenpy {
-+// namespace eigenpy {
- 
- /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instance.
-  */
-@@ -72,7 +72,7 @@ EIGEN_DONT_INLINE void exposeType() {
- #endif
- }
- 
--}  // namespace eigenpy
-+// }  // namespace eigenpy
- 
- #include "eigenpy/details.hpp"
- 
 diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..d6158ba 100644
+index 966bb79..3ddcbae 100644
 --- a/python/main.cpp
 +++ b/python/main.cpp
 @@ -48,8 +48,18 @@ void exposeIsApprox() {
@@ -1028,6 +1006,7 @@ index 966bb79..d6158ba 100644
 +bool sharedMemoryTest() { return true; }
 +
  BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+-  enableEigenPy();
 +PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
 +  bp::def("sharedMemoryTest", (bool (*)())sharedMemoryTest,
 +          "Status of the shared memory when converting from Eigen to Numpy.\n"
@@ -1035,7 +1014,7 @@ index 966bb79..d6158ba 100644
 +          "numpy.array.\n"
 +          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
 +PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
-   enableEigenPy();
++  eigenpy::enableEigenPy();
 +  PySys_WriteStdout("--------------------------------eigenpy_pywrap---3\n");
  
    bp::scope().attr("__version__") = eigenpy::printVersion();
@@ -1172,18 +1151,9 @@ index ffea7f0..7014922 100644
  )
 \ No newline at end of file
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..54487da 100644
+index 93a4b9e..1c42e27 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
-@@ -7,7 +7,7 @@
- 
- #include <stdlib.h>
- 
--namespace eigenpy {
-+// namespace eigenpy {
- 
- void seed(unsigned int seed_value) { srand(seed_value); }
- 
 @@ -41,25 +41,25 @@ void exposeTypeInfo();
  /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instances.
   */
@@ -1223,9 +1193,3 @@ index 93a4b9e..54487da 100644
    exposeMatrixBool();
    exposeMatrixInt8();
    exposeMatrixChar();
-@@ -96,4 +96,4 @@ bool withTensorSupport() {
- #endif
- }
- 
--}  // namespace eigenpy
-+// }  // namespace eigenpy
