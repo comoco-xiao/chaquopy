@@ -995,48 +995,236 @@ index 0053bcb..ff454fc 100644
  endmacro()
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
-diff --git a/include/eigenpy/eigenpy.hpp b/include/eigenpy/eigenpy.hpp
-index 5bbdc1b..8598371 100644
---- a/include/eigenpy/eigenpy.hpp
-+++ b/include/eigenpy/eigenpy.hpp
-@@ -17,7 +17,7 @@
-   ::eigenpy::enableEigenPySpecific<TYPE>();
+diff --git a/include/eigenpy/decompositions/decompositions.hpp b/include/eigenpy/decompositions/decompositions.hpp
+index fd55626..dcf67bc 100644
+--- a/include/eigenpy/decompositions/decompositions.hpp
++++ b/include/eigenpy/decompositions/decompositions.hpp
+@@ -8,14 +8,20 @@
+ #include "eigenpy/config.hpp"
  
  namespace eigenpy {
--
-+void seed(unsigned int seed_value);
+-void EIGENPY_DLLAPI exposeDecompositions();
++// todo xiao
++// void EIGENPY_DLLAPI exposeDecompositions();
++void exposeDecompositions();
+ 
+ #ifdef EIGENPY_WITH_CHOLMOD_SUPPORT
+-void EIGENPY_DLLAPI exposeCholmod();
++// todo xiao
++// void EIGENPY_DLLAPI exposeCholmod();
++void exposeCholmod();
+ #endif
+ 
+ #ifdef EIGENPY_WITH_ACCELERATE_SUPPORT
+-void EIGENPY_DLLAPI exposeAccelerate();
++// todo xiao
++// void EIGENPY_DLLAPI exposeAccelerate();
++void exposeAccelerate();
+ #endif
+ 
+ }  // namespace eigenpy
+diff --git a/include/eigenpy/eigenpy.hpp b/include/eigenpy/eigenpy.hpp
+index 5bbdc1b..1b37927 100644
+--- a/include/eigenpy/eigenpy.hpp
++++ b/include/eigenpy/eigenpy.hpp
+@@ -20,9 +20,13 @@ namespace eigenpy {
+ 
  /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instance.
   */
- void EIGENPY_DLLAPI enableEigenPy();
+-void EIGENPY_DLLAPI enableEigenPy();
++// todo xiao
++// void EIGENPY_DLLAPI enableEigenPy();
++void enableEigenPy();
+ 
+-bool EIGENPY_DLLAPI withTensorSupport();
++// todo xiao
++// bool EIGENPY_DLLAPI withTensorSupport();
++bool withTensorSupport();
+ 
+ /* Enable the Eigen--Numpy serialization for the templated MatType class.*/
+ template <typename MatType>
+diff --git a/include/eigenpy/geometry.hpp b/include/eigenpy/geometry.hpp
+index 73291d7..051e676 100644
+--- a/include/eigenpy/geometry.hpp
++++ b/include/eigenpy/geometry.hpp
+@@ -9,11 +9,16 @@
+ #include "eigenpy/config.hpp"
+ 
+ namespace eigenpy {
++// todo xiao
++// void EIGENPY_DLLAPI exposeQuaternion();
++// void EIGENPY_DLLAPI exposeAngleAxis();
+ 
+-void EIGENPY_DLLAPI exposeQuaternion();
+-void EIGENPY_DLLAPI exposeAngleAxis();
++// void EIGENPY_DLLAPI exposeGeometryConversion();
+ 
+-void EIGENPY_DLLAPI exposeGeometryConversion();
++void exposeQuaternion();
++void exposeAngleAxis();
++
++void exposeGeometryConversion();
+ 
+ }  // namespace eigenpy
+ 
 diff --git a/include/eigenpy/numpy-type.hpp b/include/eigenpy/numpy-type.hpp
-index c57a914..24ecb96 100644
+index c57a914..438ad89 100644
 --- a/include/eigenpy/numpy-type.hpp
 +++ b/include/eigenpy/numpy-type.hpp
-@@ -82,7 +82,7 @@ bool np_type_is_convertible_into_scalar(const int np_type) {
+@@ -81,8 +81,9 @@ bool np_type_is_convertible_into_scalar(const int np_type) {
+       return false;
    }
  }
- 
+-
 -struct EIGENPY_DLLAPI NumpyType {
++// todo xiao
++// struct EIGENPY_DLLAPI NumpyType {
 +struct NumpyType {
    static NumpyType& getInstance();
  
    static bp::object make(PyArrayObject* pyArray, bool copy = false);
-diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..8d51abc 100644
---- a/python/main.cpp
-+++ b/python/main.cpp
-@@ -49,6 +49,11 @@ void exposeIsApprox() {
- }
+diff --git a/include/eigenpy/numpy.hpp b/include/eigenpy/numpy.hpp
+index f4b7419..afbb191 100644
+--- a/include/eigenpy/numpy.hpp
++++ b/include/eigenpy/numpy.hpp
+@@ -13,7 +13,8 @@
  
- BOOST_PYTHON_MODULE(eigenpy_pywrap) {
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
-+  bp::def("seed", &eigenpy::seed, bp::arg("seed_value"),
-+          "Initialize the pseudo-random number generator with the argument "
-+          "seed_value.");
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
-   enableEigenPy();
+ // For compatibility with Numpy 2.x. See:
+ // https://numpy.org/devdocs/reference/c-api/array.html#c.NPY_API_SYMBOL_ATTRIBUTE
+-#define NPY_API_SYMBOL_ATTRIBUTE EIGENPY_DLLAPI
++// todo xiao
++// #define NPY_API_SYMBOL_ATTRIBUTE EIGENPY_DLLAPI
  
-   bp::scope().attr("__version__") = eigenpy::printVersion();
+ // When building with MSVC, Python headers use some pragma operator to link
+ // against the Python DLL.
+@@ -66,8 +67,11 @@ static inline void _Py_SET_TYPE(PyObject* o, PyTypeObject* type) {
+ #include <complex>
+ 
+ namespace eigenpy {
+-void EIGENPY_DLLAPI import_numpy();
+-int EIGENPY_DLLAPI PyArray_TypeNum(PyTypeObject* type);
++// todo xiao
++// void EIGENPY_DLLAPI import_numpy();
++// int EIGENPY_DLLAPI PyArray_TypeNum(PyTypeObject* type);
++void import_numpy();
++int PyArray_TypeNum(PyTypeObject* type);
+ 
+ // By default, the Scalar is considered as a Python object
+ template <typename Scalar, typename Enable = void>
+diff --git a/include/eigenpy/register.hpp b/include/eigenpy/register.hpp
+index 5b5055a..92cd721 100644
+--- a/include/eigenpy/register.hpp
++++ b/include/eigenpy/register.hpp
+@@ -17,7 +17,9 @@
+ namespace eigenpy {
+ 
+ /// \brief Structure collecting all the types registers in Numpy via EigenPy
+-struct EIGENPY_DLLAPI Register {
++// todo xiao
++// struct EIGENPY_DLLAPI Register {
++struct Register {
+   static PyArray_Descr *getPyArrayDescr(PyTypeObject *py_type_ptr);
+ 
+   static PyArray_Descr *getPyArrayDescrFromTypeNum(const int type_num);
+diff --git a/include/eigenpy/scipy-type.hpp b/include/eigenpy/scipy-type.hpp
+index 7d53e11..a2b8253 100644
+--- a/include/eigenpy/scipy-type.hpp
++++ b/include/eigenpy/scipy-type.hpp
+@@ -11,8 +11,9 @@
+ #include "eigenpy/numpy-type.hpp"
+ 
+ namespace eigenpy {
+-
+-struct EIGENPY_DLLAPI ScipyType {
++// todo xiao
++// struct EIGENPY_DLLAPI ScipyType {
++struct ScipyType {
+   static ScipyType& getInstance();
+ 
+   static void sharedMemory(const bool value);
+diff --git a/include/eigenpy/solvers/preconditioners.hpp b/include/eigenpy/solvers/preconditioners.hpp
+index 3e26638..a8ac58d 100644
+--- a/include/eigenpy/solvers/preconditioners.hpp
++++ b/include/eigenpy/solvers/preconditioners.hpp
+@@ -8,8 +8,9 @@
+ #include "eigenpy/config.hpp"
+ 
+ namespace eigenpy {
+-
+-void EIGENPY_DLLAPI exposePreconditioners();
++// todo xiao
++// void EIGENPY_DLLAPI exposePreconditioners();
++void exposePreconditioners();
+ 
+ }  // namespace eigenpy
+ 
+diff --git a/include/eigenpy/solvers/solvers.hpp b/include/eigenpy/solvers/solvers.hpp
+index af1a375..b352886 100644
+--- a/include/eigenpy/solvers/solvers.hpp
++++ b/include/eigenpy/solvers/solvers.hpp
+@@ -9,8 +9,9 @@
+ 
+ namespace eigenpy {
+ struct SolversScope {};
+-
+-void EIGENPY_DLLAPI exposeSolvers();
++// todo xiao
++// void EIGENPY_DLLAPI exposeSolvers();
++void exposeSolvers();
+ 
+ }  // namespace eigenpy
+ 
+diff --git a/include/eigenpy/std-vector.hpp b/include/eigenpy/std-vector.hpp
+index 08850a8..ac0e4f7 100644
+--- a/include/eigenpy/std-vector.hpp
++++ b/include/eigenpy/std-vector.hpp
+@@ -478,7 +478,9 @@ struct StdVectorPythonVisitor {
+ /**
+  * Expose std::vector for given matrix or vector sizes.
+  */
+-void EIGENPY_DLLAPI exposeStdVector();
++// todo xiao
++// void EIGENPY_DLLAPI exposeStdVector();
++void exposeStdVector();
+ 
+ template <typename MatType, typename Alloc = Eigen::aligned_allocator<MatType> >
+ void exposeStdVectorEigenSpecificType(const char *name) {
+diff --git a/include/eigenpy/version.hpp b/include/eigenpy/version.hpp
+index 3e5357b..6d665de 100644
+--- a/include/eigenpy/version.hpp
++++ b/include/eigenpy/version.hpp
+@@ -16,14 +16,18 @@ namespace eigenpy {
+ ///        the following standard:
+ ///        EIGENPY_MINOR_VERSION.EIGENPY_MINOR_VERSION.EIGENPY_PATCH_VERSION
+ ///
+-std::string EIGENPY_DLLAPI printVersion(const std::string& delimiter = ".");
++// todo xiao
++// std::string EIGENPY_DLLAPI printVersion(const std::string& delimiter = ".");
++std::string printVersion(const std::string& delimiter = ".");
+ 
+ ///
+ /// \brief Returns the current version of Eigen3 as a string using
+ ///        the following standard:
+ ///        EIGEN_MINOR_VERSION.EIGEN_MINOR_VERSION.EIGEN_PATCH_VERSION
+ ///
+-std::string EIGENPY_DLLAPI
++// todo xiao
++// std::string EIGENPY_DLLAPI
++std::string
+ printEigenVersion(const std::string& delimiter = ".");
+ 
+ ///
+@@ -39,7 +43,9 @@ printEigenVersion(const std::string& delimiter = ".");
+ /// provided
+ ///        by the input arguments.
+ ///
+-bool EIGENPY_DLLAPI checkVersionAtLeast(unsigned int major_version,
++// todo xiao
++// bool EIGENPY_DLLAPI checkVersionAtLeast(unsigned int major_version,
++bool checkVersionAtLeast(unsigned int major_version,
+                                         unsigned int minor_version,
+                                         unsigned int patch_version);
+ }  // namespace eigenpy
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
