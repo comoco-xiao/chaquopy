@@ -1147,3 +1147,16 @@ index ffea7f0..7014922 100644
 +    # package_dir={"eigenpy": project_python_home_dir},
  )
 \ No newline at end of file
+diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
+index 93a4b9e..ba353c2 100644
+--- a/src/eigenpy.cpp
++++ b/src/eigenpy.cpp
+@@ -44,7 +44,7 @@ void enableEigenPy() {
+   using namespace Eigen;
+   import_numpy();
+ 
+-  Exception::registerException();
++  // Exception::registerException();
+ 
+   bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
+           bp::arg("value"),
