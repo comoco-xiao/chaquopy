@@ -1225,6 +1225,19 @@ index 3e5357b..6d665de 100644
                                          unsigned int minor_version,
                                          unsigned int patch_version);
  }  // namespace eigenpy
+diff --git a/python/main.cpp b/python/main.cpp
+index 966bb79..2f5490b 100644
+--- a/python/main.cpp
++++ b/python/main.cpp
+@@ -49,7 +49,7 @@ void exposeIsApprox() {
+ }
+ 
+ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+-  enableEigenPy();
++  eigenpy::enableEigenPy();
+ 
+   bp::scope().attr("__version__") = eigenpy::printVersion();
+   bp::scope().attr("__eigen_version__") = eigenpy::printEigenVersion();
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
