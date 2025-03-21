@@ -1226,27 +1226,65 @@ index 3e5357b..6d665de 100644
                                          unsigned int patch_version);
  }  // namespace eigenpy
 diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..dfd25c4 100644
+index 966bb79..c01816e 100644
 --- a/python/main.cpp
 +++ b/python/main.cpp
-@@ -48,8 +48,16 @@ void exposeIsApprox() {
+@@ -48,12 +48,22 @@ void exposeIsApprox() {
    //          "precision determined by prec.");
  }
  
-+bool sharedMemoryTest() { return true; }
-+
- BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+-BOOST_PYTHON_MODULE(eigenpy_pywrap) {
 -  enableEigenPy();
++bool sharedMemoryTest() { return true; }
+ 
++BOOST_PYTHON_MODULE(eigenpy_pywrap) {
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
 +  bp::def("sharedMemoryTest", (bool (*)())sharedMemoryTest,
 +          "Status of the shared memory when converting from Eigen to Numpy.\n"
 +          "If True, the memory is shared when converting an Eigen::Matrix to a "
 +          "numpy.array.\n"
 +          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
-+
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
 +  eigenpy::enableEigenPy();
- 
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---3\n");
    bp::scope().attr("__version__") = eigenpy::printVersion();
    bp::scope().attr("__eigen_version__") = eigenpy::printEigenVersion();
+   bp::scope().attr("__raw_version__") = bp::str(EIGENPY_VERSION);
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---4\n");
+   bp::def("checkVersionAtLeast", &eigenpy::checkVersionAtLeast,
+           bp::args("major_version", "minor_version", "patch_version"),
+           "Checks if the current version of EigenPy is at least the version "
+@@ -61,14 +71,14 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+ 
+   bp::def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
+           "Get the set of SIMD instructions in use with Eigen.");
+-
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---5\n");
+   exposeAngleAxis();
+   exposeQuaternion();
+   exposeGeometryConversion();
+   exposeStdVector();
+-
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---6\n");
+   exposeComputationInfo();
+-
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---7\n");
+   {
+     bp::scope solvers = boost::python::class_<SolversScope>("solvers");
+     exposeSolvers();
+@@ -76,9 +86,10 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+ 
+     register_symbolic_link_to_registered_type<Eigen::ComputationInfo>();
+   }
+-
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---8\n");
+   exposeIsApprox<double>();
+   exposeIsApprox<std::complex<double> >();
+-
++PySys_WriteStdout("--------------------------------eigenpy_pywrap---9\n");
+   exposeDecompositions();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---10\n");
+ }
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
@@ -1379,7 +1417,7 @@ index ffea7f0..7014922 100644
  )
 \ No newline at end of file
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..4ebe659 100644
+index 93a4b9e..f94f4f7 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
 @@ -45,21 +45,21 @@ void enableEigenPy() {
@@ -1387,24 +1425,35 @@ index 93a4b9e..4ebe659 100644
  
    Exception::registerException();
 -
-+PySys_WriteStdout("--------------------------------enableEigenPy---1\n");
-   bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-           bp::arg("value"),
-           "Share the memory when converting from Eigen to Numpy.");
+-  bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
+-          bp::arg("value"),
+-          "Share the memory when converting from Eigen to Numpy.");
 -
-+PySys_WriteStdout("--------------------------------enableEigenPy---2\n");
-   bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
-           "Status of the shared memory when converting from Eigen to Numpy.\n"
-           "If True, the memory is shared when converting an Eigen::Matrix to a "
-           "numpy.array.\n"
-           "Otherwise, a deep copy of the Eigen::Matrix is performed.");
+-  bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
+-          "Status of the shared memory when converting from Eigen to Numpy.\n"
+-          "If True, the memory is shared when converting an Eigen::Matrix to a "
+-          "numpy.array.\n"
+-          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
 -
-+PySys_WriteStdout("--------------------------------enableEigenPy---3\n");
-   bp::def("seed", &seed, bp::arg("seed_value"),
-           "Initialize the pseudo-random number generator with the argument "
-           "seed_value.");
+-  bp::def("seed", &seed, bp::arg("seed_value"),
+-          "Initialize the pseudo-random number generator with the argument "
+-          "seed_value.");
 -
-+PySys_WriteStdout("--------------------------------enableEigenPy---4\n");
++// PySys_WriteStdout("--------------------------------enableEigenPy---1\n");
++//   bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
++//           bp::arg("value"),
++//           "Share the memory when converting from Eigen to Numpy.");
++// PySys_WriteStdout("--------------------------------enableEigenPy---2\n");
++//   bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
++//           "Status of the shared memory when converting from Eigen to Numpy.\n"
++//           "If True, the memory is shared when converting an Eigen::Matrix to a "
++//           "numpy.array.\n"
++//           "Otherwise, a deep copy of the Eigen::Matrix is performed.");
++// PySys_WriteStdout("--------------------------------enableEigenPy---3\n");
++//   bp::def("seed", &seed, bp::arg("seed_value"),
++//           "Initialize the pseudo-random number generator with the argument "
++//           "seed_value.");
++// PySys_WriteStdout("--------------------------------enableEigenPy---4\n");
    exposeMatrixBool();
    exposeMatrixInt8();
    exposeMatrixChar();
