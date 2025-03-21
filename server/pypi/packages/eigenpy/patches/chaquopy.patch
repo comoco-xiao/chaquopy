@@ -173,10 +173,10 @@ index 49304e1..80f94ab 100644
    else()
      if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..42482e2 100644
+index 0053bcb..ff454fc 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
-@@ -56,380 +56,395 @@
+@@ -56,380 +56,396 @@
  # `FIND_NUMPY` and/or `SEARCH_FOR_BOOST_PYTHON` if necessary.
  
  macro(FINDPYTHON)
@@ -562,6 +562,7 @@ index 0053bcb..42482e2 100644
 +
 +  # numpy
 +  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
++  set(NUMPY_INCLUDE_DIRS ${Python_NumPy_INCLUDE_DIRS})
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
@@ -946,7 +947,7 @@ index 0053bcb..42482e2 100644
  endmacro(FINDPYTHON)
  
  # .rst: .. command:: DYNAMIC_GRAPH_PYTHON_MODULE ( SUBMODULENAME LIBRARYNAME
-@@ -602,26 +617,27 @@ endmacro()
+@@ -602,26 +618,27 @@ endmacro()
  # Detect scipy module.
  #
  macro(FIND_SCIPY)
