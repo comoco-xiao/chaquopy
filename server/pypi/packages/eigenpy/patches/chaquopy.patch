@@ -996,10 +996,10 @@ index 0053bcb..ff454fc 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..6f4e692 100644
+index 966bb79..d6158ba 100644
 --- a/python/main.cpp
 +++ b/python/main.cpp
-@@ -48,7 +48,16 @@ void exposeIsApprox() {
+@@ -48,8 +48,18 @@ void exposeIsApprox() {
    //          "precision determined by prec.");
  }
  
@@ -1014,8 +1014,10 @@ index 966bb79..6f4e692 100644
 +          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
 +PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
    enableEigenPy();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---3\n");
  
    bp::scope().attr("__version__") = eigenpy::printVersion();
+   bp::scope().attr("__eigen_version__") = eigenpy::printEigenVersion();
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
@@ -1148,15 +1150,45 @@ index ffea7f0..7014922 100644
  )
 \ No newline at end of file
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..ba353c2 100644
+index 93a4b9e..1c42e27 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
-@@ -44,7 +44,7 @@ void enableEigenPy() {
-   using namespace Eigen;
-   import_numpy();
+@@ -41,25 +41,25 @@ void exposeTypeInfo();
+ /* Enable Eigen-Numpy serialization for a set of standard MatrixBase instances.
+  */
+ void enableEigenPy() {
+-  using namespace Eigen;
+-  import_numpy();
++  // using namespace Eigen;
++  // import_numpy();
  
 -  Exception::registerException();
 +  // Exception::registerException();
  
-   bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
-           bp::arg("value"),
+-  bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
+-          bp::arg("value"),
+-          "Share the memory when converting from Eigen to Numpy.");
+-
+-  bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
+-          "Status of the shared memory when converting from Eigen to Numpy.\n"
+-          "If True, the memory is shared when converting an Eigen::Matrix to a "
+-          "numpy.array.\n"
+-          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
++  // bp::def("sharedMemory", (void (*)(const bool))NumpyType::sharedMemory,
++  //         bp::arg("value"),
++  //         "Share the memory when converting from Eigen to Numpy.");
+ 
++  // bp::def("sharedMemory", (bool (*)())NumpyType::sharedMemory,
++  //         "Status of the shared memory when converting from Eigen to Numpy.\n"
++  //         "If True, the memory is shared when converting an Eigen::Matrix to a "
++  //         "numpy.array.\n"
++  //         "Otherwise, a deep copy of the Eigen::Matrix is performed.");
++PySys_WriteStdout("--------------------------------enableEigenPy---1\n");
+   bp::def("seed", &seed, bp::arg("seed_value"),
+           "Initialize the pseudo-random number generator with the argument "
+           "seed_value.");
+-
++PySys_WriteStdout("--------------------------------enableEigenPy---2\n");
+   exposeMatrixBool();
+   exposeMatrixInt8();
+   exposeMatrixChar();
