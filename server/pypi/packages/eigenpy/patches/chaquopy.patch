@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fd5f9f7..6203497 100644
+index fd5f9f7..909d21f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -406,9 +406,13 @@ set(${PROJECT_NAME}_SOURCES
@@ -7,7 +7,7 @@ index fd5f9f7..6203497 100644
      src/version.cpp)
  
 -add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SOURCES}
-+add_library(${PROJECT_NAME} MODULE ${${PROJECT_NAME}_SOURCES}
++add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SOURCES}
                                     ${${PROJECT_NAME}_HEADERS})
  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 +
