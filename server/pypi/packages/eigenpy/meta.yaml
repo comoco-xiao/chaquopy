@@ -9,7 +9,7 @@ build:
 
 source:
   git_url: https://github.com/comoco-xiao/eigenpy.git
-  git_rev: 9726a389d183f9cd66db6a591abd5309cc1f15a7
+  git_rev: master
 
 requirements:
   build:

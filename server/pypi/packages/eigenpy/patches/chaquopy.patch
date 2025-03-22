@@ -1,108 +1,9 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..705e302 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -59,6 +59,10 @@ endfunction()
- set(CXX_DISABLE_WERROR True)
- set(CMAKE_VERBOSE_MAKEFILE True)
- 
-+# todo xiao
-+set(CMAKE_C_COMPILER_LAUNCHER ccache CACHE INTERNAL "C cache")
-+set(CMAKE_CXX_COMPILER_LAUNCHER ccache CACHE INTERNAL "C++ cache")
-+
- # ----------------------------------------------------
- # --- OPTIONS  ---------------------------------------
- # Need to be set before including base.cmake
-@@ -93,6 +97,28 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
- compute_project_args(PROJECT_ARGS LANGUAGES CXX)
- project(${PROJECT_NAME} ${PROJECT_ARGS})
- 
-+# todo xiao
-+set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/")
-+set(PYTHON_EXECUTABLE "${PROJECT_BUILD_DIR}/env/bin/python3.9")
-+# eigen3
-+set(Eigen3_DIR "/usr/share/eigen3/cmake")
-+# boost
-+set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
-+set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
-+set(Boost_USE_STATIC_LIBS ON)
-+set(Boost_DIR "${BOOST_LIBRARYDIR}/cmake/Boost-1.85.0")
-+set(boost_headers_DIR "${BOOST_LIBRARYDIR}/cmake/boost_headers-1.85.0")
-+set(boost_filesystem_DIR "${BOOST_LIBRARYDIR}/cmake/boost_filesystem-1.85.0")
-+set(boost_atomic_DIR "${BOOST_LIBRARYDIR}/cmake/boost_atomic-1.85.0")
-+set(boost_system_DIR "${BOOST_LIBRARYDIR}/cmake/boost_system-1.85.0")
-+set(boost_serialization_DIR "${BOOST_LIBRARYDIR}/cmake/boost_serialization-1.85.0")
-+set(boost_python_DIR "${BOOST_LIBRARYDIR}/cmake/boost_python-1.85.0")
-+set(boost_container_DIR "${BOOST_LIBRARYDIR}/cmake/boost_container-1.85.0")
-+set(boost_graph_DIR "${BOOST_LIBRARYDIR}/cmake/boost_graph-1.85.0")
-+set(Boost_COMPILER "-clang")
-+message(--------------------------------------Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS})
-+include_directories(${Boost_INCLUDE_DIRS})
-+
- include("${JRL_CMAKE_MODULES}/boost.cmake")
- include("${JRL_CMAKE_MODULES}/python.cmake")
- include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -122,13 +148,19 @@ else(WIN32)
-   set(LINK create_symlink)
- endif(WIN32)
- 
--if(CMAKE_CROSSCOMPILING)
--  set(PYTHON_COMPONENTS Interpreter NumPy)
--else()
--  set(PYTHON_COMPONENTS Interpreter Development.Module NumPy)
--endif()
-+# todo xiao
-+# if(CMAKE_CROSSCOMPILING)
-+#   set(PYTHON_COMPONENTS Interpreter NumPy)
-+# else()
-+#   set(PYTHON_COMPONENTS Interpreter Development.Module NumPy)
-+# endif()
-+set(PYTHON_COMPONENTS Development.Module)
-+
- set(PYTHON_EXPORT_DEPENDENCY ON)
-+message(-----------------------------CMakeLists---1)
- findpython(REQUIRED)
-+# set(Boost_PYTHON_VERSION "3.9")
-+message(-----------------------------CMakeLists---2)
- 
- if(${NUMPY_VERSION} VERSION_LESS "1.16.0")
-   set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
-@@ -150,7 +182,11 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
- 
- set_boost_default_options()
- export_boost_default_options()
--find_package(Boost REQUIRED)
-+
-+message(-------------------------------Boost_USE_STATIC_LIBS = ${Boost_USE_STATIC_LIBS})
-+# todo xiao
-+find_package(Boost REQUIRED COMPONENTS python)
-+# find_package(Boost REQUIRED COMPONENTS python container)
- search_for_boost_python(REQUIRED)
- 
- if(BUILD_WITH_CHOLMOD_SUPPORT)
-@@ -392,6 +428,8 @@ modernize_target_link_libraries(
-   INCLUDE_DIRS
-   ${EIGEN3_INCLUDE_DIR})
- 
-+message(--------------------------------NUMPY_INCLUDE_DIRS = ${NUMPY_INCLUDE_DIRS})
-+message(--------------------------------PYTHON_INCLUDE_DIR = ${PYTHON_INCLUDE_DIR})
- modernize_target_link_libraries(
-   ${PROJECT_NAME}
-   SCOPE
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
-index 49304e1..80f94ab 100644
+index 49304e1..2ec3ef9 100644
 --- a/cmake/boost.cmake
 +++ b/cmake/boost.cmake
-@@ -21,6 +21,7 @@
- # FALSE otherwise. This function is for internal use only.
- #
- function(SEARCH_FOR_BOOST_COMPONENT boost_python_name found)
-+  message(--------------------------boost_python_name = ${boost_python_name})
-   set(${found} FALSE PARENT_SCOPE)
-   find_package(
-     Boost
-@@ -48,8 +49,12 @@ endif(CMAKE_VERSION VERSION_LESS "3.12")
+@@ -48,8 +48,12 @@ endif(CMAKE_VERSION VERSION_LESS "3.12")
  # components.
  #
  macro(SET_BOOST_DEFAULT_OPTIONS)
@@ -116,7 +17,7 @@ index 49304e1..80f94ab 100644
    set(Boost_NO_BOOST_CMAKE ON)
  endmacro(SET_BOOST_DEFAULT_OPTIONS)
  
-@@ -63,13 +68,17 @@ macro(EXPORT_BOOST_DEFAULT_OPTIONS)
+@@ -63,13 +67,17 @@ macro(EXPORT_BOOST_DEFAULT_OPTIONS)
      INSERT
      _PACKAGE_CONFIG_DEPENDENCIES_FIND_PACKAGE
      0
@@ -136,24 +37,15 @@ index 49304e1..80f94ab 100644
    )
  endmacro(EXPORT_BOOST_DEFAULT_OPTIONS)
  
-@@ -118,6 +127,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
+@@ -118,6 +126,7 @@ macro(SEARCH_FOR_BOOST_PYTHON)
        "python${PYTHON_VERSION_MAJOR}"
        "python-py${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}"
      )
-+    message(------------------------------------BOOST_PYTHON_COMPONENT_LIST = ${BOOST_PYTHON_COMPONENT_LIST})
++
      set(BOOST_PYTHON_FOUND FALSE)
      foreach(BOOST_PYTHON_COMPONENT ${BOOST_PYTHON_COMPONENT_LIST})
        SEARCH_FOR_BOOST_COMPONENT(${BOOST_PYTHON_COMPONENT} BOOST_PYTHON_FOUND)
-@@ -145,6 +155,8 @@ macro(SEARCH_FOR_BOOST_PYTHON)
-       "${PYTHON_EXPORT_DEPENDENCY_MACROS}\nSEARCH_FOR_BOOST_PYTHON(${BOOST_PYTHON_REQUIRED} NAME ${BOOST_PYTHON_NAME})"
-     )
-   endif()
-+  message(------------------------------------BOOST_PYTHON_REQUIRED = ${BOOST_PYTHON_REQUIRED})
-+  message(------------------------------------BOOST_PYTHON_NAME = ${BOOST_PYTHON_NAME})
-   find_package(Boost ${BOOST_PYTHON_REQUIRED} COMPONENTS ${BOOST_PYTHON_NAME})
-   string(TOUPPER ${BOOST_PYTHON_NAME} UPPERCOMPONENT)
- 
-@@ -183,10 +195,17 @@ macro(TARGET_LINK_BOOST_PYTHON target)
+@@ -183,10 +192,17 @@ macro(TARGET_LINK_BOOST_PYTHON target)
    endif()
  
    if(TARGET Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
@@ -1017,137 +909,6 @@ index 966bb79..a75c9cc 100644
  
    {
      bp::scope solvers = boost::python::class_<SolversScope>("solvers");
-diff --git a/setup.py b/setup.py
-index ffea7f0..7014922 100644
---- a/setup.py
-+++ b/setup.py
-@@ -1,12 +1,13 @@
- import os
- import subprocess
- import sys
-+import shutil
- from pathlib import Path
--from setuptools import setup, Extension
-+from setuptools import setup, Extension, find_packages
- from setuptools.command.build_ext import build_ext
- 
- PROJECT_DIR = Path(__file__).parent
--VERSION = "3.4.0"
-+VERSION = "3.10.3"
- 
- class CMakeBuildExt(build_ext):
-     """集成 CMake 编译流程"""
-@@ -40,7 +41,65 @@ class CMakeBuildExt(build_ext):
-         if missing:
-             sys.stderr.write(f"Error: Missing required tools: {', '.join(missing)}\n")
-             sys.exit(1)
--
-+    def copy_data(self, install_dir):
-+        # # include
-+        # include_path = os.path.join(self.build_lib, "cmeel.prefix", "include")
-+        # source_include_path = os.path.join(install_dir, "include")
-+        # if os.path.exists(include_path):
-+        #     shutil.rmtree(include_path)
-+        # shutil.copytree(source_include_path, include_path)
-+        
-+        # # lib
-+        # lib_path = os.path.join(self.build_lib, "cmeel.prefix", "lib")
-+        # source_lib_path = os.path.join(install_dir, "lib")
-+        # if os.path.exists(lib_path):
-+        #     shutil.rmtree(lib_path)
-+        # shutil.copytree(source_lib_path, lib_path)
-+        
-+        # # share
-+        # share_path = os.path.join(self.build_lib, "cmeel.prefix", "share")
-+        # source_share_path = os.path.join(install_dir, "share")
-+        # if os.path.exists(share_path):
-+        #     shutil.rmtree(share_path)
-+        # shutil.copytree(source_share_path, share_path)
-+        
-+        # # python
-+        # python_path = os.path.join(self.build_lib, "cmeel.prefix", "lib", "python3.9", "site-packages", "eigenpy")
-+        # source_python_path = os.path.join(install_dir, "eigenpy")
-+        # if os.path.exists(python_path):
-+        #     shutil.rmtree(python_path)
-+        # shutil.copytree(source_python_path, python_path)
-+        
-+        # python
-+        python_path = os.path.join(self.build_lib, "eigenpy")
-+        source_python_path = os.path.join(install_dir, "eigenpy")
-+        # if os.path.exists(python_path):
-+        #     shutil.rmtree(python_path)
-+        shutil.copytree(source_python_path, python_path)
-+        
-+        # include
-+        include_path = os.path.join(self.build_lib, "eigenpy", "include")
-+        source_include_path = os.path.join(install_dir, "include")
-+        if os.path.exists(include_path):
-+            shutil.rmtree(include_path)
-+        shutil.copytree(source_include_path, include_path)
-+        
-+        # lib
-+        lib_path = os.path.join(self.build_lib, "eigenpy", "lib")
-+        source_lib_path = os.path.join(install_dir, "lib")
-+        if os.path.exists(lib_path):
-+            shutil.rmtree(lib_path)
-+        shutil.copytree(source_lib_path, lib_path)
-+        
-+        # share
-+        share_path = os.path.join(self.build_lib, "eigenpy", "share")
-+        source_share_path = os.path.join(install_dir, "share")
-+        if os.path.exists(share_path):
-+            shutil.rmtree(share_path)
-+        shutil.copytree(source_share_path, share_path)
-+        
-+        
-+        
-     def _configure_and_build(self):
-         """执行 CMake 构建"""
-         build_dir = os.path.join(PROJECT_DIR, "cmake_build")
-@@ -49,12 +108,13 @@ class CMakeBuildExt(build_ext):
-         # 创建构建目录
-         os.makedirs(build_dir, exist_ok=True)
-         os.makedirs(install_dir, exist_ok=True)
--    
-+
-         # CMake 配置参数
-         cmake_args = [
-             f"-DCMAKE_INSTALL_PREFIX={install_dir}",
-             f"-DCMAKE_BUILD_TYPE={self.build_type}",
-         ]
-+
-         # 生成构建系统
-         subprocess.check_call(
-             ["cmake", str(PROJECT_DIR)] + cmake_args,
-@@ -67,19 +127,22 @@ class CMakeBuildExt(build_ext):
-             ["cmake", "--build", ".", "--target", "install"] + build_args,
-             cwd=build_dir,
-         )
--        print("-------------------------------------setup---3")
-+        
-+        # copy data
-+        self.copy_data(install_dir)
- 
--project_python_home_dir = os.path.join("python", "eigenpy")
-+# project_python_home_dir = os.path.join("python", "eigenpy")
- setup(
-     name="eigenpy",
-     version=VERSION,
-     description="Efficient Rigid Body Dynamics Library",
-     author="Xiao",
-     license="BSD-2-Clause",
--    packages=[],
-+    packages=find_packages(),
-     python_requires=">=3.9",
--    # install_requires=["numpy"],
-+    install_requires=["numpy"],
-+    ext_modules=[Extension("eigenpy", [])],  # 触发扩展构建
-     cmdclass={"build_ext": CMakeBuildExt},
-     zip_safe=False,
--    package_dir={"eigenpy": project_python_home_dir},
-+    # package_dir={"eigenpy": project_python_home_dir},
- )
-\ No newline at end of file
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
 index 93a4b9e..f94f4f7 100644
 --- a/src/eigenpy.cpp
