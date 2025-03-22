@@ -1,17 +1,3 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fd5f9f7..85e6760 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -416,6 +416,9 @@ target_include_directories(
-          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
- 
-+# todo xiao
-+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-+
- modernize_target_link_libraries(
-   ${PROJECT_NAME}
-   SCOPE
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..2ec3ef9 100644
@@ -900,11 +886,34 @@ index 0053bcb..be354f1 100644
  endmacro()
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
+diff --git a/include/eigenpy/eigenpy.hpp b/include/eigenpy/eigenpy.hpp
+index 5bbdc1b..340b816 100644
+--- a/include/eigenpy/eigenpy.hpp
++++ b/include/eigenpy/eigenpy.hpp
+@@ -24,6 +24,8 @@ void EIGENPY_DLLAPI enableEigenPy();
+ 
+ bool EIGENPY_DLLAPI withTensorSupport();
+ 
++void testPyBinding();
++
+ /* Enable the Eigen--Numpy serialization for the templated MatType class.*/
+ template <typename MatType>
+ void enableEigenPySpecific();
 diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..a75c9cc 100644
+index 966bb79..53c89b8 100644
 --- a/python/main.cpp
 +++ b/python/main.cpp
-@@ -62,12 +62,17 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
+@@ -49,6 +49,9 @@ void exposeIsApprox() {
+ }
+ 
+ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---testPyBinding\n");
++  testPyBinding();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---enableEigenPy\n");
+   enableEigenPy();
+ 
+   bp::scope().attr("__version__") = eigenpy::printVersion();
+@@ -62,12 +65,17 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
    bp::def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
            "Get the set of SIMD instructions in use with Eigen.");
  
@@ -924,7 +933,7 @@ index 966bb79..a75c9cc 100644
    {
      bp::scope solvers = boost::python::class_<SolversScope>("solvers");
 diff --git a/src/eigenpy.cpp b/src/eigenpy.cpp
-index 93a4b9e..f94f4f7 100644
+index 93a4b9e..75e1b54 100644
 --- a/src/eigenpy.cpp
 +++ b/src/eigenpy.cpp
 @@ -45,21 +45,21 @@ void enableEigenPy() {
@@ -964,3 +973,18 @@ index 93a4b9e..f94f4f7 100644
    exposeMatrixBool();
    exposeMatrixInt8();
    exposeMatrixChar();
+@@ -88,6 +88,14 @@ void enableEigenPy() {
+   exposeTypeInfo();
+ }
+ 
++void testPyBinding() {
++  PySys_WriteStdout("--------------------------------testPyBinding---1\n");
++  bp::def("seed", &seed, bp::arg("seed_value"),
++          "Initialize the pseudo-random number generator with the argument "
++          "seed_value.");
++  PySys_WriteStdout("--------------------------------testPyBinding---2\n");
++}
++
+ bool withTensorSupport() {
+ #ifdef EIGENPY_WITH_TENSOR_SUPPORT
+   return true;
