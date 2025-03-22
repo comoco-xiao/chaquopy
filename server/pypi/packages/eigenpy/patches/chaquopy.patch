@@ -1,15 +1,17 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fd5f9f7..8e8a487 100644
+index fd5f9f7..85e6760 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -118,6 +118,7 @@ set(boost_container_DIR "${BOOST_LIBRARYDIR}/cmake/boost_container-1.85.0")
- set(boost_graph_DIR "${BOOST_LIBRARYDIR}/cmake/boost_graph-1.85.0")
- set(Boost_COMPILER "-clang")
- include_directories(${Boost_INCLUDE_DIRS})
-+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
- # *********************************************************************************
+@@ -416,6 +416,9 @@ target_include_directories(
+          $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
  
- include("${JRL_CMAKE_MODULES}/boost.cmake")
++# todo xiao
++set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
++
+ modernize_target_link_libraries(
+   ${PROJECT_NAME}
+   SCOPE
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..2ec3ef9 100644
