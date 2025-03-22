@@ -1,27 +1,3 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fd5f9f7..019c90f 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -288,6 +288,9 @@ set(${PROJECT_NAME}_HEADERS
-     include/eigenpy/computation-info.hpp
-     include/eigenpy/deprecation-policy.hpp
-     include/eigenpy/eigenpy.hpp
-+    # todo xiao
-+    include/eigenpy/test-eigenpy.hpp
-+
-     include/eigenpy/exception.hpp
-     include/eigenpy/scalar-conversion.hpp
-     include/eigenpy/expose.hpp
-@@ -372,6 +375,9 @@ set(${PROJECT_NAME}_SOURCES
-     ${${PROJECT_NAME}_DECOMPOSITIONS_SOURCES}
-     src/exception.cpp
-     src/eigenpy.cpp
-+    # todo xiao
-+    src/test-eigenpy.cpp
-+
-     src/numpy.cpp
-     src/numpy-type.cpp
-     src/matrix-float.cpp
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..2ec3ef9 100644
