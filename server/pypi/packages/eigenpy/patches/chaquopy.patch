@@ -996,65 +996,28 @@ index 0053bcb..ff454fc 100644
  
  include(${CMAKE_CURRENT_LIST_DIR}/python-helpers.cmake)
 diff --git a/python/main.cpp b/python/main.cpp
-index 966bb79..c01816e 100644
+index 966bb79..a75c9cc 100644
 --- a/python/main.cpp
 +++ b/python/main.cpp
-@@ -48,12 +48,22 @@ void exposeIsApprox() {
-   //          "precision determined by prec.");
- }
- 
--BOOST_PYTHON_MODULE(eigenpy_pywrap) {
--  enableEigenPy();
-+bool sharedMemoryTest() { return true; }
- 
-+BOOST_PYTHON_MODULE(eigenpy_pywrap) {
-+  PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
-+  bp::def("sharedMemoryTest", (bool (*)())sharedMemoryTest,
-+          "Status of the shared memory when converting from Eigen to Numpy.\n"
-+          "If True, the memory is shared when converting an Eigen::Matrix to a "
-+          "numpy.array.\n"
-+          "Otherwise, a deep copy of the Eigen::Matrix is performed.");
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---2\n");
-+  eigenpy::enableEigenPy();
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---3\n");
-   bp::scope().attr("__version__") = eigenpy::printVersion();
-   bp::scope().attr("__eigen_version__") = eigenpy::printEigenVersion();
-   bp::scope().attr("__raw_version__") = bp::str(EIGENPY_VERSION);
-+  PySys_WriteStdout("--------------------------------eigenpy_pywrap---4\n");
-   bp::def("checkVersionAtLeast", &eigenpy::checkVersionAtLeast,
-           bp::args("major_version", "minor_version", "patch_version"),
-           "Checks if the current version of EigenPy is at least the version "
-@@ -61,14 +71,14 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
- 
+@@ -62,12 +62,17 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
    bp::def("SimdInstructionSetsInUse", &Eigen::SimdInstructionSetsInUse,
            "Get the set of SIMD instructions in use with Eigen.");
--
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---5\n");
+ 
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---exposeAngleAxis\n");
    exposeAngleAxis();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---exposeQuaternion\n");
    exposeQuaternion();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---exposeGeometryConversion\n");
    exposeGeometryConversion();
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---exposeStdVector\n");
    exposeStdVector();
 -
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---6\n");
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---exposeComputationInfo\n");
    exposeComputationInfo();
--
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---7\n");
++  PySys_WriteStdout("--------------------------------eigenpy_pywrap---1\n");
+ 
    {
      bp::scope solvers = boost::python::class_<SolversScope>("solvers");
-     exposeSolvers();
-@@ -76,9 +86,10 @@ BOOST_PYTHON_MODULE(eigenpy_pywrap) {
- 
-     register_symbolic_link_to_registered_type<Eigen::ComputationInfo>();
-   }
--
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---8\n");
-   exposeIsApprox<double>();
-   exposeIsApprox<std::complex<double> >();
--
-+PySys_WriteStdout("--------------------------------eigenpy_pywrap---9\n");
-   exposeDecompositions();
-+  PySys_WriteStdout("--------------------------------eigenpy_pywrap---10\n");
- }
 diff --git a/setup.py b/setup.py
 index ffea7f0..7014922 100644
 --- a/setup.py
