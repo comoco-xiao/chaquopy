@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2d6360c..9ad2a4c 100644
+index 2d6360c..705e302 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -59,6 +59,10 @@ endfunction()
@@ -13,29 +13,28 @@ index 2d6360c..9ad2a4c 100644
  # ----------------------------------------------------
  # --- OPTIONS  ---------------------------------------
  # Need to be set before including base.cmake
-@@ -93,6 +97,29 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
+@@ -93,6 +97,28 @@ include("${JRL_CMAKE_MODULES}/base.cmake")
  compute_project_args(PROJECT_ARGS LANGUAGES CXX)
  project(${PROJECT_NAME} ${PROJECT_ARGS})
  
 +# todo xiao
-+set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/")
++set(PYTHON_EXECUTABLE "${PROJECT_BUILD_DIR}/env/bin/python3.9")
 +# eigen3
 +set(Eigen3_DIR "/usr/share/eigen3/cmake")
 +# boost
-+# set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
-+# set(Boost_NO_SYSTEM_PATHS ON)
 +set(BOOST_ROOT "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a")
-+set(BOOST_LIBRARYDIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib")
++set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
 +set(Boost_USE_STATIC_LIBS ON)
-+set(Boost_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/Boost-1.85.0")
-+set(boost_headers_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_headers-1.85.0")
-+set(boost_filesystem_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_filesystem-1.85.0")
-+set(boost_atomic_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_atomic-1.85.0")
-+set(boost_system_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_system-1.85.0")
-+set(boost_serialization_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_serialization-1.85.0")
-+set(boost_python_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_python-1.85.0")
-+set(boost_container_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_container-1.85.0")
-+set(boost_graph_DIR "/home/ubuntu/workspace/pkg/boost_1_85_0/arm64-v8a/lib/cmake/boost_graph-1.85.0")
++set(Boost_DIR "${BOOST_LIBRARYDIR}/cmake/Boost-1.85.0")
++set(boost_headers_DIR "${BOOST_LIBRARYDIR}/cmake/boost_headers-1.85.0")
++set(boost_filesystem_DIR "${BOOST_LIBRARYDIR}/cmake/boost_filesystem-1.85.0")
++set(boost_atomic_DIR "${BOOST_LIBRARYDIR}/cmake/boost_atomic-1.85.0")
++set(boost_system_DIR "${BOOST_LIBRARYDIR}/cmake/boost_system-1.85.0")
++set(boost_serialization_DIR "${BOOST_LIBRARYDIR}/cmake/boost_serialization-1.85.0")
++set(boost_python_DIR "${BOOST_LIBRARYDIR}/cmake/boost_python-1.85.0")
++set(boost_container_DIR "${BOOST_LIBRARYDIR}/cmake/boost_container-1.85.0")
++set(boost_graph_DIR "${BOOST_LIBRARYDIR}/cmake/boost_graph-1.85.0")
 +set(Boost_COMPILER "-clang")
 +message(--------------------------------------Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS})
 +include_directories(${Boost_INCLUDE_DIRS})
@@ -43,7 +42,7 @@ index 2d6360c..9ad2a4c 100644
  include("${JRL_CMAKE_MODULES}/boost.cmake")
  include("${JRL_CMAKE_MODULES}/python.cmake")
  include("${JRL_CMAKE_MODULES}/ide.cmake")
-@@ -122,13 +149,19 @@ else(WIN32)
+@@ -122,13 +148,19 @@ else(WIN32)
    set(LINK create_symlink)
  endif(WIN32)
  
@@ -68,7 +67,7 @@ index 2d6360c..9ad2a4c 100644
  
  if(${NUMPY_VERSION} VERSION_LESS "1.16.0")
    set(NUMPY_WITH_BROKEN_UFUNC_SUPPORT TRUE)
-@@ -150,7 +183,11 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
+@@ -150,7 +182,11 @@ add_project_dependency(Eigen3 REQUIRED PKG_CONFIG_REQUIRES "eigen3 >= 3.0.5")
  
  set_boost_default_options()
  export_boost_default_options()
@@ -81,7 +80,7 @@ index 2d6360c..9ad2a4c 100644
  search_for_boost_python(REQUIRED)
  
  if(BUILD_WITH_CHOLMOD_SUPPORT)
-@@ -392,6 +429,8 @@ modernize_target_link_libraries(
+@@ -392,6 +428,8 @@ modernize_target_link_libraries(
    INCLUDE_DIRS
    ${EIGEN3_INCLUDE_DIR})
  
@@ -173,7 +172,7 @@ index 49304e1..80f94ab 100644
    else()
      if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..ff454fc 100644
+index 0053bcb..be354f1 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -56,380 +56,396 @@
@@ -561,7 +560,7 @@ index 0053bcb..ff454fc 100644
 +  include_directories(${PYTHON_INCLUDE_DIRS})
 +
 +  # numpy
-+  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
++  set(Python_NumPy_INCLUDE_DIRS "${PROJECT_BUILD_DIR}/requirements/numpy/core/include")
 +  set(NUMPY_INCLUDE_DIRS ${Python_NumPy_INCLUDE_DIRS})
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
