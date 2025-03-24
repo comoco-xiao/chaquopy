@@ -1,9 +1,9 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..231c8ed 100644
+index f5a8875..1b3edfb 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
-@@ -64,6 +64,13 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
+@@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
  set (INSTALL_MAN_DIR     ${CMAKE_INSTALL_MANDIR}        CACHE PATH "Installation directory for man documentation")
  set (INSTALL_CMAKE_DIR   ${INSTALL_LIB_DIR}/cmake/nlopt CACHE PATH "Installation directory for cmake config files")
  
@@ -14,10 +14,35 @@ index f5a8875..231c8ed 100644
 +message(----------------------------nlopt---INSTALL_MAN_DIR = ${INSTALL_MAN_DIR})
 +message(----------------------------nlopt---INSTALL_CMAKE_DIR = ${INSTALL_CMAKE_DIR})
 +
++# todo xiao
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/nlopt/build/2.7.1/cp39-cp39-android_28_arm64_v8a")
++
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
-@@ -343,8 +350,19 @@ if (NLOPT_GUILE)
+@@ -319,10 +329,20 @@ if (NLOPT_PYTHON)
+   if (CMAKE_VERSION VERSION_LESS 3.24)
+     find_package (Python COMPONENTS Interpreter Development)
+   else ()
++    # todo xiao
++    # find_package (Python COMPONENTS Interpreter Development.Module)
++    set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+     find_package (Python COMPONENTS Interpreter Development.Module)
++    include_directories(${PYTHON_INCLUDE_DIRS})
+   endif ()
+ 
+-  find_package (NumPy)
++  # todo xiao
++  # find_package (NumPy)
++  set(Python_NumPy_INCLUDE_DIRS "${PROJECT_BUILD_DIR}/requirements/numpy/core/include")
++  set(NUMPY_INCLUDE_DIRS ${Python_NumPy_INCLUDE_DIRS})
++  add_library(Python::NumPy INTERFACE IMPORTED)
++  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
++  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
+ endif ()
+ 
+ if (NOT DEFINED INSTALL_PYTHON_DIR AND NOT CMAKE_CROSSCOMPILING)
+@@ -343,8 +363,19 @@ if (NLOPT_GUILE)
    find_package (Guile)
  endif ()
  
