@@ -62,16 +62,17 @@ index f5a8875..df6608a 100644
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
 diff --git a/setup.py b/setup.py
-index c1d96ca..2e399cd 100644
+index c1d96ca..15187f2 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -18,7 +18,8 @@ with open(Path(__file__).parent / "extern" / "nlopt" / "CMakeLists.txt") as f:
+@@ -18,7 +18,9 @@ with open(Path(__file__).parent / "extern" / "nlopt" / "CMakeLists.txt") as f:
  
  
  setup(
 -    version=version,
 +    # version=version,
 +    version="2.7.1",
++    license="MIT",
      install_requires=["numpy >=1.18.5"],
      ext_modules=[NLOptBuildExtension("nlopt._nlopt", version)],
      cmdclass={"build_ext": NLOptBuild},
