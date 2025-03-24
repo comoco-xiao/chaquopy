@@ -14,7 +14,7 @@ index e95068d..bec8086 100644
  
  if (NOT WIN32)
 diff --git a/extensions.py b/extensions.py
-index 63ae616..d2ff15e 100644
+index 63ae616..9b3492b 100644
 --- a/extensions.py
 +++ b/extensions.py
 @@ -20,6 +20,13 @@ class NLOptBuildExtension(Extension):
@@ -31,10 +31,11 @@ index 63ae616..d2ff15e 100644
      def run(self):
          try:
              check_call(["cmake", "--version"])
-@@ -44,6 +51,10 @@ class NLOptBuild(build_ext):
+@@ -44,6 +51,11 @@ class NLOptBuild(build_ext):
          _ed = ext_dir.as_posix()
  
          build_dir = create_directory(Path(self.build_temp))
++        create_directory(ext_dir)
 +        
 +        print(f"-------------------------------extensions---ext_dir = ${ext_dir}")
 +        print(f"-------------------------------extensions---_ed = ${_ed}")
