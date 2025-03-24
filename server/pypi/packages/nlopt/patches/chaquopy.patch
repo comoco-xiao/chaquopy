@@ -1,6 +1,6 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..795ff20 100644
+index f5a8875..8932a35 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
 @@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
@@ -20,7 +20,18 @@ index f5a8875..795ff20 100644
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
-@@ -315,14 +325,30 @@ endif ()
+@@ -255,7 +265,9 @@ install (FILES ${NLOPT_HEADERS} DESTINATION ${RELATIVE_INSTALL_INCLUDE_DIR})
+ set (nlopt_lib nlopt)
+ add_library (${nlopt_lib} ${NLOPT_SOURCES})
+ add_dependencies(${nlopt_lib} generate-cpp)
+-target_link_libraries (${nlopt_lib} ${M_LIBRARY})
++# todo xiao
++# target_link_libraries (${nlopt_lib} ${M_LIBRARY})
++target_link_libraries (${nlopt_lib} ${M_LIBRARY} ${PYTHON_LIBRARIES})
+ 
+ set_target_properties (${nlopt_lib} PROPERTIES SOVERSION ${SO_MAJOR})
+ set_target_properties (${nlopt_lib} PROPERTIES VERSION "${SO_MAJOR}.${SO_MINOR}.${SO_PATCH}")
+@@ -315,14 +327,30 @@ endif ()
  
  add_subdirectory (src/api)
  
@@ -53,7 +64,7 @@ index f5a8875..795ff20 100644
  endif ()
  
  if (NOT DEFINED INSTALL_PYTHON_DIR AND NOT CMAKE_CROSSCOMPILING)
-@@ -343,8 +369,19 @@ if (NLOPT_GUILE)
+@@ -343,8 +371,19 @@ if (NLOPT_GUILE)
    find_package (Guile)
  endif ()
  
