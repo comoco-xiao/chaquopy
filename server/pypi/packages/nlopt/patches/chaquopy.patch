@@ -13,6 +13,25 @@ index e95068d..bec8086 100644
  option (BUILD_SHARED_LIBS OFF)
  
  if (NOT WIN32)
+Submodule extern/nlopt contains modified content
+diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
+index f5a8875..df6608a 100644
+--- a/extern/nlopt/CMakeLists.txt
++++ b/extern/nlopt/CMakeLists.txt
+@@ -64,6 +64,13 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
+ set (INSTALL_MAN_DIR     ${CMAKE_INSTALL_MANDIR}        CACHE PATH "Installation directory for man documentation")
+ set (INSTALL_CMAKE_DIR   ${INSTALL_LIB_DIR}/cmake/nlopt CACHE PATH "Installation directory for cmake config files")
+ 
++message(----------------------------nlopt---INSTALL_LIB_DIR = ${INSTALL_LIB_DIR})
++message(----------------------------nlopt---INSTALL_BIN_DIR = ${INSTALL_BIN_DIR})
++message(----------------------------nlopt---INSTALL_INCLUDE_DIR = ${INSTALL_INCLUDE_DIR})
++message(----------------------------nlopt---INSTALL_DATA_DIR = ${INSTALL_DATA_DIR})
++message(----------------------------nlopt---INSTALL_MAN_DIR = ${INSTALL_MAN_DIR})
++message(----------------------------nlopt---INSTALL_CMAKE_DIR = ${INSTALL_CMAKE_DIR})
++
+ # Make relative paths absolute (needed later on)
+ foreach (p LIB BIN INCLUDE DATA CMAKE)
+   set (var INSTALL_${p}_DIR)
 diff --git a/setup.py b/setup.py
 index c1d96ca..2e399cd 100644
 --- a/setup.py
