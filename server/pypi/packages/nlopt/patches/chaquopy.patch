@@ -1,0 +1,124 @@
+Submodule extern/nlopt contains modified content
+diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
+index f5a8875..8932a35 100644
+--- a/extern/nlopt/CMakeLists.txt
++++ b/extern/nlopt/CMakeLists.txt
+@@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
+ set (INSTALL_MAN_DIR     ${CMAKE_INSTALL_MANDIR}        CACHE PATH "Installation directory for man documentation")
+ set (INSTALL_CMAKE_DIR   ${INSTALL_LIB_DIR}/cmake/nlopt CACHE PATH "Installation directory for cmake config files")
+ 
++message(----------------------------nlopt---INSTALL_LIB_DIR = ${INSTALL_LIB_DIR})
++message(----------------------------nlopt---INSTALL_BIN_DIR = ${INSTALL_BIN_DIR})
++message(----------------------------nlopt---INSTALL_INCLUDE_DIR = ${INSTALL_INCLUDE_DIR})
++message(----------------------------nlopt---INSTALL_DATA_DIR = ${INSTALL_DATA_DIR})
++message(----------------------------nlopt---INSTALL_MAN_DIR = ${INSTALL_MAN_DIR})
++message(----------------------------nlopt---INSTALL_CMAKE_DIR = ${INSTALL_CMAKE_DIR})
++
++# todo xiao
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/nlopt/build/2.7.1/cp39-cp39-android_28_arm64_v8a")
++
+ # Make relative paths absolute (needed later on)
+ foreach (p LIB BIN INCLUDE DATA CMAKE)
+   set (var INSTALL_${p}_DIR)
+@@ -255,7 +265,9 @@ install (FILES ${NLOPT_HEADERS} DESTINATION ${RELATIVE_INSTALL_INCLUDE_DIR})
+ set (nlopt_lib nlopt)
+ add_library (${nlopt_lib} ${NLOPT_SOURCES})
+ add_dependencies(${nlopt_lib} generate-cpp)
+-target_link_libraries (${nlopt_lib} ${M_LIBRARY})
++# todo xiao
++# target_link_libraries (${nlopt_lib} ${M_LIBRARY})
++target_link_libraries (${nlopt_lib} ${M_LIBRARY} ${PYTHON_LIBRARIES})
+ 
+ set_target_properties (${nlopt_lib} PROPERTIES SOVERSION ${SO_MAJOR})
+ set_target_properties (${nlopt_lib} PROPERTIES VERSION "${SO_MAJOR}.${SO_MINOR}.${SO_PATCH}")
+@@ -315,14 +327,30 @@ endif ()
+ 
+ add_subdirectory (src/api)
+ 
++message(-------------------------------NLOPT_PYTHON = ${NLOPT_PYTHON})
+ if (NLOPT_PYTHON)
+   if (CMAKE_VERSION VERSION_LESS 3.24)
+     find_package (Python COMPONENTS Interpreter Development)
+   else ()
+-    find_package (Python COMPONENTS Interpreter Development.Module)
++  message(-------------------------------NLOPT_PYTHON---1)
++    # todo xiao
++    # find_package (Python COMPONENTS Interpreter Development.Module)
++    set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
++    # find_package (Python COMPONENTS Interpreter Development.Module)
++    find_package (Python COMPONENTS Interpreter Development)
++    include_directories(${PYTHON_INCLUDE_DIRS})
++    set(Python_FOUND TRUE CACHE BOOL "" FORCE)
++    set(Python_LIBRARIES PYTHON_LIBRARIES)
+   endif ()
+ 
+-  find_package (NumPy)
++  # todo xiao
++  # find_package (NumPy)
++  set(Python_NumPy_INCLUDE_DIRS "${PROJECT_BUILD_DIR}/requirements/numpy/core/include")
++  set(NUMPY_INCLUDE_DIRS ${Python_NumPy_INCLUDE_DIRS})
++  add_library(Python::NumPy INTERFACE IMPORTED)
++  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
++  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
++  set(NUMPY_FOUND TRUE CACHE BOOL "" FORCE)
+ endif ()
+ 
+ if (NOT DEFINED INSTALL_PYTHON_DIR AND NOT CMAKE_CROSSCOMPILING)
+@@ -343,8 +371,19 @@ if (NLOPT_GUILE)
+   find_package (Guile)
+ endif ()
+ 
++# todo xiao
++# set(SWIG_EXECUTABLE "/home/ubuntu/workspace/pkg/swig_4.3.0/bin/swig")
++# set(SWIG_DIR "/home/ubuntu/workspace/pkg/swig_4.3.0/share/swig")
++set(SWIG_EXECUTABLE "/usr/bin/swig")
++set(SWIG_DIR "/usr/share/swig4.0")
++
++message(-------------------------------NLOPT_SWIG = ${NLOPT_SWIG})
+ if (NLOPT_SWIG)
++message(-------------------------------NLOPT_SWIG---1)
++  # todo xiao
+   find_package (SWIG 3)
++  # find_package (SWIG)
++  message(-------------------------------NLOPT_SWIG---2---SWIG_FOUND = ${SWIG_FOUND})
+   if (SWIG_FOUND)
+     add_subdirectory (src/swig)
+   endif ()
+diff --git a/extern/nlopt/src/swig/CMakeLists.txt b/extern/nlopt/src/swig/CMakeLists.txt
+index b676530..0d15e2b 100644
+--- a/extern/nlopt/src/swig/CMakeLists.txt
++++ b/extern/nlopt/src/swig/CMakeLists.txt
+@@ -1,9 +1,10 @@
+-
++message(-------------------------------swig---1)
+ if (POLICY CMP0078)
+   cmake_policy(SET CMP0078 NEW)
+ endif ()
+ include (UseSWIG)
+ 
++message(-------------------------------swig---2)
+ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/nlopt-enum-renames.i)
+   file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/nlopt-enum-renames.i "// AUTOMATICALLY GENERATED -- DO NOT EDIT\n")
+   file (STRINGS ${PROJECT_SOURCE_DIR}/src/api/nlopt.h NLOPT_H_LINES REGEX "    NLOPT_[A-Z0-9_]+")
+@@ -16,6 +17,7 @@ endif ()
+ include_directories (${NLOPT_PRIVATE_INCLUDE_DIRS})
+ set_source_files_properties (nlopt.i PROPERTIES CPLUSPLUS ON)
+ 
++message(-------------------------------swig---3---NUMPY_FOUND = ${NUMPY_FOUND}---Python_FOUND = ${Python_FOUND})
+ if (NUMPY_FOUND AND Python_FOUND)
+ 
+   set (SWIG_MODULE_nlopt_python_EXTRA_DEPS nlopt-python.i numpy.i generate-cpp)
+diff --git a/setup.py b/setup.py
+index c1d96ca..2e399cd 100644
+--- a/setup.py
++++ b/setup.py
+@@ -18,7 +18,8 @@ with open(Path(__file__).parent / "extern" / "nlopt" / "CMakeLists.txt") as f:
+ 
+ 
+ setup(
+-    version=version,
++    # version=version,
++    version="2.7.1",
+     install_requires=["numpy >=1.18.5"],
+     ext_modules=[NLOptBuildExtension("nlopt._nlopt", version)],
+     cmdclass={"build_ext": NLOptBuild},
