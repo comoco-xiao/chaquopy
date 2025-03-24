@@ -63,7 +63,7 @@ index f5a8875..1b3edfb 100644
      add_subdirectory (src/swig)
    endif ()
 diff --git a/extern/nlopt/src/swig/CMakeLists.txt b/extern/nlopt/src/swig/CMakeLists.txt
-index b676530..2ad2699 100644
+index b676530..0d15e2b 100644
 --- a/extern/nlopt/src/swig/CMakeLists.txt
 +++ b/extern/nlopt/src/swig/CMakeLists.txt
 @@ -1,9 +1,10 @@
@@ -78,6 +78,14 @@ index b676530..2ad2699 100644
  if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/nlopt-enum-renames.i)
    file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/nlopt-enum-renames.i "// AUTOMATICALLY GENERATED -- DO NOT EDIT\n")
    file (STRINGS ${PROJECT_SOURCE_DIR}/src/api/nlopt.h NLOPT_H_LINES REGEX "    NLOPT_[A-Z0-9_]+")
+@@ -16,6 +17,7 @@ endif ()
+ include_directories (${NLOPT_PRIVATE_INCLUDE_DIRS})
+ set_source_files_properties (nlopt.i PROPERTIES CPLUSPLUS ON)
+ 
++message(-------------------------------swig---3---NUMPY_FOUND = ${NUMPY_FOUND}---Python_FOUND = ${Python_FOUND})
+ if (NUMPY_FOUND AND Python_FOUND)
+ 
+   set (SWIG_MODULE_nlopt_python_EXTRA_DEPS nlopt-python.i numpy.i generate-cpp)
 diff --git a/setup.py b/setup.py
 index c1d96ca..2e399cd 100644
 --- a/setup.py
