@@ -1,6 +1,6 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..c294b1c 100644
+index f5a8875..325c59e 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
 @@ -64,6 +64,13 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
@@ -17,7 +17,7 @@ index f5a8875..c294b1c 100644
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
-@@ -343,8 +350,14 @@ if (NLOPT_GUILE)
+@@ -343,8 +350,17 @@ if (NLOPT_GUILE)
    find_package (Guile)
  endif ()
  
@@ -25,11 +25,14 @@ index f5a8875..c294b1c 100644
 +set(SWIG_EXECUTABLE "/home/ubuntu/workspace/pkg/swig_4.3.0/bin/swig")
 +set(SWIG_DIR "/home/ubuntu/workspace/pkg/swig_4.3.0/share/swig")
 +
++message(-------------------------------NLOPT_SWIG = ${NLOPT_SWIG})
  if (NLOPT_SWIG)
 -  find_package (SWIG 3)
 +  # todo xiao
 +  # find_package (SWIG 3)
++  message(-------------------------------NLOPT_SWIG---1)
 +  find_package (SWIG)
++  message(-------------------------------NLOPT_SWIG---2)
    if (SWIG_FOUND)
      add_subdirectory (src/swig)
    endif ()
