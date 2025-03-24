@@ -1,6 +1,6 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..1b3edfb 100644
+index f5a8875..3254873 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
 @@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
@@ -20,15 +20,22 @@ index f5a8875..1b3edfb 100644
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
-@@ -319,10 +329,20 @@ if (NLOPT_PYTHON)
+@@ -315,14 +325,28 @@ endif ()
+ 
+ add_subdirectory (src/api)
+ 
++message(-------------------------------NLOPT_PYTHON = ${NLOPT_PYTHON})
+ if (NLOPT_PYTHON)
    if (CMAKE_VERSION VERSION_LESS 3.24)
      find_package (Python COMPONENTS Interpreter Development)
    else ()
++  message(-------------------------------NLOPT_PYTHON---1)
 +    # todo xiao
 +    # find_package (Python COMPONENTS Interpreter Development.Module)
 +    set(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
      find_package (Python COMPONENTS Interpreter Development.Module)
 +    include_directories(${PYTHON_INCLUDE_DIRS})
++    set(Python_FOUND TRUE CACHE BOOL "" FORCE)
    endif ()
  
 -  find_package (NumPy)
@@ -39,10 +46,11 @@ index f5a8875..1b3edfb 100644
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
++  set(NUMPY_FOUND TRUE CACHE BOOL "" FORCE)
  endif ()
  
  if (NOT DEFINED INSTALL_PYTHON_DIR AND NOT CMAKE_CROSSCOMPILING)
-@@ -343,8 +363,19 @@ if (NLOPT_GUILE)
+@@ -343,8 +367,19 @@ if (NLOPT_GUILE)
    find_package (Guile)
  endif ()
  
