@@ -17,4 +17,4 @@ requirements:
   host:
     - python
     - numpy 1.23.3
-    - pytorch 2.6.0
+    - torch 2.6.0
