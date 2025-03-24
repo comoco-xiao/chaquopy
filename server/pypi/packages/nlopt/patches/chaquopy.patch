@@ -13,6 +13,21 @@ index e95068d..bec8086 100644
  option (BUILD_SHARED_LIBS OFF)
  
  if (NOT WIN32)
+diff --git a/extensions.py b/extensions.py
+index 63ae616..5627a42 100644
+--- a/extensions.py
++++ b/extensions.py
+@@ -44,6 +44,10 @@ class NLOptBuild(build_ext):
+         _ed = ext_dir.as_posix()
+ 
+         build_dir = create_directory(Path(self.build_temp))
++        
++        print(f"-------------------------------extensions---ext_dir = ${ext_dir}")
++        print(f"-------------------------------extensions---_ed = ${_ed}")
++        print(f"-------------------------------extensions---build_dir = ${build_dir}")
+ 
+         # package builds in 2 steps, first to compile the nlopt package and second to build the DLL
+         cmd = [
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
 index f5a8875..df6608a 100644
