@@ -1,6 +1,6 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..3254873 100644
+index f5a8875..16ea71d 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
 @@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
@@ -20,7 +20,7 @@ index f5a8875..3254873 100644
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
    set (var INSTALL_${p}_DIR)
-@@ -315,14 +325,28 @@ endif ()
+@@ -315,14 +325,29 @@ endif ()
  
  add_subdirectory (src/api)
  
@@ -36,6 +36,7 @@ index f5a8875..3254873 100644
      find_package (Python COMPONENTS Interpreter Development.Module)
 +    include_directories(${PYTHON_INCLUDE_DIRS})
 +    set(Python_FOUND TRUE CACHE BOOL "" FORCE)
++    set(Python_LIBRARIES PYTHON_LIBRARIES)
    endif ()
  
 -  find_package (NumPy)
@@ -50,7 +51,7 @@ index f5a8875..3254873 100644
  endif ()
  
  if (NOT DEFINED INSTALL_PYTHON_DIR AND NOT CMAKE_CROSSCOMPILING)
-@@ -343,8 +367,19 @@ if (NLOPT_GUILE)
+@@ -343,8 +368,19 @@ if (NLOPT_GUILE)
    find_package (Guile)
  endif ()
  
