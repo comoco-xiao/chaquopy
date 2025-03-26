@@ -13,48 +13,24 @@ index 404fc12..5594dba 100644
  endif()
  
 diff --git a/python/package/__init__.py b/python/package/__init__.py
-index 56ac82c..19eb19a 100644
+index 56ac82c..a8c8062 100644
 --- a/python/package/__init__.py
 +++ b/python/package/__init__.py
-@@ -1,7 +1,12 @@
-+print("-----------------------------------coacd---1")
- import numpy as np
-+print("-----------------------------------coacd---2")
- import os
-+from pathlib import Path
-+print("-----------------------------------coacd---3")
- 
- import ctypes
-+print("-----------------------------------coacd---4")
- from ctypes import (
-     Structure,
-     POINTER,
-@@ -13,12 +18,22 @@ from ctypes import (
-     c_uint,
+@@ -14,11 +14,13 @@ from ctypes import (
      c_char_p,
  )
--
--
+ 
++# todo xiao
++# _lib_files = os.listdir(os.path.dirname(os.path.abspath(__file__)))
++# for _file in _lib_files:
++#     if _file.startswith("lib_coacd"):
++#         _lib = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), _file))
+ 
 -_lib_files = os.listdir(os.path.dirname(os.path.abspath(__file__)))
 -for _file in _lib_files:
 -    if _file.startswith("lib_coacd"):
 -        _lib = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), _file))
-+print("-----------------------------------coacd---5")
-+
-+# _lib_files = os.listdir(os.path.dirname(os.path.abspath(__file__)))
-+# print(f"------------------------coacd---_lib_files = ${_lib_files}")
-+# for _file in _lib_files:
-+#     if _file.startswith("lib_coacd"):
-+#         print(f"-------------------coacd lib = ${os.path.join(os.path.dirname(os.path.abspath(__file__)), _file)}")
-+#         _lib = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), _file))
-+filep = os.path.join(Path(__file__).parent, "lib_coacd.so")
-+print(f"-----------------------------------coacd---6---filep = ${filep}")
-+
-+# from . import lib_coacd as _lib
-+
-+# _lib = ctypes.CDLL("lib_coacd.so")
 +_lib = ctypes.CDLL(os.path.join(os.path.dirname(__file__), "lib_coacd.so"), ctypes.RTLD_LOCAL,)
-+print("-----------------------------------coacd---7")
  
  
  class CoACD_Mesh(ctypes.Structure):
