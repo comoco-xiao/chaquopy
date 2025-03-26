@@ -1,3 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 404fc12..5594dba 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -30,7 +30,8 @@ else()
+         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+     elseif(UNIX)
+         # Linux/Unix: add -fPIC and disable -Werror=stringop-overflow
+-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wno-error=stringop-overflow")
++        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wno-error=stringop-overflow")
++        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+     endif()
+ endif()
+ 
 diff --git a/setup.py b/setup.py
 index 0f4a9f2..477a76f 100644
 --- a/setup.py
