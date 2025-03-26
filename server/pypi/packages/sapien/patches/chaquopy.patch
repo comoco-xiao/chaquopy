@@ -136,10 +136,10 @@ index f6850154..a6425631 100644
  
  } // namespace physx
 diff --git a/include/sapien/sapien_renderer/sapien_renderer_system.h b/include/sapien/sapien_renderer/sapien_renderer_system.h
-index e1e14d43..30888d33 100644
+index e1e14d43..c543067f 100644
 --- a/include/sapien/sapien_renderer/sapien_renderer_system.h
 +++ b/include/sapien/sapien_renderer/sapien_renderer_system.h
-@@ -26,6 +26,14 @@ class PointCloudComponent;
+@@ -26,11 +26,19 @@ class PointCloudComponent;
  class CudaDeformableMeshComponent;
  class SapienRenderCubemap;
  
@@ -154,6 +154,21 @@ index e1e14d43..30888d33 100644
  class SapienRenderEngine {
  public:
    static std::shared_ptr<SapienRenderEngine> Get(std::shared_ptr<Device> device = nullptr, const void *layer = nullptr
+ #ifdef USE_OPENXR
+-                                                ,const std::shared_ptr<PlatformData> &data = nullptr
++                                                ,const std::shared_ptr<PlatformData> data = nullptr
+ #endif
+                                                 );
+ 
+@@ -65,7 +73,7 @@ class SapienRendererSystem : public System {
+ public:
+   SapienRendererSystem(std::shared_ptr<Device> device, const void *layer = nullptr
+ #ifdef USE_OPENXR
+-                      ,const std::shared_ptr<PlatformData> &data = nullptr
++                      ,const std::shared_ptr<PlatformData> data = nullptr
+ #endif
+   );
+   std::shared_ptr<Device> getDevice() const;
 @@ -115,6 +123,10 @@ public:
  
    uint64_t nextRenderId() { return mNextRenderId++; };
@@ -554,7 +569,7 @@ index 1b182440..c59f85c4 100644
  
  void PhysxSystemCpu::registerComponent(std::shared_ptr<PhysxRigidDynamicComponent> component) {
 diff --git a/src/sapien_renderer/sapien_renderer_system.cpp b/src/sapien_renderer/sapien_renderer_system.cpp
-index 7c190c40..1e03990c 100644
+index 7c190c40..6ce0bc4a 100644
 --- a/src/sapien_renderer/sapien_renderer_system.cpp
 +++ b/src/sapien_renderer/sapien_renderer_system.cpp
 @@ -11,6 +11,7 @@
@@ -582,7 +597,8 @@ index 7c190c40..1e03990c 100644
 +
  std::shared_ptr<SapienRenderEngine> SapienRenderEngine::Get(std::shared_ptr<Device> device, const void *layer
  #ifdef USE_OPENXR
-                                                             ,const std::shared_ptr<PlatformData> &platformData
+-                                                            ,const std::shared_ptr<PlatformData> &platformData
++                                                            ,const std::shared_ptr<PlatformData> platformData
  #endif
                                                              ) {
 +  if (!layer && SapienRendererSystem::gNativeData && SapienRendererSystem::gNativeData->layer) {
@@ -606,8 +622,12 @@ index 7c190c40..1e03990c 100644
      if (platformData) {
        svulkan2::core::Context::setPlatformData(platformData);
      }
-@@ -117,6 +133,9 @@ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const
-                                           ,const std::shared_ptr<PlatformData> &data
+@@ -114,9 +130,12 @@ SapienRenderEngine::~SapienRenderEngine() {}
+ 
+ SapienRendererSystem::SapienRendererSystem(std::shared_ptr<Device> device, const void *layer
+ #ifdef USE_OPENXR
+-                                          ,const std::shared_ptr<PlatformData> &data
++                                          ,const std::shared_ptr<PlatformData> data
  #endif
  ) {
 +  if (!layer && gNativeData && gNativeData->layer) {
