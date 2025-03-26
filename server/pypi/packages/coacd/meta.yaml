@@ -1,0 +1,19 @@
+{% set version = "1.0.6" %}
+
+package:
+  name: coacd
+  version: {{ version }}
+
+build:
+  number: 2
+
+source:
+  git_url: https://github.com/SarahWeiii/CoACD.git
+  git_rev: {{ version }}
+
+requirements:
+  build:
+    - cmake 3.31.4
+  host:
+    - python
+    - numpy 1.23.3
