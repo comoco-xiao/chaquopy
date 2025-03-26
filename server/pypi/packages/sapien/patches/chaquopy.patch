@@ -180,7 +180,7 @@ index e1e14d43..30888d33 100644
  
  } // namespace sapien_renderer
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
-index db48f0a0..da07690f 100644
+index db48f0a0..4b3349a9 100644
 --- a/python/CMakeLists.txt
 +++ b/python/CMakeLists.txt
 @@ -10,6 +10,9 @@ else()
@@ -193,7 +193,7 @@ index db48f0a0..da07690f 100644
  
  if (CMAKE_BUILD_TYPE STREQUAL "Debug")
      add_definitions(-D_DEBUG)
-@@ -28,12 +31,18 @@ endmacro()
+@@ -28,12 +31,20 @@ endmacro()
  list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
  include(eigen)
  include(pybind11)
@@ -208,8 +208,10 @@ index db48f0a0..da07690f 100644
  file(GLOB_RECURSE PYBIND_SRC "pybind/*.cpp")
  pybind11_add_module(pysapien ${PYBIND_SRC})
 -target_link_libraries(pysapien PRIVATE sapien::sapien eigen)
-+# target_link_libraries(pysapien PRIVATE sapien::sapien eigen ${PYTHON_LIBRARIES} android log)
-+target_link_libraries(pysapien PRIVATE sapien::sapien eigen ${PYTHON_LIBRARIES} android log OpenXR::headers OpenXR::openxr_loader magic_enum)
++target_link_libraries(pysapien PRIVATE sapien::sapien eigen ${PYTHON_LIBRARIES} android log)
++if (${USE_OPENXR})
++    target_link_libraries(pysapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum)
++endif()
  target_compile_definitions(pysapien PRIVATE PYBIND11_USE_SMART_HOLDER_AS_DEFAULT)
  
  if (MSVC)
@@ -436,7 +438,7 @@ index 495d36ea..530a6532 100644
 -opencv-python>=4.0
 +# opencv-python
 diff --git a/setup.py b/setup.py
-index bd21283f..8d07e031 100644
+index bd21283f..0334b893 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -105,7 +105,8 @@ def generate_version():
@@ -462,7 +464,16 @@ index bd21283f..8d07e031 100644
  
      if sys.platform == "win32":
          cmake_args += [f"-DBUILD_TESTING=Off"]
-@@ -285,18 +288,19 @@ class CMakeBuild(build_ext):
+@@ -245,6 +248,8 @@ class CMakeBuild(build_ext):
+             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=$<1:{extdir}>",
+             f"-DPYTHON_EXECUTABLE={sys.executable}",
+             f"-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded",
++            # openxr
++            "-DUSE_OPENXR=ON",
+         ]
+         if args.debug:
+             cfg = "Debug"
+@@ -285,18 +290,19 @@ class CMakeBuild(build_ext):
  
          # provide oidn for linux
          if platform.system() == "Linux":
@@ -494,7 +505,7 @@ index bd21283f..8d07e031 100644
  
      def copy_assets(self, ext):
          vulkan_shader_path = os.path.join(self.build_lib, "sapien", "vulkan_shader")
-@@ -313,10 +317,18 @@ class CMakeBuild(build_ext):
+@@ -313,10 +319,18 @@ class CMakeBuild(build_ext):
              dy_source_paths = [
                  os.path.join(sapien_install_dir, "lib/libsapien.dylib"),
                  os.path.join(sapien_install_dir, "lib/libsvulkan2.dylib"),
@@ -517,7 +528,7 @@ index bd21283f..8d07e031 100644
              ]
              if os.path.exists(dy_libs_path):
                  shutil.rmtree(dy_libs_path)
-@@ -325,15 +337,16 @@ class CMakeBuild(build_ext):
+@@ -325,15 +339,16 @@ class CMakeBuild(build_ext):
                  shutil.copy(lib, dy_libs_path)
  
          # provide Vulkan libraries for linux
@@ -543,7 +554,7 @@ index bd21283f..8d07e031 100644
  
          sensor_assets_path = os.path.join(self.build_lib, "sapien", "sensor", "assets")
          source_patterns_path = os.path.join(
-@@ -350,7 +363,8 @@ class CMakeBuild(build_ext):
+@@ -350,7 +365,8 @@ class CMakeBuild(build_ext):
  
      def build_extension(self, ext):
          if platform.system() == "Linux":
