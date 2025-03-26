@@ -20,7 +20,7 @@ index b4afa3de..2a36927d 100644
    surfaceCreateInfo.flags = vk::AndroidSurfaceCreateFlagsKHR();
    surfaceCreateInfo.setWindow(const_cast<ANativeWindow*>(static_cast<const ANativeWindow*>(mLayer)));
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dcd94d91..ff7c8df8 100644
+index dcd94d91..f2ef6d0c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -61,11 +61,11 @@ endif()
@@ -40,8 +40,13 @@ index dcd94d91..ff7c8df8 100644
  endif()
  
  if (${SAPIEN_DEBUG_VIEWER})
-@@ -137,7 +137,7 @@ if (${USE_OPENXR})
-     target_link_libraries(sapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum pinocchio yaml-cpp nlopt pytorch nlohmann_json)
+@@ -134,10 +134,11 @@ if(CMAKE_SYSTEM_NAME MATCHES "Android")
+ endif()
+ 
+ if (${USE_OPENXR})
+-    target_link_libraries(sapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum pinocchio yaml-cpp nlopt pytorch nlohmann_json)
++    # target_link_libraries(sapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum pinocchio yaml-cpp nlopt pytorch nlohmann_json)
++    target_link_libraries(sapien PRIVATE OpenXR::headers OpenXR::openxr_loader magic_enum)
  endif()
  
 -target_link_libraries(sapien PUBLIC eigen svulkan2)
