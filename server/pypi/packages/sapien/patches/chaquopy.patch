@@ -55,7 +55,7 @@ index dcd94d91..f2ef6d0c 100644
      target_link_libraries(sapien PUBLIC tinyxml2)
  endif()
 diff --git a/cmake/openxr.cmake b/cmake/openxr.cmake
-index 81462d94..e16f26b7 100644
+index 81462d94..dfa464f1 100644
 --- a/cmake/openxr.cmake
 +++ b/cmake/openxr.cmake
 @@ -6,4 +6,10 @@ FetchContent_Declare(OpenXR-SDK
@@ -69,7 +69,7 @@ index 81462d94..e16f26b7 100644
 +target_include_directories(
 +        headers
 +        INTERFACE
-+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../OpenXR>
++        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../OpenXR>
 +        $<INSTALL_INTERFACE:include>)
 \ No newline at end of file
 diff --git a/cmake/pybind11.cmake b/cmake/pybind11.cmake
