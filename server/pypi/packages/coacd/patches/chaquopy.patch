@@ -13,7 +13,7 @@ index 404fc12..5594dba 100644
  endif()
  
 diff --git a/python/package/__init__.py b/python/package/__init__.py
-index 56ac82c..36465f2 100644
+index 56ac82c..131daf0 100644
 --- a/python/package/__init__.py
 +++ b/python/package/__init__.py
 @@ -1,7 +1,12 @@
@@ -29,7 +29,7 @@ index 56ac82c..36465f2 100644
  from ctypes import (
      Structure,
      POINTER,
-@@ -13,12 +18,16 @@ from ctypes import (
+@@ -13,12 +18,19 @@ from ctypes import (
      c_uint,
      c_char_p,
  )
@@ -49,6 +49,9 @@ index 56ac82c..36465f2 100644
 +#         _lib = ctypes.CDLL(os.path.join(os.path.dirname(os.path.abspath(__file__)), _file))
 +filep = os.path.join(Path(__file__).parent, "lib_coacd.so")
 +print(f"-----------------------------------coacd---6---filep = ${filep}")
++
++_lib = ctypes.CDLL("lib_coacd.so")
++print("-----------------------------------coacd---7")
  
  
  class CoACD_Mesh(ctypes.Structure):
