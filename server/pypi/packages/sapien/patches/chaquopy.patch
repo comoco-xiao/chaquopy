@@ -420,9 +420,18 @@ index 68423651..91619c07 100644
    PyPhysxMaterial
        .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..c789dd52 100644
+index 3aa2a05a..8f1aa04f 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
+@@ -563,7 +563,7 @@ void init_sapien_renderer(py::module &sapien) {
+   auto PyRenderWindow = py::class_<SapienRendererWindow>(m, "RenderWindow");
+   auto PyRenderVRDisplay = py::class_<SapienVRDisplay>(m, "RenderVRDisplay");
+ 
+-  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr)
++  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr, py::arg("data"))
+       .def_property_readonly("_internal_context", &SapienRenderEngine::getContext);
+ 
+   PyRenderSystemGroup
 @@ -617,6 +617,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
  
        // .def("disable_auto_upload", &SapienRendererSystem::disableAutoUpload)
