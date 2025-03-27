@@ -1,0 +1,13 @@
+{% set version = "2.16.0" %}
+
+package:
+  name: dataclasses-jsonschema
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/s-knibbs/dataclasses-jsonschema.git
+  git_rev: {{ version }}
+
+requirements:
+  host:
+    - python
