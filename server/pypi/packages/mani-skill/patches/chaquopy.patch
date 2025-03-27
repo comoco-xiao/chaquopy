@@ -121,10 +121,16 @@ index 54fb6e2..c00fea5 100644
      env.reset(seed=0)
      env: BaseEnv = env.unwrapped
 diff --git a/mani_skill/utils/building/urdf_loader.py b/mani_skill/utils/building/urdf_loader.py
-index cd7be75..56ce2d1 100644
+index cd7be75..59519e5 100644
 --- a/mani_skill/utils/building/urdf_loader.py
 +++ b/mani_skill/utils/building/urdf_loader.py
-@@ -29,6 +29,11 @@ class URDFLoader(SapienURDFLoader):
+@@ -25,10 +25,16 @@ class URDFLoader(SapienURDFLoader):
+     name: str = None
+     disable_self_collisions: bool = False
+ 
+-    def parse(self, urdf_file, srdf_file=None, package_dir=None) -> ParsedURDFData:
++    # def parse(self, urdf_file, srdf_file=None, package_dir=None) -> ParsedURDFData:
++    def parse(self, urdf_file, srdf_file=None, package_dir=None):
          articulation_builders, actor_builders, cameras = super().parse(
              urdf_file, srdf_file, package_dir
          )
@@ -136,17 +142,28 @@ index cd7be75..56ce2d1 100644
          for i, a in enumerate(articulation_builders):
              if len(articulation_builders) > 1:
                  a.set_name(f"{self.name}-articulation-{i}")
-@@ -40,6 +45,10 @@ class URDFLoader(SapienURDFLoader):
+@@ -40,11 +46,16 @@ class URDFLoader(SapienURDFLoader):
                      l.collision_groups[2] |= 1 << 29
          for i, b in enumerate(actor_builders):
              b.set_name(f"{self.name}-actor-{i}")
+-        return dict(
+-            articulation_builders=articulation_builders,
+-            actor_builders=actor_builders,
+-            cameras=cameras,
+-        )
 +            
 +        print(f"------------------------------maniskill---urdf_loader---1---articulation_builders size = ${len(articulation_builders)}")
 +        print(f"------------------------------maniskill---urdf_loader---1---actor_builders size = ${len(actor_builders)}")
 +        print(f"------------------------------maniskill---urdf_loader---1---cameras size = ${len(cameras)}")
-         return dict(
-             articulation_builders=articulation_builders,
-             actor_builders=actor_builders,
++        # return dict(
++        #     articulation_builders=articulation_builders,
++        #     actor_builders=actor_builders,
++        #     cameras=cameras,
++        # )
++        return articulation_builders, actor_builders, cameras
+ 
+     def load_file_as_articulation_builder(
+         self, urdf_file, srdf_file=None, package_dir=None
 diff --git a/setup.py b/setup.py
 index 43701e2..0bb16be 100644
 --- a/setup.py
