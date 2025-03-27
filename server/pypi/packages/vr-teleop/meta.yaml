@@ -6,7 +6,7 @@ package:
 
 source:
   git_url: git@github.com:comoco-xiao/VRTeleop.git
-  git_rev: dev
+  git_rev: main
 
 requirements:
   host:
