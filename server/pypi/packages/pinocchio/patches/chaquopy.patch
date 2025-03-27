@@ -1,3 +1,25 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ffc25e58..73486cbf 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -93,7 +93,7 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
+ 
+ # todo xiao
+ # *********************************************************************************
+-set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a")
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp310-cp310-android_28_arm64_v8a")
+ # eigen3
+ set(Eigen3_DIR "/usr/share/eigen3/cmake")
+ # set(eigenpy_DIR "/home/ubuntu/.pyenv/versions/3.9.20/lib/python3.9/site-packages/cmeel.prefix/lib/cmake/eigenpy")
+@@ -122,7 +122,7 @@ set(boost_graph_DIR "${BOOST_LIBRARYDIR}/cmake/boost_graph-1.85.0")
+ set(boost_unit_test_framework_DIR "${BOOST_LIBRARYDIR}/cmake/boost_unit_test_framework-1.85.0")
+ set(Boost_COMPILER "-clang")
+ # python executable
+-set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/env/bin/python3.9")
++set(PYTHON_EXECUTABLE "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp310-cp310-android_28_arm64_v8a/env/bin/python3.10")
+ # *********************************************************************************
+ 
+ include("${JRL_CMAKE_MODULES}/python.cmake")
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..80f94ab 100644
@@ -81,7 +103,7 @@ index 49304e1..80f94ab 100644
    else()
      if(APPLE)
 diff --git a/cmake/python.cmake b/cmake/python.cmake
-index 0053bcb..bb88c0c 100644
+index 0053bcb..72ef791 100644
 --- a/cmake/python.cmake
 +++ b/cmake/python.cmake
 @@ -56,380 +56,397 @@
@@ -469,7 +491,7 @@ index 0053bcb..bb88c0c 100644
 +  include_directories(${PYTHON_INCLUDE_DIRS})
 +  message(-----------------------------FINDPYTHON---2)
 +  # numpy
-+  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp39-cp39-android_28_arm64_v8a/requirements/numpy/core/include")
++  set(Python_NumPy_INCLUDE_DIRS "/home/ubuntu/workspace/chaquopy/server/pypi/packages/pinocchio/build/3.4.0/cp310-cp310-android_28_arm64_v8a/requirements/numpy/core/include")
 +  add_library(Python::NumPy INTERFACE IMPORTED)
 +  target_include_directories(Python::NumPy SYSTEM INTERFACE ${Python_NumPy_INCLUDE_DIRS})
 +  set(Python_NumPy_FOUND TRUE CACHE BOOL "" FORCE)
