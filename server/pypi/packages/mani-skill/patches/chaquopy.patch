@@ -121,30 +121,14 @@ index 54fb6e2..c00fea5 100644
      env.reset(seed=0)
      env: BaseEnv = env.unwrapped
 diff --git a/mani_skill/utils/building/urdf_loader.py b/mani_skill/utils/building/urdf_loader.py
-index cd7be75..01e8845 100644
+index cd7be75..a453eef 100644
 --- a/mani_skill/utils/building/urdf_loader.py
 +++ b/mani_skill/utils/building/urdf_loader.py
-@@ -29,6 +29,11 @@ class URDFLoader(SapienURDFLoader):
-         articulation_builders, actor_builders, cameras = super().parse(
-             urdf_file, srdf_file, package_dir
-         )
-+        print(f"------------------------------maniskill---urdf_loader---urdf_file = ${urdf_file}")
-+        print(f"------------------------------maniskill---urdf_loader---srdf_file = ${srdf_file}")
-+        print(f"------------------------------maniskill---urdf_loader---articulation_builders size = ${len(articulation_builders)}")
-+        print(f"------------------------------maniskill---urdf_loader---actor_builders size = ${len(actor_builders)}")
-+        print(f"------------------------------maniskill---urdf_loader---cameras size = ${len(cameras)}")
-         for i, a in enumerate(articulation_builders):
-             if len(articulation_builders) > 1:
-                 a.set_name(f"{self.name}-articulation-{i}")
-@@ -40,7 +45,11 @@ class URDFLoader(SapienURDFLoader):
+@@ -40,7 +40,7 @@ class URDFLoader(SapienURDFLoader):
                      l.collision_groups[2] |= 1 << 29
          for i, b in enumerate(actor_builders):
              b.set_name(f"{self.name}-actor-{i}")
 -        return dict(
-+            
-+        print(f"------------------------------maniskill---urdf_loader---1---articulation_builders size = ${len(articulation_builders)}")
-+        print(f"------------------------------maniskill---urdf_loader---1---actor_builders size = ${len(actor_builders)}")
-+        print(f"------------------------------maniskill---urdf_loader---1---cameras size = ${len(cameras)}")
 +        return ParsedURDFData(
              articulation_builders=articulation_builders,
              actor_builders=actor_builders,
