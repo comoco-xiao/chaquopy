@@ -1,6 +1,6 @@
 Submodule extern/nlopt contains modified content
 diff --git a/extern/nlopt/CMakeLists.txt b/extern/nlopt/CMakeLists.txt
-index f5a8875..8932a35 100644
+index f5a8875..00d42fc 100644
 --- a/extern/nlopt/CMakeLists.txt
 +++ b/extern/nlopt/CMakeLists.txt
 @@ -64,6 +64,16 @@ set (INSTALL_DATA_DIR    ${CMAKE_INSTALL_DATADIR}/nlopt CACHE PATH "Installation
@@ -15,7 +15,7 @@ index f5a8875..8932a35 100644
 +message(----------------------------nlopt---INSTALL_CMAKE_DIR = ${INSTALL_CMAKE_DIR})
 +
 +# todo xiao
-+set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/nlopt/build/2.7.1/cp39-cp39-android_28_arm64_v8a")
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/nlopt/build/2.7.1/cp310-cp310-android_28_arm64_v8a")
 +
  # Make relative paths absolute (needed later on)
  foreach (p LIB BIN INCLUDE DATA CMAKE)
