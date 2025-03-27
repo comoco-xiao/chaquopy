@@ -1,3 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3f5c2c5..ae96905 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -99,8 +99,8 @@ project(${PROJECT_NAME} ${PROJECT_ARGS})
+ 
+ # todo xiao
+ # *********************************************************************************
+-set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp39-cp39-android_28_arm64_v8a/")
+-set(PYTHON_EXECUTABLE "${PROJECT_BUILD_DIR}/env/bin/python3.9")
++set(PROJECT_BUILD_DIR "/home/ubuntu/workspace/chaquopy/server/pypi/packages/eigenpy/build/3.10.3/cp310-cp310-android_28_arm64_v8a/")
++set(PYTHON_EXECUTABLE "${PROJECT_BUILD_DIR}/env/bin/python3.10")
+ # eigen3
+ set(Eigen3_DIR "/usr/share/eigen3/cmake")
+ # boost
 Submodule cmake contains modified content
 diff --git a/cmake/boost.cmake b/cmake/boost.cmake
 index 49304e1..2ec3ef9 100644
