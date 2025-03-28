@@ -351,17 +351,24 @@ index 4b1edc51..f42f4fdc 100644
  class PhysxArticulation:
      name: str
 diff --git a/python/py_package/pysapien/render.pyi b/python/py_package/pysapien/render.pyi
-index ea6c214f..0448431e 100644
+index ea6c214f..626bb792 100644
 --- a/python/py_package/pysapien/render.pyi
 +++ b/python/py_package/pysapien/render.pyi
-@@ -977,7 +977,9 @@ class RenderWindow:
+@@ -4,6 +4,8 @@ import pybind11_stubgen.typing_ext
+ import sapien.pysapien
+ import sapien.pysapien.internal_renderer
+ import typing
++from typing import Optional, Any
++
+ __all__ = ['RenderBodyComponent', 'RenderCameraComponent', 'RenderCameraGroup', 'RenderCubemap', 'RenderCudaMeshComponent', 'RenderDirectionalLightComponent', 'RenderLightComponent', 'RenderMaterial', 'RenderParallelogramLightComponent', 'RenderPointCloudComponent', 'RenderPointLightComponent', 'RenderSceneLoaderNode', 'RenderShape', 'RenderShapeBox', 'RenderShapeCapsule', 'RenderShapeCylinder', 'RenderShapePlane', 'RenderShapePrimitive', 'RenderShapeSphere', 'RenderShapeTriangleMesh', 'RenderShapeTriangleMeshPart', 'RenderSpotLightComponent', 'RenderSystem', 'RenderSystemGroup', 'RenderTexture', 'RenderTexture2D', 'RenderTexturedLightComponent', 'RenderVRDisplay', 'RenderWindow', 'SapienRenderer', 'clear_cache', 'enable_vr', 'get_camera_shader_dir', 'get_device_summary', 'get_imgui_ini_filename', 'get_msaa', 'get_ray_tracing_denoiser', 'get_ray_tracing_dof_aperture', 'get_ray_tracing_dof_plane', 'get_ray_tracing_path_depth', 'get_ray_tracing_samples_per_pixel', 'get_viewer_shader_dir', 'get_vr_action_manifest_filename', 'get_vr_enabled', 'load_scene', 'set_camera_shader_dir', 'set_global_config', 'set_imgui_ini_filename', 'set_log_level', 'set_msaa', 'set_picture_format', 'set_ray_tracing_denoiser', 'set_ray_tracing_dof_aperture', 'set_ray_tracing_dof_plane', 'set_ray_tracing_path_depth', 'set_ray_tracing_samples_per_pixel', 'set_viewer_shader_dir', 'set_vr_action_manifest_filename']
+ M = typing.TypeVar("M", bound=int)
+ N = typing.TypeVar("N", bound=int)
+@@ -977,7 +979,7 @@ class RenderWindow:
      def super(self) -> bool:
          ...
  class SapienRenderer:
 -    def __init__(self, device: sapien.pysapien.Device | None = None) -> None:
-+    def __init__(self, device: sapien.pysapien.Device | None = None,
-+                 layer = None,
-+                 data = None) -> None:
++    def __init__(self, device: sapien.pysapien.Device | None = None, layer: Optional[Any] = None, data: Optional[Any] = None) -> None:
          ...
      @property
      def _internal_context(self) -> sapien.pysapien.internal_renderer.Context:
