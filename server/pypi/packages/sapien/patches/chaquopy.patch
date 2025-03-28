@@ -607,7 +607,7 @@ index bd21283f..0334b893 100644
          self.copy_assets(ext)
  
 diff --git a/src/physx/articulation.cpp b/src/physx/articulation.cpp
-index 36acec1f..c01c93d9 100644
+index 36acec1f..bc0116e6 100644
 --- a/src/physx/articulation.cpp
 +++ b/src/physx/articulation.cpp
 @@ -4,6 +4,8 @@
@@ -619,15 +619,17 @@ index 36acec1f..c01c93d9 100644
  
  using namespace physx;
  
-@@ -222,6 +224,8 @@ uint32_t PhysxArticulation::getDof() {
+@@ -222,7 +224,9 @@ uint32_t PhysxArticulation::getDof() {
  
  void PhysxArticulation::checkDof(uint32_t n) {
    if (n != getDof()) {
+-    throw std::runtime_error("input vector size does not match articulation DOFs");
 +    std::ostringstream oss;
 +    oss << "input vector size does not match articulation DOFs. " << "n = " << n << ", getDof() = " << getDof();
-     throw std::runtime_error("input vector size does not match articulation DOFs");
++    throw std::runtime_error(oss.str());
    }
  }
+ 
 diff --git a/src/physx/physx_system.cpp b/src/physx/physx_system.cpp
 index 1b182440..c59f85c4 100644
 --- a/src/physx/physx_system.cpp
