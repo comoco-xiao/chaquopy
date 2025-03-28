@@ -420,7 +420,7 @@ index 68423651..91619c07 100644
    PyPhysxMaterial
        .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..8f1aa04f 100644
+index 3aa2a05a..79e05964 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
 @@ -563,7 +563,7 @@ void init_sapien_renderer(py::module &sapien) {
@@ -428,7 +428,7 @@ index 3aa2a05a..8f1aa04f 100644
    auto PyRenderVRDisplay = py::class_<SapienVRDisplay>(m, "RenderVRDisplay");
  
 -  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr)
-+  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr, py::arg("data"))
++  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr, py::arg("data") = nullptr)
        .def_property_readonly("_internal_context", &SapienRenderEngine::getContext);
  
    PyRenderSystemGroup
