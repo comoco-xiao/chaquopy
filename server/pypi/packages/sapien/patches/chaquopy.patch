@@ -739,7 +739,7 @@ index 7c190c40..1d70a6e4 100644
  
  } // namespace sapien_renderer
 diff --git a/src/sapien_renderer/vr.cpp b/src/sapien_renderer/vr.cpp
-index b5ff922a..0ebef8f5 100644
+index b5ff922a..a2a87d8f 100644
 --- a/src/sapien_renderer/vr.cpp
 +++ b/src/sapien_renderer/vr.cpp
 @@ -126,7 +126,13 @@ namespace sapien::sapien_renderer {
@@ -757,6 +757,24 @@ index b5ff922a..0ebef8f5 100644
  
    void SapienVRDisplay::fetchPoses() { mVR->updatePoses(); }
  
+@@ -199,6 +205,9 @@ namespace sapien::sapien_renderer {
+   void SapienVRDisplay::setRootPose(Pose const &pose) { mRootPose = pose; }
+ 
+   void SapienVRDisplay::render() {
++#ifdef USE_OPENXR
++    xrRender();
++#else
+     if (mEngine->getContext()->getDevice().waitForFences(mSceneRenderFence.get(), VK_TRUE,
+                                                          UINT64_MAX) != vk::Result::eSuccess) {
+       throw std::runtime_error("failed on wait for fence.");
+@@ -229,6 +238,7 @@ namespace sapien::sapien_renderer {
+ 
+     // present to steam
+     mVR->renderFrame(imageLeft, imageRight);
++#endif
+   }
+ 
+ #ifdef USE_OPENXR
 diff --git a/src/sapien_renderer/window.cpp b/src/sapien_renderer/window.cpp
 index 74e3b7a4..201645de 100644
 --- a/src/sapien_renderer/window.cpp
