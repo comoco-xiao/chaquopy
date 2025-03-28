@@ -350,6 +350,21 @@ index 4b1edc51..f42f4fdc 100644
  M = typing.TypeVar("M", bound=int)
  class PhysxArticulation:
      name: str
+diff --git a/python/py_package/pysapien/render.pyi b/python/py_package/pysapien/render.pyi
+index ea6c214f..0448431e 100644
+--- a/python/py_package/pysapien/render.pyi
++++ b/python/py_package/pysapien/render.pyi
+@@ -977,7 +977,9 @@ class RenderWindow:
+     def super(self) -> bool:
+         ...
+ class SapienRenderer:
+-    def __init__(self, device: sapien.pysapien.Device | None = None) -> None:
++    def __init__(self, device: sapien.pysapien.Device | None = None,
++                 layer = None,
++                 data = None) -> None:
+         ...
+     @property
+     def _internal_context(self) -> sapien.pysapien.internal_renderer.Context:
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
