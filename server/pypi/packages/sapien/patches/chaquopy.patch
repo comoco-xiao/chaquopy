@@ -433,28 +433,21 @@ index 68423651..91619c07 100644
    PyPhysxMaterial
        .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..2677c8eb 100644
+index 3aa2a05a..4844758c 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
-@@ -563,7 +563,16 @@ void init_sapien_renderer(py::module &sapien) {
+@@ -563,7 +563,9 @@ void init_sapien_renderer(py::module &sapien) {
    auto PyRenderWindow = py::class_<SapienRendererWindow>(m, "RenderWindow");
    auto PyRenderVRDisplay = py::class_<SapienVRDisplay>(m, "RenderVRDisplay");
  
 -  PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr)
-+// .def(
-+//           "load_scene",
-+//           [](std::string const &filename, bool applyScale) {
-+//             return LoadScene(filename, applyScale);
-+//           },
-+//           py::arg("filename"), py::arg("apply_scale") = true)
-+  // PySapienRenderer.def(py::init(&SapienRenderEngine::Get), py::arg("device") = nullptr, py::arg("layer") = nullptr, py::arg("data") = nullptr)
 +  PySapienRenderer.def(py::init([](std::shared_ptr<Device> device) {
 +    return SapienRenderEngine::Get(device);
 +  }), py::arg("device") = nullptr)
        .def_property_readonly("_internal_context", &SapienRenderEngine::getContext);
  
    PyRenderSystemGroup
-@@ -617,6 +626,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
+@@ -617,6 +619,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
  
        // .def("disable_auto_upload", &SapienRendererSystem::disableAutoUpload)
  
@@ -613,6 +606,28 @@ index bd21283f..0334b893 100644
          self.build_pybind(ext)
          self.copy_assets(ext)
  
+diff --git a/src/physx/articulation.cpp b/src/physx/articulation.cpp
+index 36acec1f..c01c93d9 100644
+--- a/src/physx/articulation.cpp
++++ b/src/physx/articulation.cpp
+@@ -4,6 +4,8 @@
+ #include "sapien/physx/articulation_link_component.h"
+ #include "sapien/physx/physx_system.h"
+ #include "sapien/scene.h"
++#include <iostream>
++#include <sstream>
+ 
+ using namespace physx;
+ 
+@@ -222,6 +224,8 @@ uint32_t PhysxArticulation::getDof() {
+ 
+ void PhysxArticulation::checkDof(uint32_t n) {
+   if (n != getDof()) {
++    std::ostringstream oss;
++    oss << "input vector size does not match articulation DOFs. " << "n = " << n << ", getDof() = " << getDof();
+     throw std::runtime_error("input vector size does not match articulation DOFs");
+   }
+ }
 diff --git a/src/physx/physx_system.cpp b/src/physx/physx_system.cpp
 index 1b182440..c59f85c4 100644
 --- a/src/physx/physx_system.cpp
