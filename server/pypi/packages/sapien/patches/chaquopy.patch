@@ -406,6 +406,19 @@ index 9d7bc32c..773bf403 100644
  
  
  def _create_pinocchio_model(
+diff --git a/python/py_package/wrapper/renderer.py b/python/py_package/wrapper/renderer.py
+index 13198865..e3d91b11 100644
+--- a/python/py_package/wrapper/renderer.py
++++ b/python/py_package/wrapper/renderer.py
+@@ -6,6 +6,8 @@ from warnings import warn
+ class SapienRenderer(_SapienRenderer):
+     def __init__(self, **args):
+         warn("SapienRenderer is no no longer needed.", DeprecationWarning, stacklevel=2)
++        print("--------------------------------SapienRenderer---__init__---1")
++        print(f"--------------------------------SapienRenderer---__init__---args = {args}")
+         super().__init__()
+ 
+     def create_material(self):
 diff --git a/python/pybind/physx.cpp b/python/pybind/physx.cpp
 index 68423651..91619c07 100644
 --- a/python/pybind/physx.cpp
