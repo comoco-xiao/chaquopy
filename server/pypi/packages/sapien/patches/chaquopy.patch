@@ -753,7 +753,7 @@ index 7c190c40..1d70a6e4 100644
  
  } // namespace sapien_renderer
 diff --git a/src/sapien_renderer/vr.cpp b/src/sapien_renderer/vr.cpp
-index b5ff922a..d0e3e5c7 100644
+index b5ff922a..710bd17d 100644
 --- a/src/sapien_renderer/vr.cpp
 +++ b/src/sapien_renderer/vr.cpp
 @@ -126,7 +126,13 @@ namespace sapien::sapien_renderer {
@@ -771,8 +771,23 @@ index b5ff922a..d0e3e5c7 100644
  
    void SapienVRDisplay::fetchPoses() { mVR->updatePoses(); }
  
-@@ -146,6 +152,9 @@ namespace sapien::sapien_renderer {
+@@ -139,13 +145,24 @@ namespace sapien::sapien_renderer {
+   }
+ 
+   Pose SapienVRDisplay::getLeftHandRootPose() {
++#ifdef USE_OPENXR
++    return Pose();
++#else
+     return POSE_GL_TO_ROS * Mat4ToPose(mVR->getSkeletalRootPoseLeft()) * POSE_ROS_TO_GL;
++#endif
+   }
+ 
+   Pose SapienVRDisplay::getRightHandRootPose() {
++#ifdef USE_OPENXR
++    return Pose();
++#else
      return POSE_GL_TO_ROS * Mat4ToPose(mVR->getSkeletalRootPoseRight()) * POSE_ROS_TO_GL;
++#endif
    }
    std::vector<Pose> SapienVRDisplay::getLeftHandSkeletalPoses() {
 +#ifdef USE_OPENXR
@@ -781,7 +796,7 @@ index b5ff922a..d0e3e5c7 100644
      auto poses = mVR->getSkeletalDataLeft();
      std::vector<Pose> res;
      res.reserve(poses.size());
-@@ -154,8 +163,12 @@ namespace sapien::sapien_renderer {
+@@ -154,8 +171,12 @@ namespace sapien::sapien_renderer {
                      POSE_ROS_TO_GL);
      }
      return res;
@@ -794,7 +809,7 @@ index b5ff922a..d0e3e5c7 100644
      auto poses = mVR->getSkeletalDataRight();
      std::vector<Pose> res;
      res.reserve(poses.size());
-@@ -164,6 +177,7 @@ namespace sapien::sapien_renderer {
+@@ -164,6 +185,7 @@ namespace sapien::sapien_renderer {
                      POSE_ROS_TO_GL);
      }
      return res;
@@ -802,7 +817,7 @@ index b5ff922a..d0e3e5c7 100644
    }
  
    uint64_t SapienVRDisplay::getControllerButtonPressed(uint32_t id) const {
-@@ -199,6 +213,9 @@ namespace sapien::sapien_renderer {
+@@ -199,6 +221,9 @@ namespace sapien::sapien_renderer {
    void SapienVRDisplay::setRootPose(Pose const &pose) { mRootPose = pose; }
  
    void SapienVRDisplay::render() {
@@ -812,7 +827,7 @@ index b5ff922a..d0e3e5c7 100644
      if (mEngine->getContext()->getDevice().waitForFences(mSceneRenderFence.get(), VK_TRUE,
                                                           UINT64_MAX) != vk::Result::eSuccess) {
        throw std::runtime_error("failed on wait for fence.");
-@@ -229,18 +246,16 @@ namespace sapien::sapien_renderer {
+@@ -229,18 +254,16 @@ namespace sapien::sapien_renderer {
  
      // present to steam
      mVR->renderFrame(imageLeft, imageRight);
