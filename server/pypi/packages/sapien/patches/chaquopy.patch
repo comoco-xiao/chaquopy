@@ -197,6 +197,20 @@ index e1e14d43..30888d33 100644
  };
  
  } // namespace sapien_renderer
+diff --git a/include/sapien/sapien_renderer/vr.h b/include/sapien/sapien_renderer/vr.h
+index 95fbb74c..795d85de 100644
+--- a/include/sapien/sapien_renderer/vr.h
++++ b/include/sapien/sapien_renderer/vr.h
+@@ -87,6 +87,9 @@ namespace sapien::sapien_renderer {
+     std::function<void(const ControllerState &state)> mOnControllerStateUpdate;
+     std::map<std::string, Vec3> mFixedCameraPositions;
+     std::string mCameraPositionName;
++
++    std::vector<Pose> mLeftHandSkeletalPoses;
++    std::vector<Pose> mRightHandSkeletalPoses;
+ #endif
+     std::function<void(const std::vector<Pose>&, const std::vector<Pose>&)> mOnTracking;
+   };
 diff --git a/python/CMakeLists.txt b/python/CMakeLists.txt
 index db48f0a0..4b3349a9 100644
 --- a/python/CMakeLists.txt
@@ -739,7 +753,7 @@ index 7c190c40..1d70a6e4 100644
  
  } // namespace sapien_renderer
 diff --git a/src/sapien_renderer/vr.cpp b/src/sapien_renderer/vr.cpp
-index b5ff922a..a2a87d8f 100644
+index b5ff922a..d0e3e5c7 100644
 --- a/src/sapien_renderer/vr.cpp
 +++ b/src/sapien_renderer/vr.cpp
 @@ -126,7 +126,13 @@ namespace sapien::sapien_renderer {
@@ -757,7 +771,38 @@ index b5ff922a..a2a87d8f 100644
  
    void SapienVRDisplay::fetchPoses() { mVR->updatePoses(); }
  
-@@ -199,6 +205,9 @@ namespace sapien::sapien_renderer {
+@@ -146,6 +152,9 @@ namespace sapien::sapien_renderer {
+     return POSE_GL_TO_ROS * Mat4ToPose(mVR->getSkeletalRootPoseRight()) * POSE_ROS_TO_GL;
+   }
+   std::vector<Pose> SapienVRDisplay::getLeftHandSkeletalPoses() {
++#ifdef USE_OPENXR
++    return mLeftHandSkeletalPoses;
++#else
+     auto poses = mVR->getSkeletalDataLeft();
+     std::vector<Pose> res;
+     res.reserve(poses.size());
+@@ -154,8 +163,12 @@ namespace sapien::sapien_renderer {
+                     POSE_ROS_TO_GL);
+     }
+     return res;
++#endif
+   }
+   std::vector<Pose> SapienVRDisplay::getRightHandSkeletalPoses() {
++#ifdef USE_OPENXR
++    return mRightHandSkeletalPoses;
++#else
+     auto poses = mVR->getSkeletalDataRight();
+     std::vector<Pose> res;
+     res.reserve(poses.size());
+@@ -164,6 +177,7 @@ namespace sapien::sapien_renderer {
+                     POSE_ROS_TO_GL);
+     }
+     return res;
++#endif
+   }
+ 
+   uint64_t SapienVRDisplay::getControllerButtonPressed(uint32_t id) const {
+@@ -199,6 +213,9 @@ namespace sapien::sapien_renderer {
    void SapienVRDisplay::setRootPose(Pose const &pose) { mRootPose = pose; }
  
    void SapienVRDisplay::render() {
@@ -767,7 +812,7 @@ index b5ff922a..a2a87d8f 100644
      if (mEngine->getContext()->getDevice().waitForFences(mSceneRenderFence.get(), VK_TRUE,
                                                           UINT64_MAX) != vk::Result::eSuccess) {
        throw std::runtime_error("failed on wait for fence.");
-@@ -229,6 +238,7 @@ namespace sapien::sapien_renderer {
+@@ -229,18 +246,16 @@ namespace sapien::sapien_renderer {
  
      // present to steam
      mVR->renderFrame(imageLeft, imageRight);
@@ -775,6 +820,22 @@ index b5ff922a..a2a87d8f 100644
    }
  
  #ifdef USE_OPENXR
+   void SapienVRDisplay::onTracking(const std::vector<XrPosef>& left, const std::vector<XrPosef>& right) {
+-    if (!mOnTracking) {
+-      return;
++    mLeftHandSkeletalPoses = updatePoses(left);
++    mRightHandSkeletalPoses = updatePoses(right);
++    if (mOnTracking) {
++      mOnTracking(mLeftHandSkeletalPoses, mRightHandSkeletalPoses);
+     }
+-    std::vector<Pose> leftHand;
+-    std::vector<Pose> rightHand;
+-    leftHand = updatePoses(left);
+-    rightHand = updatePoses(right);
+-    mOnTracking(leftHand, rightHand);
+   }
+ 
+   void SapienVRDisplay::xrRender() {
 diff --git a/src/sapien_renderer/window.cpp b/src/sapien_renderer/window.cpp
 index 74e3b7a4..201645de 100644
 --- a/src/sapien_renderer/window.cpp
