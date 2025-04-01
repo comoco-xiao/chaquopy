@@ -494,7 +494,7 @@ index 495d36ea..530a6532 100644
 -opencv-python>=4.0
 +# opencv-python
 diff --git a/setup.py b/setup.py
-index bd21283f..0334b893 100644
+index bd21283f..085770f3 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -105,7 +105,8 @@ def generate_version():
@@ -610,16 +610,14 @@ index bd21283f..0334b893 100644
  
          sensor_assets_path = os.path.join(self.build_lib, "sapien", "sensor", "assets")
          source_patterns_path = os.path.join(
-@@ -350,7 +365,8 @@ class CMakeBuild(build_ext):
+@@ -350,6 +365,7 @@ class CMakeBuild(build_ext):
  
      def build_extension(self, ext):
          if platform.system() == "Linux":
--            self.build_pinocchio(ext)
 +            print("---build linux build extension")
-+            # self.build_pinocchio(ext)
+             self.build_pinocchio(ext)
          self.build_pybind(ext)
          self.copy_assets(ext)
- 
 diff --git a/src/physx/articulation.cpp b/src/physx/articulation.cpp
 index 36acec1f..bc0116e6 100644
 --- a/src/physx/articulation.cpp
