@@ -1,3 +1,46 @@
+diff --git a/mani_skill/agents/base_agent.py b/mani_skill/agents/base_agent.py
+index adb4c6c..ee154bf 100644
+--- a/mani_skill/agents/base_agent.py
++++ b/mani_skill/agents/base_agent.py
+@@ -87,30 +87,36 @@ class BaseAgent:
+         agent_idx: Optional[str] = None,
+         initial_pose: Optional[Union[sapien.Pose, Pose]] = None,
+     ):
++        print("-----------------------------------BaseAgent---__init__---1")
+         self.scene = scene
+         self._control_freq = control_freq
+         self._agent_idx = agent_idx
+-
++        print("-----------------------------------BaseAgent---__init__---2")
+         self.robot: Articulation = None
+         """The robot object, which is an Articulation. Data like pose, qpos etc. can be accessed from this object."""
+         self.controllers: Dict[str, BaseController] = dict()
+         """The controllers of the robot."""
+         self.sensors: Dict[str, BaseSensor] = dict()
+         """The sensors that come with the robot."""
+-
++        print("-----------------------------------BaseAgent---__init__---3")
+         self._load_articulation(initial_pose)
++        print("-----------------------------------BaseAgent---__init__---4")
+         self._after_loading_articulation()
++        print("-----------------------------------BaseAgent---__init__---5")
+ 
+         # Controller
+         self.supported_control_modes = list(self._controller_configs.keys())
+         """List of all possible control modes for this robot."""
+         if control_mode is None:
+             control_mode = self.supported_control_modes[0]
++        print("-----------------------------------BaseAgent---__init__---6")
+         # The control mode after reset for consistency
+         self._default_control_mode = control_mode
+         self.set_control_mode()
++        print("-----------------------------------BaseAgent---__init__---7")
+ 
+         self._after_init()
++        print("-----------------------------------BaseAgent---__init__---8")
+ 
+     @property
+     def _sensor_configs(self) -> List[BaseSensorConfig]:
 diff --git a/mani_skill/envs/sapien_env.py b/mani_skill/envs/sapien_env.py
 index 0845901..4d1dfb7 100644
 --- a/mani_skill/envs/sapien_env.py
