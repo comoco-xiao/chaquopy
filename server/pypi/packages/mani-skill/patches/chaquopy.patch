@@ -164,16 +164,14 @@ index 54fb6e2..c00fea5 100644
      env.reset(seed=0)
      env: BaseEnv = env.unwrapped
 diff --git a/mani_skill/utils/building/urdf_loader.py b/mani_skill/utils/building/urdf_loader.py
-index cd7be75..11a2cd0 100644
+index cd7be75..fba881a 100644
 --- a/mani_skill/utils/building/urdf_loader.py
 +++ b/mani_skill/utils/building/urdf_loader.py
-@@ -25,7 +25,8 @@ class URDFLoader(SapienURDFLoader):
-     name: str = None
+@@ -26,6 +26,7 @@ class URDFLoader(SapienURDFLoader):
      disable_self_collisions: bool = False
  
--    def parse(self, urdf_file, srdf_file=None, package_dir=None) -> ParsedURDFData:
-+    # def parse(self, urdf_file, srdf_file=None, package_dir=None) -> ParsedURDFData:
-+    def parse(self, urdf_file, srdf_file=None, package_dir=None):
+     def parse(self, urdf_file, srdf_file=None, package_dir=None) -> ParsedURDFData:
++    # def parse(self, urdf_file, srdf_file=None, package_dir=None):
          articulation_builders, actor_builders, cameras = super().parse(
              urdf_file, srdf_file, package_dir
          )
@@ -182,16 +180,12 @@ index cd7be75..11a2cd0 100644
          for i, b in enumerate(actor_builders):
              b.set_name(f"{self.name}-actor-{i}")
 -        return dict(
--            articulation_builders=articulation_builders,
--            actor_builders=actor_builders,
--            cameras=cameras,
--        )
-+        # return ParsedURDFData(
-+        #     articulation_builders=articulation_builders,
-+        #     actor_builders=actor_builders,
-+        #     cameras=cameras,
-+        # )
-+        return articulation_builders, actor_builders, cameras
++        return ParsedURDFData(
+             articulation_builders=articulation_builders,
+             actor_builders=actor_builders,
+             cameras=cameras,
+         )
++        # return articulation_builders, actor_builders, cameras
  
      def load_file_as_articulation_builder(
          self, urdf_file, srdf_file=None, package_dir=None
