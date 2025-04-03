@@ -164,7 +164,7 @@ index 54fb6e2..c00fea5 100644
      env.reset(seed=0)
      env: BaseEnv = env.unwrapped
 diff --git a/mani_skill/utils/building/urdf_loader.py b/mani_skill/utils/building/urdf_loader.py
-index cd7be75..c7a8dc2 100644
+index cd7be75..eed4c9a 100644
 --- a/mani_skill/utils/building/urdf_loader.py
 +++ b/mani_skill/utils/building/urdf_loader.py
 @@ -25,7 +25,9 @@ class URDFLoader(SapienURDFLoader):
@@ -196,11 +196,11 @@ index cd7be75..c7a8dc2 100644
              cameras=cameras,
          )
 +        print(f"---------------------------------urdf_loader---parse---udata = {udata}")
-+        return articulation_builders, actor_builders, cameras
++        return articulation_builders, actor_builders, cameras, udata
  
      def load_file_as_articulation_builder(
          self, urdf_file, srdf_file=None, package_dir=None
-@@ -73,10 +84,12 @@ class URDFLoader(SapienURDFLoader):
+@@ -73,10 +84,13 @@ class URDFLoader(SapienURDFLoader):
          """
          if name is not None:
              self.name = name
@@ -213,7 +213,8 @@ index cd7be75..c7a8dc2 100644
 +        # articulation_builders = _parsed_urdf_data["articulation_builders"]
 +        # actor_builders = _parsed_urdf_data["actor_builders"]
 +        # cameras = _parsed_urdf_data["cameras"]
-+        articulation_builders, actor_builders, cameras = self.parse(urdf_file, srdf_file, package_dir)
++        articulation_builders, actor_builders, cameras, udata = self.parse(urdf_file, srdf_file, package_dir)
++        print(f"---------------------------------urdf_loader---load---udata = {udata}")
  
          if len(articulation_builders) > 1 or len(actor_builders) != 0:
              raise Exception(
