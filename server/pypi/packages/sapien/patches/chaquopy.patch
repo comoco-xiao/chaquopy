@@ -11,9 +11,18 @@ index e355ac4b..eeccede5 100644
    bool isPresentAvailable() const;
    bool isRayTracingAvailable() const;
 diff --git a/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h b/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
-index 1c1231d4..1b234a78 100644
+index 1c1231d4..09c6327d 100644
 --- a/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
 +++ b/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
+@@ -78,7 +78,7 @@ namespace svulkan2::core {
+     std::shared_ptr<PhysicalDevice> createPhysicalDevice(std::string const &hint);
+ 
+     // HACK: shutdown VR should be called before device shutdown
+-    void shutdownVR() const;
++    void shutdownVR();
+ 
+     Instance(Instance const &other) = delete;
+     Instance(Instance const &&other) = delete;
 @@ -101,7 +101,7 @@ namespace svulkan2::core {
      std::vector<PhysicalDeviceInfo> mPhysicalDeviceInfo;
  
@@ -55,7 +64,7 @@ index dd4a3399..7740ece4 100644
  
  std::shared_ptr<resource::SVResourceManager> Context::getResourceManager() const {
 diff --git a/3rd_party/sapien-vulkan-2/src/core/instance.cpp b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
-index b4afa3de..388bc630 100644
+index b4afa3de..6d244389 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 @@ -77,7 +77,7 @@ namespace svulkan2::core {
@@ -75,10 +84,12 @@ index b4afa3de..388bc630 100644
    vk::AndroidSurfaceCreateInfoKHR surfaceCreateInfo = {};
    surfaceCreateInfo.flags = vk::AndroidSurfaceCreateFlagsKHR();
    surfaceCreateInfo.setWindow(const_cast<ANativeWindow*>(static_cast<const ANativeWindow*>(mLayer)));
-@@ -990,10 +991,17 @@ namespace svulkan2::core {
+@@ -989,11 +990,18 @@ namespace svulkan2::core {
+                                             mPhysicalDeviceInfo.at(pickedDeviceIdx));
    }
  
-   void Instance::shutdownVR() const {
+-  void Instance::shutdownVR() const {
++  void Instance::shutdownVR() {
 +#ifdef USE_OPENXR
 +    if (mXrInstance) {
 +      xrDestroyInstance(mXrInstance);
