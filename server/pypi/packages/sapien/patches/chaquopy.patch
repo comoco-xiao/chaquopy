@@ -1,5 +1,48 @@
+diff --git a/3rd_party/sapien-vulkan-2/include/svulkan2/core/context.h b/3rd_party/sapien-vulkan-2/include/svulkan2/core/context.h
+index e355ac4b..eeccede5 100644
+--- a/3rd_party/sapien-vulkan-2/include/svulkan2/core/context.h
++++ b/3rd_party/sapien-vulkan-2/include/svulkan2/core/context.h
+@@ -66,6 +66,7 @@ public:
+ 
+   ~Context();
+   inline bool isVulkanAvailable() const { return mInstance && mPhysicalDevice; }
++  void shutdownVR();
+ 
+   bool isPresentAvailable() const;
+   bool isRayTracingAvailable() const;
+diff --git a/3rd_party/sapien-vulkan-2/src/core/context.cpp b/3rd_party/sapien-vulkan-2/src/core/context.cpp
+index dd4a3399..7740ece4 100644
+--- a/3rd_party/sapien-vulkan-2/src/core/context.cpp
++++ b/3rd_party/sapien-vulkan-2/src/core/context.cpp
+@@ -99,11 +99,15 @@ Context::Context(uint32_t maxNumMaterials, uint32_t maxNumTextures, uint32_t def
+ Context::~Context() {
+   GLSLCompiler::FinalizeProcess();
+ 
+-  mInstance->shutdownVR();
++  shutdownVR();
+   if (mDevice) {
+     getDevice().waitIdle();
+   }
+ 
++  logger::info("Vulkan finished");
++}
++
++void Context::shutdownVR() {
+ #ifdef USE_OPENXR
+   CHECK_XRCMD(xrDestroySpace(mHeadSpace));
+   CHECK_XRCMD(xrDestroySpace(mLocalSpace));
+@@ -114,8 +118,7 @@ Context::~Context() {
+   mCurrentSpace = XR_NULL_HANDLE;
+   CHECK_XRCMD(xrDestroySession(mSession));
+ #endif
+-
+-  logger::info("Vulkan finished");
++  mInstance->shutdownVR();
+ }
+ 
+ std::shared_ptr<resource::SVResourceManager> Context::getResourceManager() const {
 diff --git a/3rd_party/sapien-vulkan-2/src/core/instance.cpp b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
-index b4afa3de..2a36927d 100644
+index b4afa3de..578094bb 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 @@ -77,7 +77,7 @@ namespace svulkan2::core {
@@ -19,6 +62,36 @@ index b4afa3de..2a36927d 100644
    vk::AndroidSurfaceCreateInfoKHR surfaceCreateInfo = {};
    surfaceCreateInfo.flags = vk::AndroidSurfaceCreateFlagsKHR();
    surfaceCreateInfo.setWindow(const_cast<ANativeWindow*>(static_cast<const ANativeWindow*>(mLayer)));
+@@ -990,10 +991,17 @@ namespace svulkan2::core {
+   }
+ 
+   void Instance::shutdownVR() const {
++#ifdef USE_OPENXR
++    if (mXrInstance) {
++      xrDestroyInstance(mXrInstance);
++      mXrInstance = nullptr;
++    }
++#else
+     if (mVRSupported) {
+       logger::info("VR shutting down");
+       vr::VR_Shutdown();
+     }
++#endif
+   }
+ 
+   Instance::~Instance() {
+@@ -1001,7 +1009,10 @@ namespace svulkan2::core {
+     glfwTerminate();
+ #endif
+ #ifdef USE_OPENXR
+-    xrDestroyInstance(mXrInstance);
++    if (mXrInstance) {
++      xrDestroyInstance(mXrInstance);
++      mXrInstance = nullptr;
++    }
+     VULKAN_HPP_DEFAULT_DISPATCHER.vkDestroyInstance(mInstance, nullptr);
+ #else
+     mInstance.reset();
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index dcd94d91..f2ef6d0c 100644
 --- a/CMakeLists.txt
@@ -198,10 +271,19 @@ index e1e14d43..30888d33 100644
  
  } // namespace sapien_renderer
 diff --git a/include/sapien/sapien_renderer/vr.h b/include/sapien/sapien_renderer/vr.h
-index 95fbb74c..795d85de 100644
+index 95fbb74c..f0f9f28f 100644
 --- a/include/sapien/sapien_renderer/vr.h
 +++ b/include/sapien/sapien_renderer/vr.h
-@@ -87,6 +87,9 @@ namespace sapien::sapien_renderer {
+@@ -49,6 +49,8 @@ namespace sapien::sapien_renderer {
+ 
+     std::shared_ptr<svulkan2::scene::Scene> getInternalScene() const { return mRenderScene; }
+ 
++    void shutdownVR();
++
+     ~SapienVRDisplay() {}
+ 
+ #ifdef USE_OPENXR
+@@ -87,6 +89,9 @@ namespace sapien::sapien_renderer {
      std::function<void(const ControllerState &state)> mOnControllerStateUpdate;
      std::map<std::string, Vec3> mFixedCameraPositions;
      std::string mCameraPositionName;
@@ -388,15 +470,17 @@ index 4b1edc51..f42f4fdc 100644
  class PhysxArticulation:
      name: str
 diff --git a/python/py_package/pysapien/render.pyi b/python/py_package/pysapien/render.pyi
-index ea6c214f..2968db0b 100644
+index ea6c214f..15cc00ef 100644
 --- a/python/py_package/pysapien/render.pyi
 +++ b/python/py_package/pysapien/render.pyi
-@@ -788,7 +788,7 @@ class RenderTexturedLightComponent(RenderSpotLightComponent):
+@@ -788,7 +788,9 @@ class RenderTexturedLightComponent(RenderSpotLightComponent):
          ...
  class RenderVRDisplay:
      root_pose: sapien.pysapien.Pose
 -    def __init__(self) -> None:
 +    def __init__(self, screen_scale: float = 1.0) -> None:
++        ...
++    def shutdown_vr(self) -> None:
          ...
      def fetch_poses(self) -> None:
          """
@@ -483,7 +567,7 @@ index 68423651..91619c07 100644
    PyPhysxMaterial
        .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..ab7534b5 100644
+index 3aa2a05a..3d19bf58 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
 @@ -563,7 +563,9 @@ void init_sapien_renderer(py::module &sapien) {
@@ -513,7 +597,7 @@ index 3aa2a05a..ab7534b5 100644
        .def_property_readonly("cuda_object_transforms",
                               &SapienRendererSystem::getTransformCudaArray)
  
-@@ -1269,7 +1280,10 @@ consumer library. Make a copy if needed.
+@@ -1269,7 +1280,11 @@ consumer library. Make a copy if needed.
        .def("set_focus_callback", &SapienRendererWindow::setFocusCallback, py::arg("callback"))
        .def("unset_focus_callback", &SapienRendererWindow::unsetFocusCallback);
  
@@ -522,6 +606,7 @@ index 3aa2a05a..ab7534b5 100644
 +      .def(py::init([](float screenScale) {
 +            return std::make_shared<SapienVRDisplay>("", screenScale);
 +          }), py::arg("screenScale") = 1.f)
++      .def("shutdown_vr", &SapienVRDisplay::shutdownVR)
        .def("set_scene", &SapienVRDisplay::setScene, py::arg("scene"))
        .def("set_camera_parameters", &SapienVRDisplay::setCameraParameters, py::arg("near"),
             py::arg("far"))
@@ -799,10 +884,27 @@ index 7c190c40..1d70a6e4 100644
  
  } // namespace sapien_renderer
 diff --git a/src/sapien_renderer/vr.cpp b/src/sapien_renderer/vr.cpp
-index b5ff922a..710bd17d 100644
+index b5ff922a..83fae68e 100644
 --- a/src/sapien_renderer/vr.cpp
 +++ b/src/sapien_renderer/vr.cpp
-@@ -126,7 +126,13 @@ namespace sapien::sapien_renderer {
+@@ -64,6 +64,16 @@ namespace sapien::sapien_renderer {
+ #endif
+   }
+ 
++  void SapienVRDisplay::shutdownVR() {
++    if (!mEngine) {
++      return;
++    }
++    if (!mEngine->getContext()) {
++      return;
++    }
++    mEngine->getContext()->shutdownVR();
++  }
++
+   std::array<svulkan2::scene::Camera *, 2> SapienVRDisplay::getCameras() {
+     if (!mRenderScene) {
+       throw std::runtime_error(
+@@ -126,7 +136,13 @@ namespace sapien::sapien_renderer {
      }
    }
  
@@ -817,7 +919,7 @@ index b5ff922a..710bd17d 100644
  
    void SapienVRDisplay::fetchPoses() { mVR->updatePoses(); }
  
-@@ -139,13 +145,24 @@ namespace sapien::sapien_renderer {
+@@ -139,13 +155,24 @@ namespace sapien::sapien_renderer {
    }
  
    Pose SapienVRDisplay::getLeftHandRootPose() {
@@ -842,7 +944,7 @@ index b5ff922a..710bd17d 100644
      auto poses = mVR->getSkeletalDataLeft();
      std::vector<Pose> res;
      res.reserve(poses.size());
-@@ -154,8 +171,12 @@ namespace sapien::sapien_renderer {
+@@ -154,8 +181,12 @@ namespace sapien::sapien_renderer {
                      POSE_ROS_TO_GL);
      }
      return res;
@@ -855,7 +957,7 @@ index b5ff922a..710bd17d 100644
      auto poses = mVR->getSkeletalDataRight();
      std::vector<Pose> res;
      res.reserve(poses.size());
-@@ -164,6 +185,7 @@ namespace sapien::sapien_renderer {
+@@ -164,6 +195,7 @@ namespace sapien::sapien_renderer {
                      POSE_ROS_TO_GL);
      }
      return res;
@@ -863,7 +965,7 @@ index b5ff922a..710bd17d 100644
    }
  
    uint64_t SapienVRDisplay::getControllerButtonPressed(uint32_t id) const {
-@@ -199,6 +221,9 @@ namespace sapien::sapien_renderer {
+@@ -199,6 +231,9 @@ namespace sapien::sapien_renderer {
    void SapienVRDisplay::setRootPose(Pose const &pose) { mRootPose = pose; }
  
    void SapienVRDisplay::render() {
@@ -873,7 +975,7 @@ index b5ff922a..710bd17d 100644
      if (mEngine->getContext()->getDevice().waitForFences(mSceneRenderFence.get(), VK_TRUE,
                                                           UINT64_MAX) != vk::Result::eSuccess) {
        throw std::runtime_error("failed on wait for fence.");
-@@ -229,18 +254,16 @@ namespace sapien::sapien_renderer {
+@@ -229,18 +264,16 @@ namespace sapien::sapien_renderer {
  
      // present to steam
      mVR->renderFrame(imageLeft, imageRight);
