@@ -494,7 +494,7 @@ index 4b1edc51..f42f4fdc 100644
  class PhysxArticulation:
      name: str
 diff --git a/python/py_package/pysapien/render.pyi b/python/py_package/pysapien/render.pyi
-index ea6c214f..e5c75947 100644
+index ea6c214f..c64d3ca3 100644
 --- a/python/py_package/pysapien/render.pyi
 +++ b/python/py_package/pysapien/render.pyi
 @@ -4,7 +4,7 @@ import pybind11_stubgen.typing_ext
@@ -502,7 +502,7 @@ index ea6c214f..e5c75947 100644
  import sapien.pysapien.internal_renderer
  import typing
 -__all__ = ['RenderBodyComponent', 'RenderCameraComponent', 'RenderCameraGroup', 'RenderCubemap', 'RenderCudaMeshComponent', 'RenderDirectionalLightComponent', 'RenderLightComponent', 'RenderMaterial', 'RenderParallelogramLightComponent', 'RenderPointCloudComponent', 'RenderPointLightComponent', 'RenderSceneLoaderNode', 'RenderShape', 'RenderShapeBox', 'RenderShapeCapsule', 'RenderShapeCylinder', 'RenderShapePlane', 'RenderShapePrimitive', 'RenderShapeSphere', 'RenderShapeTriangleMesh', 'RenderShapeTriangleMeshPart', 'RenderSpotLightComponent', 'RenderSystem', 'RenderSystemGroup', 'RenderTexture', 'RenderTexture2D', 'RenderTexturedLightComponent', 'RenderVRDisplay', 'RenderWindow', 'SapienRenderer', 'clear_cache', 'enable_vr', 'get_camera_shader_dir', 'get_device_summary', 'get_imgui_ini_filename', 'get_msaa', 'get_ray_tracing_denoiser', 'get_ray_tracing_dof_aperture', 'get_ray_tracing_dof_plane', 'get_ray_tracing_path_depth', 'get_ray_tracing_samples_per_pixel', 'get_viewer_shader_dir', 'get_vr_action_manifest_filename', 'get_vr_enabled', 'load_scene', 'set_camera_shader_dir', 'set_global_config', 'set_imgui_ini_filename', 'set_log_level', 'set_msaa', 'set_picture_format', 'set_ray_tracing_denoiser', 'set_ray_tracing_dof_aperture', 'set_ray_tracing_dof_plane', 'set_ray_tracing_path_depth', 'set_ray_tracing_samples_per_pixel', 'set_viewer_shader_dir', 'set_vr_action_manifest_filename']
-+__all__ = ['RenderBodyComponent', 'RenderCameraComponent', 'RenderCameraGroup', 'RenderCubemap', 'RenderCudaMeshComponent', 'RenderDirectionalLightComponent', 'RenderLightComponent', 'RenderMaterial', 'RenderParallelogramLightComponent', 'RenderPointCloudComponent', 'RenderPointLightComponent', 'RenderSceneLoaderNode', 'RenderShape', 'RenderShapeBox', 'RenderShapeCapsule', 'RenderShapeCylinder', 'RenderShapePlane', 'RenderShapePrimitive', 'RenderShapeSphere', 'RenderShapeTriangleMesh', 'RenderShapeTriangleMeshPart', 'RenderSpotLightComponent', 'RenderSystem', 'RenderSystemGroup', 'RenderTexture', 'RenderTexture2D', 'RenderTexturedLightComponent', 'RenderVRDisplay', 'RenderWindow', 'SapienRenderer', 'clear_cache', 'enable_vr', 'get_camera_shader_dir', 'get_device_summary', 'get_imgui_ini_filename', 'get_msaa', 'get_ray_tracing_denoiser', 'get_ray_tracing_dof_aperture', 'get_ray_tracing_dof_plane', 'get_ray_tracing_path_depth', 'get_ray_tracing_samples_per_pixel', 'get_viewer_shader_dir', 'get_vr_action_manifest_filename', 'get_vr_enabled', 'load_scene', 'set_camera_shader_dir', 'set_global_config', 'set_imgui_ini_filename', 'set_log_level', 'set_msaa', 'set_picture_format', 'set_ray_tracing_denoiser', 'set_ray_tracing_dof_aperture', 'set_ray_tracing_dof_plane', 'set_ray_tracing_path_depth', 'set_ray_tracing_samples_per_pixel', 'set_viewer_shader_dir', 'set_vr_action_manifest_filename', '_force_vr_shutdown']
++__all__ = ['RenderBodyComponent', 'RenderCameraComponent', 'RenderCameraGroup', 'RenderCubemap', 'RenderCudaMeshComponent', 'RenderDirectionalLightComponent', 'RenderLightComponent', 'RenderMaterial', 'RenderParallelogramLightComponent', 'RenderPointCloudComponent', 'RenderPointLightComponent', 'RenderSceneLoaderNode', 'RenderShape', 'RenderShapeBox', 'RenderShapeCapsule', 'RenderShapeCylinder', 'RenderShapePlane', 'RenderShapePrimitive', 'RenderShapeSphere', 'RenderShapeTriangleMesh', 'RenderShapeTriangleMeshPart', 'RenderSpotLightComponent', 'RenderSystem', 'RenderSystemGroup', 'RenderTexture', 'RenderTexture2D', 'RenderTexturedLightComponent', 'RenderVRDisplay', 'RenderWindow', 'SapienRenderer', 'clear_cache', 'enable_vr', 'get_camera_shader_dir', 'get_device_summary', 'get_imgui_ini_filename', 'get_msaa', 'get_ray_tracing_denoiser', 'get_ray_tracing_dof_aperture', 'get_ray_tracing_dof_plane', 'get_ray_tracing_path_depth', 'get_ray_tracing_samples_per_pixel', 'get_viewer_shader_dir', 'get_vr_action_manifest_filename', 'get_vr_enabled', 'load_scene', 'set_camera_shader_dir', 'set_global_config', 'set_imgui_ini_filename', 'set_log_level', 'set_msaa', 'set_picture_format', 'set_ray_tracing_denoiser', 'set_ray_tracing_dof_aperture', 'set_ray_tracing_dof_plane', 'set_ray_tracing_path_depth', 'set_ray_tracing_samples_per_pixel', 'set_viewer_shader_dir', 'set_vr_action_manifest_filename', 'shutdown_vr']
  M = typing.TypeVar("M", bound=int)
  N = typing.TypeVar("N", bound=int)
  class RenderBodyComponent(sapien.pysapien.Component):
@@ -517,6 +517,15 @@ index ea6c214f..e5c75947 100644
          ...
      def fetch_poses(self) -> None:
          """
+@@ -994,6 +996,8 @@ def enable_vr() -> None:
+     """
+     Enable VR via Steam. Must be called before creating RenderSystem or sapien Scene.
+     """
++def shutdown_vr() -> None:
++    ...
+ def get_camera_shader_dir() -> str:
+     ...
+ def get_device_summary() -> str:
 diff --git a/python/py_package/wrapper/engine.py b/python/py_package/wrapper/engine.py
 index 78c6a404..d458673f 100644
 --- a/python/py_package/wrapper/engine.py
@@ -600,10 +609,22 @@ index 68423651..91619c07 100644
    PyPhysxMaterial
        .def(py::init<float, float, float>(), py::arg("static_friction"),
 diff --git a/python/pybind/sapien_renderer.cpp b/python/pybind/sapien_renderer.cpp
-index 3aa2a05a..3d19bf58 100644
+index 3aa2a05a..0df1ae6a 100644
 --- a/python/pybind/sapien_renderer.cpp
 +++ b/python/pybind/sapien_renderer.cpp
-@@ -563,7 +563,9 @@ void init_sapien_renderer(py::module &sapien) {
+@@ -441,6 +441,11 @@ void init_sapien_renderer(py::module &sapien) {
+       .def("enable_vr", &SapienRendererDefault::enableVR,
+            "Enable VR via Steam. Must be called before creating RenderSystem or sapien Scene.")
+       .def("get_vr_enabled", &SapienRendererDefault::getVREnabled)
++      .def("shutdown_vr",
++          []() { SapienRenderEngine::Get()->getContext()->getInstance2()->shutdownVR(); },
++          "SteamVR will be permanently broken (even across processes) when the process is killed "
++          "without shutting down VR. This function is used to force shutting down VR when you "
++          "know SAPIEN will be killed without a clean shutdown.")
+       .def(
+           "_force_vr_shutdown",
+           []() { SapienRenderEngine::Get()->getContext()->getInstance2()->shutdownVR(); },
+@@ -563,7 +568,9 @@ void init_sapien_renderer(py::module &sapien) {
    auto PyRenderWindow = py::class_<SapienRendererWindow>(m, "RenderWindow");
    auto PyRenderVRDisplay = py::class_<SapienVRDisplay>(m, "RenderVRDisplay");
  
@@ -614,7 +635,7 @@ index 3aa2a05a..3d19bf58 100644
        .def_property_readonly("_internal_context", &SapienRenderEngine::getContext);
  
    PyRenderSystemGroup
-@@ -617,6 +619,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
+@@ -617,6 +624,15 @@ This function waits for any pending CUDA operations on cuda stream provided by :
  
        // .def("disable_auto_upload", &SapienRendererSystem::disableAutoUpload)
  
@@ -630,7 +651,7 @@ index 3aa2a05a..3d19bf58 100644
        .def_property_readonly("cuda_object_transforms",
                               &SapienRendererSystem::getTransformCudaArray)
  
-@@ -1269,7 +1280,11 @@ consumer library. Make a copy if needed.
+@@ -1269,7 +1285,11 @@ consumer library. Make a copy if needed.
        .def("set_focus_callback", &SapienRendererWindow::setFocusCallback, py::arg("callback"))
        .def("unset_focus_callback", &SapienRendererWindow::unsetFocusCallback);
  
