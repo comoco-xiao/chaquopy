@@ -10,6 +10,19 @@ index e355ac4b..eeccede5 100644
  
    bool isPresentAvailable() const;
    bool isRayTracingAvailable() const;
+diff --git a/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h b/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
+index 1c1231d4..1b234a78 100644
+--- a/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
++++ b/3rd_party/sapien-vulkan-2/include/svulkan2/core/instance.h
+@@ -101,7 +101,7 @@ namespace svulkan2::core {
+     std::vector<PhysicalDeviceInfo> mPhysicalDeviceInfo;
+ 
+ #ifdef USE_OPENXR
+-    XrInstance mXrInstance = VK_NULL_HANDLE;
++    XrInstance mXrInstance = XR_NULL_HANDLE;
+     XrSystemId mSystemId = XR_NULL_SYSTEM_ID;
+ #endif
+ 
 diff --git a/3rd_party/sapien-vulkan-2/src/core/context.cpp b/3rd_party/sapien-vulkan-2/src/core/context.cpp
 index dd4a3399..7740ece4 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/context.cpp
@@ -42,7 +55,7 @@ index dd4a3399..7740ece4 100644
  
  std::shared_ptr<resource::SVResourceManager> Context::getResourceManager() const {
 diff --git a/3rd_party/sapien-vulkan-2/src/core/instance.cpp b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
-index b4afa3de..578094bb 100644
+index b4afa3de..388bc630 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 @@ -77,7 +77,7 @@ namespace svulkan2::core {
@@ -69,7 +82,7 @@ index b4afa3de..578094bb 100644
 +#ifdef USE_OPENXR
 +    if (mXrInstance) {
 +      xrDestroyInstance(mXrInstance);
-+      mXrInstance = nullptr;
++      mXrInstance = XR_NULL_HANDLE;
 +    }
 +#else
      if (mVRSupported) {
@@ -87,7 +100,7 @@ index b4afa3de..578094bb 100644
 -    xrDestroyInstance(mXrInstance);
 +    if (mXrInstance) {
 +      xrDestroyInstance(mXrInstance);
-+      mXrInstance = nullptr;
++      mXrInstance = XR_NULL_HANDLE;
 +    }
      VULKAN_HPP_DEFAULT_DISPATCHER.vkDestroyInstance(mInstance, nullptr);
  #else
