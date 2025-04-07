@@ -33,38 +33,43 @@ index 1c1231d4..09c6327d 100644
  #endif
  
 diff --git a/3rd_party/sapien-vulkan-2/src/core/context.cpp b/3rd_party/sapien-vulkan-2/src/core/context.cpp
-index dd4a3399..7740ece4 100644
+index dd4a3399..4d0213ea 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/context.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/core/context.cpp
-@@ -99,11 +99,15 @@ Context::Context(uint32_t maxNumMaterials, uint32_t maxNumTextures, uint32_t def
+@@ -97,12 +97,13 @@ Context::Context(uint32_t maxNumMaterials, uint32_t maxNumTextures, uint32_t def
+ }
+ 
  Context::~Context() {
-   GLSLCompiler::FinalizeProcess();
+-  GLSLCompiler::FinalizeProcess();
++  shutdownVR();
  
 -  mInstance->shutdownVR();
-+  shutdownVR();
-   if (mDevice) {
-     getDevice().waitIdle();
-   }
- 
+-  if (mDevice) {
+-    getDevice().waitIdle();
+-  }
 +  logger::info("Vulkan finished");
 +}
 +
 +void Context::shutdownVR() {
++  GLSLCompiler::FinalizeProcess();
+ 
  #ifdef USE_OPENXR
    CHECK_XRCMD(xrDestroySpace(mHeadSpace));
-   CHECK_XRCMD(xrDestroySpace(mLocalSpace));
-@@ -114,8 +118,7 @@ Context::~Context() {
-   mCurrentSpace = XR_NULL_HANDLE;
+@@ -115,7 +116,11 @@ Context::~Context() {
    CHECK_XRCMD(xrDestroySession(mSession));
  #endif
--
+ 
 -  logger::info("Vulkan finished");
 +  mInstance->shutdownVR();
++
++  if (mDevice) {
++    getDevice().waitIdle();
++  }
  }
  
  std::shared_ptr<resource::SVResourceManager> Context::getResourceManager() const {
 diff --git a/3rd_party/sapien-vulkan-2/src/core/instance.cpp b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
-index b4afa3de..6d244389 100644
+index b4afa3de..a805491f 100644
 --- a/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 +++ b/3rd_party/sapien-vulkan-2/src/core/instance.cpp
 @@ -77,7 +77,7 @@ namespace svulkan2::core {
@@ -84,7 +89,7 @@ index b4afa3de..6d244389 100644
    vk::AndroidSurfaceCreateInfoKHR surfaceCreateInfo = {};
    surfaceCreateInfo.flags = vk::AndroidSurfaceCreateFlagsKHR();
    surfaceCreateInfo.setWindow(const_cast<ANativeWindow*>(static_cast<const ANativeWindow*>(mLayer)));
-@@ -989,11 +990,18 @@ namespace svulkan2::core {
+@@ -989,11 +990,19 @@ namespace svulkan2::core {
                                              mPhysicalDeviceInfo.at(pickedDeviceIdx));
    }
  
@@ -95,6 +100,7 @@ index b4afa3de..6d244389 100644
 +      xrDestroyInstance(mXrInstance);
 +      mXrInstance = XR_NULL_HANDLE;
 +    }
++    VULKAN_HPP_DEFAULT_DISPATCHER.vkDestroyInstance(mInstance, nullptr);
 +#else
      if (mVRSupported) {
        logger::info("VR shutting down");
@@ -104,7 +110,7 @@ index b4afa3de..6d244389 100644
    }
  
    Instance::~Instance() {
-@@ -1001,7 +1009,10 @@ namespace svulkan2::core {
+@@ -1001,7 +1010,10 @@ namespace svulkan2::core {
      glfwTerminate();
  #endif
  #ifdef USE_OPENXR
