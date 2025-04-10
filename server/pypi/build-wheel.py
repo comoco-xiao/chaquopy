@@ -454,7 +454,7 @@ class BuildWheel:
                                       fr"({self.python_tag}|{self.non_python_tag})-"
                                       fr"android_(?P<api_level>\d+)_{self.abi_tag}"
                                       fr"\.whl$", filename)
-                    print(f"--------------------------------match = {match}")
+                    print(f"--------------------------------package = {package}, version = {version}, self.python_tag = {self.python_tag}, self.non_python_tag = {self.non_python_tag}, self.abi_tag = {self.abi_tag}, filename = {filename}")
                     # api_level = match["api_level"]
                     # print(f"----------------------------match[api_level] = {api_level}, self.api_level = {self.api_level}")
                     if match and (int(match["api_level"]) <= self.api_level):
