@@ -1,0 +1,13 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index d181d5bc..b94de8f4 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,7 +1,7 @@
+ [build-system]
+ requires = [
+     "Cython >=0.29.31,<4",
+-    "numpy >=2.0.0, <3",
++    "numpy >=1.23.3, <3",
+     "pkgconfig",
+     "setuptools >=61",
+ ]
