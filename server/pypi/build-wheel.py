@@ -454,7 +454,7 @@ class BuildWheel:
                                       fr"({self.python_tag}|{self.non_python_tag})-"
                                       fr"android_(?P<api_level>\d+)_{self.abi_tag}"
                                       fr"\.whl$", filename)
-                    print(f"----------------------------match[\"api_level\"] = {match["api_level"]}, self.api_level = {self.api_level}")
+                    print(f"----------------------------match[\"api_level\"] = {match['api_level']}, self.api_level = {self.api_level}")
                     if match and (int(match["api_level"]) <= self.api_level):
                         matches.append(match)
             if not matches:
