@@ -12,7 +12,7 @@ index d181d5bc..b94de8f4 100644
      "setuptools >=61",
  ]
 diff --git a/setup_build.py b/setup_build.py
-index 853216e2..8fc52014 100644
+index 853216e2..6a991aff 100644
 --- a/setup_build.py
 +++ b/setup_build.py
 @@ -86,7 +86,8 @@ class h5py_build_ext(build_ext):
@@ -64,17 +64,19 @@ index 853216e2..8fc52014 100644
  
          # This allows ccache to recognise the files when pip builds in a temp
          # directory. It speeds up repeatedly running tests through tox with
-@@ -137,6 +146,9 @@ class h5py_build_ext(build_ext):
+@@ -137,6 +146,11 @@ class h5py_build_ext(build_ext):
          # ccache is not in use.
          os.environ['CCACHE_BASEDIR'] = op.dirname(op.abspath(__file__))
          os.environ['CCACHE_NOHASHDIR'] = '1'
 +        
 +        # todo xiao
 +        # os.environ['HDF5_DIR'] = '/home/ubuntu/workspace/pkg/hdf5'
++        os.environ['HDF5_LIBDIR'] =  '/usr/lib/x86_64-linux-gnu'
++        os.environ['HDF5_INCLUDEDIR'] =  '/usr/include/hdf5'
  
          # Get configuration from environment variables
          config = BuildConfig.from_env()
-@@ -164,7 +176,7 @@ DEF HDF5_VERSION = {config.hdf5_version}
+@@ -164,7 +178,7 @@ DEF HDF5_VERSION = {config.hdf5_version}
  DEF DIRECT_VFD = {bool(config.direct_vfd)}
  DEF VOL_MIN_HDF5_VERSION = (1,11,5)
  DEF COMPLEX256_SUPPORT = {complex256_support}
