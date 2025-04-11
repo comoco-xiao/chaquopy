@@ -12,7 +12,7 @@ index d181d5bc..b94de8f4 100644
      "setuptools >=61",
  ]
 diff --git a/setup_build.py b/setup_build.py
-index 853216e2..9c755810 100644
+index 853216e2..8fc52014 100644
 --- a/setup_build.py
 +++ b/setup_build.py
 @@ -86,7 +86,8 @@ class h5py_build_ext(build_ext):
@@ -70,10 +70,19 @@ index 853216e2..9c755810 100644
          os.environ['CCACHE_NOHASHDIR'] = '1'
 +        
 +        # todo xiao
-+        os.environ['HDF5_DIR'] = '/home/ubuntu/workspace/pkg/hdf5'
++        # os.environ['HDF5_DIR'] = '/home/ubuntu/workspace/pkg/hdf5'
  
          # Get configuration from environment variables
          config = BuildConfig.from_env()
+@@ -164,7 +176,7 @@ DEF HDF5_VERSION = {config.hdf5_version}
+ DEF DIRECT_VFD = {bool(config.direct_vfd)}
+ DEF VOL_MIN_HDF5_VERSION = (1,11,5)
+ DEF COMPLEX256_SUPPORT = {complex256_support}
+-DEF NUMPY_BUILD_VERSION = '{numpy.__version__}'
++DEF NUMPY_BUILD_VERSION = '1.23.3'
+ DEF CYTHON_BUILD_VERSION = '{cython_version}'
+ """
+         write_if_changed(config_file, s)
 diff --git a/setup_configure.py b/setup_configure.py
 index 3c5fe0db..d5b41371 100644
 --- a/setup_configure.py
