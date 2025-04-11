@@ -12,10 +12,59 @@ index d181d5bc..b94de8f4 100644
      "setuptools >=61",
  ]
 diff --git a/setup_build.py b/setup_build.py
-index 853216e2..8a2d3b44 100644
+index 853216e2..9c755810 100644
 --- a/setup_build.py
 +++ b/setup_build.py
-@@ -137,6 +137,9 @@ class h5py_build_ext(build_ext):
+@@ -86,7 +86,8 @@ class h5py_build_ext(build_ext):
+         This is the point at which custom directories, MPI options, etc.
+         enter the build process.
+         """
+-        import numpy
++        # todo xiao
++        # import numpy
+ 
+         settings = COMPILER_SETTINGS.copy()
+ 
+@@ -99,12 +100,16 @@ class h5py_build_ext(build_ext):
+             settings['library_dirs'].extend(config.msmpi_lib_dirs)
+             settings['libraries'].append('msmpi')
+ 
+-        try:
+-            numpy_includes = numpy.get_include()
+-        except AttributeError:
+-            # if numpy is not installed get the headers from the .egg directory
+-            import numpy.core
+-            numpy_includes = os.path.join(os.path.dirname(numpy.core.__file__), 'include')
++        # todo xiao
++        # try:
++        #     numpy_includes = numpy.get_include()
++        # except AttributeError:
++        #     # if numpy is not installed get the headers from the .egg directory
++        #     import numpy.core
++        #     numpy_includes = os.path.join(os.path.dirname(numpy.core.__file__), 'include')
++        
++        # Chaquopy
++        numpy_includes = os.path.abspath("../requirements/numpy/core/include")
+ 
+         settings['include_dirs'] += [numpy_includes]
+         if config.mpi:
+@@ -127,9 +132,13 @@ class h5py_build_ext(build_ext):
+ 
+         from Cython import __version__ as cython_version
+         from Cython.Build import cythonize
+-        import numpy
++        
++        # todo xiao
++        # import numpy
+ 
+-        complex256_support = hasattr(numpy, 'complex256')
++        # todo xiao
++        # complex256_support = hasattr(numpy, 'complex256')
++        complex256_support = False
+ 
+         # This allows ccache to recognise the files when pip builds in a temp
+         # directory. It speeds up repeatedly running tests through tox with
+@@ -137,6 +146,9 @@ class h5py_build_ext(build_ext):
          # ccache is not in use.
          os.environ['CCACHE_BASEDIR'] = op.dirname(op.abspath(__file__))
          os.environ['CCACHE_NOHASHDIR'] = '1'
