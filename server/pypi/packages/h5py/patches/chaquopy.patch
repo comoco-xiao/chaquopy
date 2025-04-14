@@ -12,7 +12,7 @@ index d181d5bc..b94de8f4 100644
      "setuptools >=61",
  ]
 diff --git a/setup_build.py b/setup_build.py
-index 853216e2..cc217558 100644
+index 853216e2..087168b4 100644
 --- a/setup_build.py
 +++ b/setup_build.py
 @@ -86,7 +86,8 @@ class h5py_build_ext(build_ext):
@@ -71,7 +71,7 @@ index 853216e2..cc217558 100644
 +        
 +        # todo xiao
 +        os.environ['HDF5_DIR'] = '/home/ubuntu/workspace/pkg/hdf5_linux'
-+        # os.environ['HDF5_LIBDIR'] =  '/usr/lib/x86_64-linux-gnu'
++        os.environ['HDF5_LIBDIR'] =  '/home/ubuntu/workspace/pkg/hdf5_linux/lib'
 +        os.environ['HDF5_INCLUDEDIR'] =  '/home/ubuntu/workspace/pkg/hdf5_linux/include'
  
          # Get configuration from environment variables
